@@ -19,7 +19,8 @@ module.config(function($routeProvider) {
         });
 });
 
-module.controller('ConversationListController', function() {
+module.controller('ConversationListController', function(Conversation) {
+    console.log(Conversation.query());
     // TODO
 });
 

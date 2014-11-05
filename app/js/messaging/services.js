@@ -11,7 +11,7 @@ var module = angular.module('overdressed.messaging.services', [
  */
 module.factory('Api', function() {
     // TODO: read from manifest
-    var baseUrl = '/api/';
+    var baseUrl = 'http://admin:district@inf5750-19.uio.no/api/';
 
     return {
         getBaseUrl: function() {
@@ -26,8 +26,11 @@ module.factory('Api', function() {
  * Uses the ngResource as a base object
  */
 module.factory('Conversation', function($resource, Api) {
-    var res = $resource(Api.getBaseUrl()+'conversations', {
-
+    var res = $resource(Api.getBaseUrl()+'messageConversations/:id', {
+        id: '@id'
+    }, {
+        // the list returned is in data.messageConversations (and pageinfo in data.pager)
+        query: { isArray: false }
     });
 
     /*
