@@ -1,12 +1,13 @@
 module.exports = function(grunt)
 {
     var js_files = [
-        "./bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js",
+        //"./bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js",
         "./bower_components/angular/angular.js",
         "./bower_components/angular-route/angular-route.js",
         //"./bower_components/angular-animate/angular-animate.js",
         "./bower_components/angular-resource/angular-resource.js",
-        "./app/js/**.js"
+        "./app/js/*.js", // should be able to use ** instead of having subdirectory, but don't work (?!)
+        "./app/js/messaging/*.js"
     ];
     grunt.initConfig({
         concat: {
@@ -80,7 +81,7 @@ module.exports = function(grunt)
     // Plugin loading
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-ng-annotate');
@@ -100,3 +101,4 @@ module.exports = function(grunt)
     ]);
 
 };
+
