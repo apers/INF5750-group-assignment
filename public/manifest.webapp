@@ -12,6 +12,10 @@
         "48": "/img/icon-48.png",
         "128": "/img/icon.png"
     },
+    "developer": {
+        "name": "Overdressed",
+        "url": "http://wat.com"
+    },
     "activities": {
         "dhis": {
             "href": "*"
