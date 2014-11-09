@@ -9,8 +9,8 @@
     "description": "Example application for DHIS2.",
     "icons": {
         "16": null,
-        "48": "/img/icon-48.png",
-        "128": "/img/icon.png"
+        "48": "res/icon-48.png",
+        "128": "res/icon.png"
     },
     "developer": {
         "name": "Overdressed",

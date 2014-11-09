@@ -11,7 +11,7 @@
 #
 # !! RUNNING THIS SCRIPT DELETES ANY APP WITH THE SAME NAME FROM THE SERVER !!
 
-SERVER=""
+SERVER="inf5750-19.uio.no"
 USER="admin"
 PASS="district"
 APP_NAME="Overdressed"
