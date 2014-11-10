@@ -10,10 +10,13 @@ var module = angular.module('overdressed', [
 
 module.config(['$routeProvider', function($routeProvider) {
     // send to index page if unknown url
-    $routeProvider.otherwise({redirectTo: '/'});
+    $routeProvider.otherwise({
+        redirectTo: '/'
+    });
 }]);
 
-module.config(['$locationProvider', function($locationProvider) {
-    // use HTML5 history API for nice urls
-    $locationProvider.html5Mode(true);
-}]);
+
+//module.config(['$locationProvider', function($locationProvider) {
+//    // use HTML5 history API for nice urls
+//    $locationProvider.html5Mode(true);
+//}]);
