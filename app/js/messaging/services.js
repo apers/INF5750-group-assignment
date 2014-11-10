@@ -9,9 +9,13 @@ var module = angular.module('overdressed.messaging.services', [
  *
  * TODO: Should probably be somewhere else and not inside the conversations module group
  */
-module.factory('Api', function() {
+module.factory('Api', function($http) {
     // TODO: read from manifest
     var baseUrl = 'http://admin:district@inf5750-19.uio.no/api/';
+
+    //$http.get('manifest.webapp').success(function(data) {
+    //    return data.activities.dhis.href + "/api/";
+    //});
 
     return {
         getBaseUrl: function() {
@@ -38,6 +42,8 @@ module.factory('Conversation', function($resource, Api) {
 
     };
     */
+
+    //res.prototype.
 
     return res;
 });

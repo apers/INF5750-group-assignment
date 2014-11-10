@@ -1,4 +1,8 @@
 <!-- a specific message -->
-A conversation
-<p><a href="/">&laquo; conversation list</a></p>
+<div class="conversation">
+    <p>{{conversation.displayName}}</p>
+    <p class="message" ng-repeat="message in conversation.messages">{{message.name}}</p>
+</div>
+
+<p><a href ng-click="changePage('/')">&laquo; conversation list</a></p>
 

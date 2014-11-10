@@ -1,1 +1,17 @@
 // scss for messaging component
+.conversationList {
+  tr {
+    td {
+      padding: 5px 5px 5px 5px;
+    }
+  }
+  .hovercolor {
+    background: #9ac4ff;
+  }
+}
+
+.conversation {
+  .message {
+    border: solid 1px black;
+  }
+}

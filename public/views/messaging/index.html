@@ -1,6 +1,17 @@
 <!-- a conversation list -->
-Conversation list
-<p><a href="/">&laquo; conversation list</a></p>
+<table class="conversationList">
+    <tr>
+        <td><b>Date</b></td>
+        <td><b>Subject</b></td>
+    </tr>
+    <tr ng-mouseover="hover = true"
+        ng-mouseleave="hover = false"
+        ng-class="{hovercolor: hover}" ng-repeat="conversation in conversations.messageConversations"
+        ng-click="changePage('/conversation/' + conversation.id)">
+        <td>{{conversation.created | date : 'MMM yyyy, hh:mm'}}</td>
+        <td>{{conversation.name}}</td>
+    </tr>
+</table>
 
 
 

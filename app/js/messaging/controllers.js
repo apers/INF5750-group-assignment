@@ -19,11 +19,23 @@ module.config(function($routeProvider) {
         });
 });
 
-module.controller('ConversationListController', function(Conversation) {
-    console.log(Conversation.query());
-    // TODO
+module.controller('ConversationListController', function($scope, $location, Conversation) {
+
+    // Get all conversations
+    $scope.conversations = Conversation.query();
+
+    // Change page
+    $scope.changePage = function(path) {
+        console.log(path)
+        $location.path(path);
+    }
 });
 
-module.controller('ConversationController', function() {
-    // TODO
+module.controller('ConversationController', function($scope, $routeParams, Conversation) {
+    $scope.conversation = Conversation.get({id: $routeParams.id});
+    // Change page
+    $scope.changePage = function(path) {
+        console.log(path)
+        $location.path(path);
+    }
 });
