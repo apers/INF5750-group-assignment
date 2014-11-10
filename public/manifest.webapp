@@ -1,12 +1,18 @@
 {
     "version": "1.0",
     "name": "Overdressed",
+    "description": "DHIS2 messaging app",
     "launch_path": "index.html",
+    "default_locale": "en",
     "installs_allowed_from": [
         "*"
     ],
-    "default_locale": "en",
-    "description": "Example application for DHIS2.",
+    "developer": {
+        "url": "http://www.dhis2.org",
+        "name": "Overdressed",
+        "company": null,
+        "email": null
+    },
     "icons": {
         "16": null,
         "48": "res/icon-48.png",
