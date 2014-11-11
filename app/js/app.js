@@ -16,7 +16,7 @@ module.config(['$routeProvider', function($routeProvider) {
 }]);
 
 
-//module.config(['$locationProvider', function($locationProvider) {
-//    // use HTML5 history API for nice urls
-//    $locationProvider.html5Mode(true);
-//}]);
+module.config(['$locationProvider', function($locationProvider) {
+    // use HTML5 history API for nice urls
+    $locationProvider.html5Mode(true);
+}]);

@@ -14,7 +14,7 @@
 SERVER="inf5750-19.uio.no"
 USER="admin"
 PASS="district"
-APP_NAME="Overdressed"
+APP_NAME="Messaging2"
 
 if [ "$SERVER" == "" ] 
 then
@@ -25,12 +25,14 @@ fi
 cmd=(
 "grunt prod" 
 "cd public" 
-"sed -i "s/Overdressed/$APP_NAME/" manifest.webapp"
+"sed -i "s/APP_NAME/$APP_NAME/" manifest.webapp"
+"sed -i "s/APP_NAME/$APP_NAME/" index.html"
 "zip -r $APP_NAME.zip ." 
 "curl -X DELETE -u $USER:$PASS http://$SERVER/api/apps/$APP_NAME"
 "curl -X POST -u $USER:$PASS -F file=@$APP_NAME.zip http://$SERVER/api/apps" 
 "rm $APP_NAME.zip"
-"sed -i "s/$APP_NAME/Overdressed/" manifest.webapp"
+"sed -i "s/$APP_NAME/APP_NAME/" manifest.webapp"
+"sed -i "s/$APP_NAME/APP_NAME/" index.html"
 )
 
 check_return_value () {
