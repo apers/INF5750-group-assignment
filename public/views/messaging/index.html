@@ -4,12 +4,12 @@
         <td><b>Date</b></td>
         <td><b>Subject</b></td>
     </tr>
-    <tr ng-mouseover="hover = true"
-        ng-mouseleave="hover = false"
-        ng-class="{hovercolor: hover}" ng-repeat="conversation in conversations.messageConversations"
+    <tr class="conversation"
+        ng-repeat="conversation in conversations.messageConversations"
         ng-click="changePage('/conversation/' + conversation.id)">
         <td>{{conversation.created | date : 'MMM yyyy, hh:mm'}}</td>
         <td>{{conversation.name}}</td>
+        <td>{{console.log(conversationIsRead(conversation.id))}}</td>
     </tr>
 </table>
 
