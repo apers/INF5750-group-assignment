@@ -28,7 +28,7 @@ then
 fi
 
 cmd=(
-"grunt prod" 
+"gulp" 
 "cd public" 
 "sed -ie "s/APP_NAME/$APP_NAME/" manifest.webapp"
 "sed -ie "s/APP_NAME/$APP_NAME/" index.html"
