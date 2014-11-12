@@ -6,12 +6,6 @@
     <!-- Keep APP_NAME if using server_install.sh  -->
     <base href="/apps/APP_NAME/">
     <script src="app.js"></script>
-
-    <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="../../dist/css/bootstrap-theme.min.css" rel="stylesheet">
-
 </head>
 <body>
     <!-- Fixed navbar -->
@@ -31,35 +25,14 @@
             <li class="active"><a href="#">Inbox</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
-            
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
-    <div class="col-md-6">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Subject</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Mark</td>
-                <td>Otto</td>
-              </tr>
-              <tr>
-                <td>Jacob</td>
-                <td>Thornton</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    <div ng-view>
+    <div class="container" ng-view>
         <!-- contents of the controller's view will be replaced here -->
     </div>
+
 </body>
 </html>
