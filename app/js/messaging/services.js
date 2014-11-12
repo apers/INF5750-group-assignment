@@ -47,3 +47,12 @@ module.factory('Conversation', function($resource, Api) {
 
     return res;
 });
+
+/* 
+ get json objects from users ?
+module.factory('Users', function($resource, Api) {
+
+	var res = $http(Api.getBaseUrl()+'users.json';
+	return res;
+}
+*/

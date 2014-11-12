@@ -14,7 +14,7 @@
 SERVER="inf5750-19.uio.no"
 USER="admin"
 PASS="district"
-APP_NAME="Messaging2"
+APP_NAME="Overdresseds"
 
 if [ "$SERVER" == "" ] 
 then

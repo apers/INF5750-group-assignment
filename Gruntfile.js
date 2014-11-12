@@ -95,9 +95,9 @@ module.exports = function(grunt)
     grunt.registerTask('prod', [
         'copy',
         'sass:prod',
-        'concat',
-        'ngAnnotate',
-        'uglify'
+        'concat'//,
+        //'ngAnnotate',
+        //'uglify'
     ]);
 
 };
