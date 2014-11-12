@@ -11,10 +11,15 @@
 #
 # !! RUNNING THIS SCRIPT DELETES ANY APP WITH THE SAME NAME FROM THE SERVER !!
 
+if [ -z "$1" ]; then
+    echo "Missing app name as parameter!"
+    exit
+fi
+
 SERVER="inf5750-19.uio.no"
 USER="admin"
 PASS="district"
-APP_NAME="Overdresseds"
+APP_NAME="$1"
 
 if [ "$SERVER" == "" ] 
 then
