@@ -8,3 +8,6 @@ https://wiki.uio.no/mn/ifi/inf5750/index.php/Overdressed
 
 ## Development
 * Run ```$ gulp``` to generate new static files
+
+## Deployment
+* Run ```./install_server.sh NAME``` to deploy as a app named NAME. It will generated new static files.
