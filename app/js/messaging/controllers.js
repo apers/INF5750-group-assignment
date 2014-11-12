@@ -10,16 +10,17 @@ module.config(function($routeProvider) {
             templateUrl: 'views/messaging/index.html',
             controller: 'ConversationListController'
         })
-        .when('/conversation/:id', {
-            templateUrl: 'views/messaging/conversation.html',
-            controller: 'ConversationController'
-        })
         .when('/conversation/new', {
         
         	templateUrl: 'views/messaging/new.html',
-        	controller: 'conversationNewController'
+        	controller: 'ConversationNewController'
         	
+        })
+        .when('/conversation/:id', {
+            templateUrl: 'views/messaging/conversation.html',
+            controller: 'ConversationController'
         });
+        
 });
 
 module.controller('ConversationListController', function($scope, $location, Conversation) {
@@ -43,9 +44,9 @@ module.controller('ConversationController', function($scope, $routeParams, Conve
     }
 });
 
-module.controller('ConversationNewController', function($scope, , $http, Conversation) {
+module.controller('ConversationNewController', function($scope, $location, $http, Conversation) {
 	//resouce har API (?)
-	$http.get("admin:district@inf5750-19.uio.no/api/users.json").
+	$http.get("http://admin:district@inf5750-19.uio.no/api/users.json").
 	success(function(data, status) {
       $scope.users = data;
     }).
