@@ -16,6 +16,13 @@ if [ -z "$1" ]; then
     exit
 fi
 
+sed="sed -i"
+
+# Change sed command if we are running Apple OS
+if [[ `uname` == 'Darwin' ]]; then
+	sed="sed -i ''"
+fi
+
 SERVER="inf5750-19.uio.no"
 USER="admin"
 PASS="district"
@@ -30,14 +37,14 @@ fi
 cmd=(
 "gulp" 
 "cd public" 
-"sed -ie "s/APP_NAME/$APP_NAME/" manifest.webapp"
-"sed -ie "s/APP_NAME/$APP_NAME/" index.html"
+"$sed "s/APP_NAME/$APP_NAME/" manifest.webapp"
+"$sed "s/APP_NAME/$APP_NAME/" index.html"
 "zip -r $APP_NAME.zip ." 
 "curl -X DELETE -u $USER:$PASS http://$SERVER/api/apps/$APP_NAME"
 "curl -X POST -u $USER:$PASS -F file=@$APP_NAME.zip http://$SERVER/api/apps" 
 "rm $APP_NAME.zip"
-"sed -ie "s/$APP_NAME/APP_NAME/" manifest.webapp"
-"sed -ie "s/$APP_NAME/APP_NAME/" index.html"
+"$sed "s/$APP_NAME/APP_NAME/" manifest.webapp"
+"$sed "s/$APP_NAME/APP_NAME/" index.html"
 )
 
 check_return_value () {
