@@ -16,16 +16,12 @@ if [ -z "$1" ]; then
     exit
 fi
 
-# Change sed command if we are running Apple OS
-sed="sed -i.backup"
-if [[ `uname` == 'Darwin' ]]; then
-	sed="sed -i .backup"
-fi
 
 SERVER="inf5750-19.uio.no"
 USER="admin"
 PASS="district"
 APP_NAME="$1"
+sed="sed -i.backup"
 
 if [ "$SERVER" == "" ]
 then
@@ -38,8 +34,8 @@ cmd=(
     "cd public"
 
     # replace APP_NAME in files, restore from backupfiles later
-    "$sed -e 's/APP_NAME/$APP_NAME/' index.html"
-    "$sed -e 's/APP_NAME/$APP_NAME/' manifest.webapp"
+    "$sed 's/APP_NAME/$APP_NAME/' index.html"
+    "$sed 's/APP_NAME/$APP_NAME/' manifest.webapp"
 
     # put the package on DHIS2-server
     "zip -r $APP_NAME.zip ."
@@ -48,8 +44,11 @@ cmd=(
     "rm $APP_NAME.zip"
 
     # restore changed files
-    "mv index.html.backup index.html"
-    "mv manifest.webapp.backup manifest.webapp"
+    "$sed 's/$APP_NAME/APP_NAME/' manifest.webapp"
+    "$sed 's/$APP_NAME/APP_NAME/' index.html"
+
+    #Delete backup file
+    "find . -name '*.backup' -type f -delete"
 )
 
 check_return_value () {
