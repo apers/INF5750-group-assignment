@@ -21,7 +21,6 @@ SERVER="inf5750-19.uio.no"
 USER="admin"
 PASS="district"
 APP_NAME="$1"
-sed="sed -i.backup -e"
 
 if [ "$SERVER" == "" ]
 then
@@ -34,8 +33,8 @@ cmd=(
     "cd public"
 
     # replace APP_NAME in files, restore from backupfiles later
-    "$sed 's/APP_NAME/$APP_NAME/' index.html"
-    "$sed 's/APP_NAME/$APP_NAME/' manifest.webapp"
+    "sed -i.backup -e 's/APP_NAME/$APP_NAME/' index.html"
+    "sed -i.backup -e 's/APP_NAME/$APP_NAME/' manifest.webapp"
 
     # put the package on DHIS2-server
     "zip -r $APP_NAME.zip ."
