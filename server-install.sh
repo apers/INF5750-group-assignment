@@ -21,7 +21,7 @@ SERVER="inf5750-19.uio.no"
 USER="admin"
 PASS="district"
 APP_NAME="$1"
-sed="sed -i.backup"
+sed="sed -i.backup -e"
 
 if [ "$SERVER" == "" ]
 then
@@ -44,11 +44,8 @@ cmd=(
     "rm $APP_NAME.zip"
 
     # restore changed files
-    "$sed 's/$APP_NAME/APP_NAME/' manifest.webapp"
-    "$sed 's/$APP_NAME/APP_NAME/' index.html"
-
-    #Delete backup file
-    "find . -name '*.backup' -type f -delete"
+    "mv index.html.backup index.html"
+    "mv manifest.webapp.backup manifest.webapp"
 )
 
 check_return_value () {
