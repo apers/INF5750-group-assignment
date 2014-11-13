@@ -6,7 +6,7 @@
 #
 # USER, PASS = dhis server http auth
 #
-# APP_NAME = The upload name of the app. 
+# APP_NAME = The upload name of the app.
 #            Change name to have serveral working copies on the same server
 #
 # !! RUNNING THIS SCRIPT DELETES ANY APP WITH THE SAME NAME FROM THE SERVER !!
@@ -27,7 +27,7 @@ USER="admin"
 PASS="district"
 APP_NAME="$1"
 
-if [ "$SERVER" == "" ] 
+if [ "$SERVER" == "" ]
 then
     echo "Server name not set"
     exit
@@ -54,7 +54,7 @@ cmd=(
 
 check_return_value () {
     if [ $? -eq "1" ]
-    then 
+    then
         echo "${cmd[$1]} failed"
         exit
     fi
