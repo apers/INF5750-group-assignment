@@ -16,11 +16,10 @@ if [ -z "$1" ]; then
     exit
 fi
 
-sed="sed -i"
-
 # Change sed command if we are running Apple OS
+sed="sed -i.backup"
 if [[ `uname` == 'Darwin' ]]; then
-	sed="sed -i ''"
+	sed="sed -i .backup"
 fi
 
 SERVER="inf5750-19.uio.no"
@@ -35,16 +34,22 @@ then
 fi
 
 cmd=(
-"gulp" 
-"cd public" 
-"$sed "s/APP_NAME/$APP_NAME/" manifest.webapp"
-"$sed "s/APP_NAME/$APP_NAME/" index.html"
-"zip -r $APP_NAME.zip ." 
-"curl -X DELETE -u $USER:$PASS http://$SERVER/api/apps/$APP_NAME"
-"curl -X POST -u $USER:$PASS -F file=@$APP_NAME.zip http://$SERVER/api/apps" 
-"rm $APP_NAME.zip"
-"$sed "s/$APP_NAME/APP_NAME/" manifest.webapp"
-"$sed "s/$APP_NAME/APP_NAME/" index.html"
+    "gulp"
+    "cd public"
+
+    # replace APP_NAME in files, restore from backupfiles later
+    "$sed -e 's/APP_NAME/$APP_NAME/' index.html"
+    "$sed -e 's/APP_NAME/$APP_NAME/' manifest.webapp"
+
+    # put the package on DHIS2-server
+    "zip -r $APP_NAME.zip ."
+    "curl -X DELETE -u $USER:$PASS http://$SERVER/api/apps/$APP_NAME"
+    "curl -X POST -u $USER:$PASS -F file=@$APP_NAME.zip http://$SERVER/api/apps"
+    "rm $APP_NAME.zip"
+
+    # restore changed files
+    "mv index.html.backup index.html"
+    "mv manifest.webapp.backup manifest.webapp"
 )
 
 check_return_value () {
@@ -59,6 +64,6 @@ check_return_value () {
 for item in ${!cmd[*]}
 do
     echo "Running ${cmd[item]}"
-    ${cmd[item]}
+    eval ${cmd[item]}
     check_return_value $item
 done
