@@ -1,7 +1,25 @@
 
-	<!-- search through a list of members(?), use angular..  -->
-<div data-ng-controller="ConversationNewController">
-
-	<li data-ng-repeat="a in users"> {{ a }} </li>
-
+<div ng-controller="ConversationNewController">
+	<br/>
+	<br/>
+	<br/>
+	<li style="color:red; display: inline;
+			list-style-type: none;
+			padding-right: 20px;" 
+			ng-repeat="x in recv" ng-click="remRecv($index)"> [x]{{ x.name }} </li>
+    <br/>
+		<label>To user</label>
+		<input type="text" ng-model="to" ng-change="changed()" 
+		ng-model-options="{debounce:500}" placeholder="Write user"/>
+		<br/>
+	
+	
+    <li style="color:blue" ng-repeat="x in res.users" ng-click="addRecv(x)"> {{ x.name }} </li>
+		<br/>
+		<label>Subject</label>
+		<input type="text" ng-model="sub" placeholder="Write subject"/>
+		<br/>
+		<label>Text</label>
+		<textarea cols="70" rows="30" id="mail" placeholder="..." ng-model="mailText"></textarea>
+	
 </div>
