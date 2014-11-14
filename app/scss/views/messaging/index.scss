@@ -5,6 +5,11 @@
     }
   }
   .conversation:hover {
-    background: #9ac4ff;
+    background: #ffffcd;
+  }
+  .conversation {
+    a {
+      text-decoration: none;
+    }
   }
 }

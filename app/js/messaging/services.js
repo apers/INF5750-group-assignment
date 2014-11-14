@@ -34,7 +34,13 @@ module.factory('Conversation', function($resource, Api) {
         id: '@id'
     }, {
         // the list returned is in data.messageConversations (and pageinfo in data.pager)
-        query: { isArray: false },
+        query: {
+            isArray: false,
+            params: {
+                fields: ':all',
+                page: '@page'
+            }
+        },
 
         get: {
             params: {
@@ -43,7 +49,6 @@ module.factory('Conversation', function($resource, Api) {
             }
         }
     });
-
     /*
     res.prototype.xxx = function() {
 

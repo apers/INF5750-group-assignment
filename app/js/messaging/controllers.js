@@ -7,13 +7,17 @@ var module = angular.module('overdressed.messaging.controllers', [
 module.config(function($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: 'views/messaging/index.html',
-            controller: 'ConversationListController'
+            redirectTo: '/inbox/1'
         })
         .when('/conversation/new', {
 
             templateUrl: 'views/messaging/new.html',
             controller: 'ConversationNewController'
+
+        })
+        .when('/inbox/:page', {
+            templateUrl: 'views/messaging/index.html',
+            controller: 'ConversationListController'
 
         })
         .when('/conversation/:id', {
@@ -22,16 +26,12 @@ module.config(function($routeProvider) {
         });
 });
 
-module.controller('ConversationListController', function($scope, $location, Conversation) {
-
+module.controller('ConversationListController', function($scope, $location, $routeParams, Conversation) {
     // Get all conversations
-    $scope.conversations = Conversation.query();
+    $scope.conversations = Conversation.query($routeParams);
 
-    // Change page
-    $scope.changePage = function(path) {
-        console.log(path)
-        $location.path(path);
-    }
+    // Set current page
+    $scope.page = parseInt($routeParams.page);
 });
 
 module.controller('ConversationController', function($scope, $routeParams, Conversation, $window) {

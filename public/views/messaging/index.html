@@ -1,17 +1,47 @@
-<!-- a conversation list -->
-<table class="conversationList">
-    <tr>
-        <td><b>Date</b></td>
-        <td><b>Subject</b></td>
-    </tr>
-    <tr class="conversation"
-        ng-repeat="conversation in conversations.messageConversations"
-        ng-click="changePage('/conversation/' + conversation.id)">
-        <td>{{conversation.created | date : 'MMM yyyy, hh:mm'}}</td>
-        <td>{{conversation.name}}</td>
-        <td>{{console.log(conversationIsRead(conversation.id))}}</td>
-    </tr>
-</table>
-
+<!-- Whole list -->
+<div class="list-group conversationList">
+    <!-- Each item -->
+    <div class="list-group-item conversation"
+       ng-repeat="conversation in conversations.messageConversations"
+       ng-class="{'list-group-item-success': !conversation.read, 'active': conversation.selected}">
+        <div class="row">
+            <!-- Check boxes for selection -->
+            <div class="col-md-1">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <input type="checkbox" ng-model="conversation.selected">
+                    </div>
+                </div>
+            </div>
+            <!-- Content: Subject, sender etc -->
+            <div class="col-md-11"
+               href="{{'#conversation/' + conversation.id}}">
+                <!-- Heading -->
+                <div class="row">
+                    <div class="col-md-6 ">
+                        <h4 class="list-group-item-heading">{{conversation.displayName}}</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="pull-right">{{conversation.created | date : 'MMM. dd, hh:mm'}}</p>
+                    </div>
+                </div>
+                <!-- Content -->
+                <p class="list-group-item-text">{{
+                    conversation.lastSenderFirstname + ' ' +
+                    conversation.lastSenderSurname}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-center">
+    <ul class="pagination">
+        <li><a href="#inbox/{{page - 1}}">&laquo;</a></li>
+        <li ng-class="{'active': (page == 1)}"><a href="#inbox/1">1</a></li>
+        <li ng-class="{'active': (page == 2)}"><a href="#inbox/2">2</a></li>
+        <li ng-class="{'active': (page == 3)}"><a href="#inbox/3">3</a></li>
+        <li><a href="#inbox/{{page + 1}}">&raquo;</a></li>
+    </ul>
+</div>
 
 
