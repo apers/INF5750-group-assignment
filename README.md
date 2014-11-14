@@ -23,7 +23,7 @@ The application will use the [dhis2 API](https://www.dhis2.org/doc/snapshot/en/d
 * STAR Star a conversation (mark as follow-up) #5
 * UNSTAR Unstar a conversation (unmark as follow-up) #5
 * NEWCONVERSATION Create conversation #7, #10, #24
-* * SEARCHRECEIVER Search by users, groups and organization units #25
+ * SEARCHRECEIVER Search by users, groups and organization units #25
 * DELETECONVERSATION Delete a conversation #8
 
 #### Constraints
