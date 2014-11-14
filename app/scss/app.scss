@@ -1,4 +1,7 @@
 @import "bootstrap";
 
 @import "template";
-@import "messaging";
+
+@import "views/messaging/index.scss";
+@import "views/messaging/conversation.scss";
+@import "views/messaging/new.scss";
