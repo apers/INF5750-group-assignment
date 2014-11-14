@@ -1,0 +1,46 @@
+.conversation {
+    .conversation-item {
+        .users {
+            margin-bottom: 10px;
+            p { display: none }
+            ul {
+                &, li {
+                    margin: 0;
+                    padding: 0;
+                }
+                li {
+                    list-style: none;
+                    display: inline;
+                }
+                li:after {
+                    content: ', ';
+                }
+                li:last-child:after {
+                    content: '';
+                }
+            }
+            a {
+                color: $text-muted;
+                &:hover {
+                    color: $link-hover-color;
+                }
+            }
+        }
+
+        .messages {
+            .message {
+                .date {
+                    color: $text-muted;
+                    font-size: 80%;
+                }
+                .text {
+                    white-space: pre-wrap;
+                }
+            }
+        }
+
+        .hotline {
+            margin-bottom: 20px;
+        }
+    }
+}

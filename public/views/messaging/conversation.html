@@ -1,9 +1,76 @@
-<!-- a specific message -->
+<p><a href ng-href="#/">&laquo; Conversation list</a></p>
+
 <div class="conversation">
-    <p>{{conversation.displayName}}</p>
-    <p class="message" ng-repeat="message in conversation.messages">{{message.name}}</p>
+    <div class="alert alert-info" ng-show="conversation == null">
+        Loading message...
+    </div>
+
+    <div class="alert alert-danger" ng-show="conversation == false">
+        The message requested was not found.
+    </div>
+
+    <div class="conversation-item" ng-show="conversation">
+        <h3>
+            {{conversation.displayName}}
+            <a href ng-click="changeFollowUp()">
+                <span ng-show="conversation.followUp" class="glyphicon glyphicon-star"></span>
+                <span ng-show="!conversation.followUp" class="glyphicon glyphicon-star-empty"></span>
+            </a>
+        </h3>
+
+        <div class="users">
+            <p>Users involved:</p>
+            <ul>
+                <li ng-repeat="item in conversation.userMessages">
+                    <a ng-href="/dhis-web-dashboard-integration/profile.action?id={{item.user.id}}">
+                        {{item.user.name}}<!--
+                    --></a><!--
+                --></li>
+            </ul>
+        </div>
+
+        <div class="list-group messages">
+            <section class="list-group-item message" ng-repeat="message in conversation.messages">
+                <h4 class="list-group-item-heading">
+                    <a ng-href="/dhis-web-dashboard-integration/profile.action?id={{message.sender.id}}">
+                        {{message.sender.name}}
+                    </a>
+
+                    <span class="date">{{message.created|date:'yyyy-MM-dd HH:mm'}}</span>
+                </h4>
+
+                <div class="list-group-item-text text">{{message.name}}</div>
+            </section>
+
+            <div class="list-group-item reply-form">
+                <h4 class="sr-only">Add reply</h4>
+                <form onsubmit="addReply()">
+                    <div class="form-group">
+                        <textarea ng-model="reply_text" class="form-control" rows="5"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        Add reply
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="hotline">
+            <button ng-click="markUnread()" class="btn btn-default">
+                <span class="glyphicon glyphicon-envelope"></span>
+                Mark as unread
+            </button>
+            <button ng-click="delete()" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove"></span>
+                Delete
+            </button>
+            <button ng-click="gotoTop()" class="btn btn-default pull-right">
+                <span class="glyphicon glyphicon-arrow-up"></span>
+                To top
+            </button>
+        </div>
+
+        <p><a href ng-href="#/">&laquo; Conversation list</a></p>
+    </div>
 </div>
-
-
-<p><a href ng-href="#/">&laquo; conversation list</a></p>
-

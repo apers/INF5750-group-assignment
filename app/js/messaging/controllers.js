@@ -35,13 +35,40 @@ module.controller('ConversationListController', function($scope, $location, Conv
 	}
 });
 
-module.controller('ConversationController', function($scope, $routeParams, Conversation) {
-	$scope.conversation = Conversation.get({id: $routeParams.id});
-	// Change page
-	$scope.changePage = function(path) {
-		console.log(path)
-		$location.path(path);
-	}
+module.controller('ConversationController', function($scope, $routeParams, Conversation, $window) {
+    $scope.conversation = null;
+    Conversation.get({id: $routeParams.id}, function(ret) {
+        $scope.conversation = ret;
+        console.log("ret", ret);
+    }, function(error) {
+        $scope.conversation = false;
+        console.log("err", error);
+    });
+
+    $scope.changeFollowUp = function() {
+        $scope.conversation.followUp = !$scope.conversation.followUp;
+        // TODO: save
+        console.log("set followup", $scope.conversation.id, $scope.conversation.followUp);
+    }
+
+    $scope.addReply = function() {
+        // TODO
+        console.log("add reply", $scope.conversation.id, $scope.reply_text);
+    };
+
+    $scope.markUnread = function() {
+        // TODO
+        console.log("mark unread", $scope.conversation.id);
+    };
+
+    $scope.delete = function() {
+        // TODO
+        console.log("delete conversation", $scope.conversation.id);
+    };
+
+    $scope.gotoTop = function() {
+        $window.scrollTo(0, 0);
+    };
 });
 
 module.controller('ConversationNewController', function($scope, $location, $http, Conversation) {
