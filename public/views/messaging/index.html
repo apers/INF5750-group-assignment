@@ -1,4 +1,7 @@
 <!-- Whole list -->
+<button ng-click="getAllSelected(conversations.messageConversations)" type="button" class="btn btn-default">Selected</button>
+<button ng-click="selectAll(conversations.messageConversations)" type="button" class="btn btn-default">Select all</button>
+<button ng-click="selectAll(conversations.messageConversations)" type="button" class="btn btn-default">{{totalSelected}}</button>
 <div class="list-group conversationList">
     <!-- Each item -->
     <div class="list-group-item conversation"
@@ -9,12 +12,19 @@
             <div class="col-md-1">
                 <div class="input-group">
                     <div class="input-group-addon">
-                        <input type="checkbox" ng-model="conversation.selected">
+                        <!--  Selected -->
+                        <span ng-show="!conversation.selected" class="glyphicon glyphicon-unchecked" ng-click="selectConversation(conversation)"></span>
+                        <span ng-show="conversation.selected" class="glyphicon glyphicon-check" ng-click="selectConversation(conversation)"></span>
+                        <!--  Follow up -->
+                        <span ng-show="conversation.followUp" class="glyphicon glyphicon-star" ng-click="changeFollowUp(conversation)"></span>
+                        <span ng-show="!conversation.followUp" class="glyphicon glyphicon-star-empty" ng-click="changeFollowUp(conversation)"></span>
+                        <!--  Delete -->
+                        <span class="glyphicon glyphicon-remove"></span>
                     </div>
                 </div>
             </div>
             <!-- Content: Subject, sender etc -->
-            <div class="col-md-11"
+            <a class="col-md-11"
                href="{{'#conversation/' + conversation.id}}">
                 <!-- Heading -->
                 <div class="row">
@@ -30,7 +40,7 @@
                     conversation.lastSenderFirstname + ' ' +
                     conversation.lastSenderSurname}}
                 </p>
-            </div>
+            </a>
         </div>
     </div>
 </div>

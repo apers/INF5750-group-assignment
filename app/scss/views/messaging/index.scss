@@ -1,15 +1,21 @@
-.conversationList {
-  tr {
-    td {
-      padding: 5px 5px 5px 5px;
+.conversationList
+{
+  .conversation
+  {
+    &:hover {
+      border-color: #428bca;
+      background: #428bca;
+      color: #fff;
+      z-index: 2;
     }
-  }
-  .conversation:hover {
-    background: #ffffcd;
-  }
-  .conversation {
-    a {
-      text-decoration: none;
+
+    // Remove link colors and decorations from inbox view
+    a
+    {
+      &:link {  text-decoration: none; color: inherit}
+      &:active { text-decoration: none; color: inherit}
+      &:hover { text-decoration: none; color: inherit}
+      &:visited { text-decoration: none; color: inherit}
     }
   }
 }

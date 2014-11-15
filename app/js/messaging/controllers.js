@@ -27,8 +27,46 @@ module.config(function($routeProvider) {
 });
 
 module.controller('ConversationListController', function($scope, $location, $routeParams, Conversation) {
+    // Init
+    $scope.totalSelected = 0;
+
     // Get all conversations
-    $scope.conversations = Conversation.query($routeParams);
+    var conversationList = Conversation.query($routeParams);
+    $scope.conversations = conversationList;
+
+    /* Selects all the messages */
+    $scope.selectAll = function(conversations){
+        conversations.forEach(function(conversation) {
+            if( (conversation.selected == false) || !('selected' in conversation)) {
+                conversation.selected = true;
+                $scope.totalSelected++;
+            }
+        })
+    };
+
+    /* Gets all selected conversations  */
+    $scope.getAllSelected = function(conversations) {
+        for (var i in conversations) {
+            if (conversations[i].selected == true) {
+                console.log(conversations[i].id);
+            }
+        }
+    };
+
+    /* Select conversation */
+    $scope.selectConversation = function(conversation) {
+        conversation.selected = !conversation.selected;
+        if( conversation.selected == true ) {
+            $scope.totalSelected++;
+        } else {
+            $scope.totalSelected--;
+        }
+    }
+
+    $scope.changeFollowUp = function(conversation) {
+        conversation.followUp = conversation.followUp;
+        // TODO: save
+    }
 
     // Set current page
     $scope.page = parseInt($routeParams.page);
