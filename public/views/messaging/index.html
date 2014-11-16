@@ -1,46 +1,44 @@
 <!-- Whole list -->
-<button ng-click="getAllSelected(conversations.messageConversations)" type="button" class="btn btn-default">Selected</button>
-<button ng-click="selectAll(conversations.messageConversations)" type="button" class="btn btn-default">Select all</button>
-<button ng-click="selectAll(conversations.messageConversations)" type="button" class="btn btn-default">{{totalSelected}}</button>
+<div class="btn-group" role="group" aria-label="...">
+    <button type="button" class="btn btn-default"
+            ng-click="selectAll(conversations.messageConversations);">Select all
+    </button>
+    <button type="button" class="btn btn-default" ng-click="getAllSelected(conversations.messageConversations)">Delete
+    </button>
+</div>
 <div class="list-group conversationList">
     <!-- Each item -->
     <div class="list-group-item conversation"
-       ng-repeat="conversation in conversations.messageConversations"
-       ng-class="{'list-group-item-success': !conversation.read, 'active': conversation.selected}">
+         ng-repeat="conversation in conversations.messageConversations"
+         ng-class="{'list-group-item-success': !conversation.read, 'selected': conversation.selected}">
         <div class="row">
             <!-- Check boxes for selection -->
             <div class="col-md-1">
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <!--  Selected -->
-                        <span ng-show="!conversation.selected" class="glyphicon glyphicon-unchecked" ng-click="selectConversation(conversation)"></span>
-                        <span ng-show="conversation.selected" class="glyphicon glyphicon-check" ng-click="selectConversation(conversation)"></span>
-                        <!--  Follow up -->
-                        <span ng-show="conversation.followUp" class="glyphicon glyphicon-star" ng-click="changeFollowUp(conversation)"></span>
-                        <span ng-show="!conversation.followUp" class="glyphicon glyphicon-star-empty" ng-click="changeFollowUp(conversation)"></span>
-                        <!--  Delete -->
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </div>
-                </div>
+                <input type="checkbox" ng-model="conversation.selected"
+                       ng-change="selectConversation(conversation.selected)">
             </div>
             <!-- Content: Subject, sender etc -->
-            <a class="col-md-11"
-               href="{{'#conversation/' + conversation.id}}">
+            <a class="col-md-10"
+               ng-href="{{'#conversation/' + conversation.id}}">
                 <!-- Heading -->
-                <div class="row">
-                    <div class="col-md-6 ">
-                        <h4 class="list-group-item-heading">{{conversation.displayName}}</h4>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="pull-right">{{conversation.created | date : 'MMM. dd, hh:mm'}}</p>
-                    </div>
-                </div>
+                <h4 class="list-group-item-heading">{{conversation.displayName}}</h4>
                 <!-- Content -->
                 <p class="list-group-item-text">{{
                     conversation.lastSenderFirstname + ' ' +
                     conversation.lastSenderSurname}}
                 </p>
             </a>
+
+            <div class="col-md-1">
+                <p class="pull-right">{{conversation.created | date : 'MMM. dd, hh:mm'}}</p>
+                <!--  Follow up -->
+                <span ng-show="conversation.followUp" class="glyphicon glyphicon-star"
+                      ng-click="changeFollowUp(conversation)"></span>
+                <span ng-show="!conversation.followUp" class="glyphicon glyphicon-star-empty"
+                      ng-click="changeFollowUp(conversation)"></span>
+                <!--  Delete -->
+                <span class="glyphicon glyphicon-remove" ng-click="deleteConversation(conversation)"></span>
+            </div>
         </div>
     </div>
 </div>

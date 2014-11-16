@@ -2,7 +2,35 @@
 {
   .conversation
   {
+    // Glyph sizes
+    span.glyphicon-star {
+      font-size: 1.5em;
+      color: #d8ca36;
+    }
+    span.glyphicon-star-empty {
+      font-size: 1.5em;
+      color: #777777;
+      &:hover {
+        color: #d8ca36;
+      }
+    }
+    span.glyphicon-remove {
+      font-size: 1.5em;
+      color: #777777;
+      &:hover {
+        color: #d15455;
+      }
+    }
+
+    // Same style as when selected
     &:hover {
+      border-color: #d9edf7;
+      background: #d9edf7;
+      color: #31708f;
+      z-index: 2;
+    }
+
+    &.selected {
       border-color: #428bca;
       background: #428bca;
       color: #fff;
@@ -18,4 +46,20 @@
       &:visited { text-decoration: none; color: inherit}
     }
   }
+  // Style for new message
+  .new-message {
+    border-color: #bcebbb;
+    background: #bcebbb;
+    z-index: 2;
+  }
 }
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
