@@ -64,7 +64,7 @@ module.controller('ConversationListController', function($scope, $location, $rou
     }
 
     $scope.changeFollowUp = function(conversation) {
-        conversation.followUp = conversation.followUp;
+        conversation.followUp = !conversation.followUp;
         // TODO: save
     }
 
