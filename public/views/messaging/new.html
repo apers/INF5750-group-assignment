@@ -1,25 +1,48 @@
 
 <div ng-controller="ConversationNewController">
 	<br/>
-	<br/>
-	<br/>
+	users:
 	<li style="color:red; display: inline;
 			list-style-type: none;
 			padding-right: 20px;" 
-			ng-repeat="x in recv" ng-click="remRecv($index)"> [x]{{ x.name }} </li>
+			ng-repeat="x in recv.usrNames" ng-click="remRecv($index, 'u')"> [x]{{ x.name }} </li>
     <br/>
-		<label>To user</label>
-		<input type="text" ng-model="to" ng-change="changed()" 
+    groups:
+    <li style="color:green; display: inline;
+			list-style-type: none;
+			padding-right: 20px;" 
+			ng-repeat="x in recv.grpNames" ng-click="remRecv($index, 'g')"> [x]{{ x.name }} </li>
+    <br/>
+    organizations:
+    <li style="color:purple; display: inline;
+			list-style-type: none;
+			padding-right: 20px;" 
+			ng-repeat="x in recv.orgNames" ng-click="remRecv($index, 'o')"> [x]{{ x.name }} </li>
+    <br/>
+		<label>To User</label>
+		<input type="text" ng-model="toUsr" ng-change="findRes('u')" 
 		ng-model-options="{debounce:500}" placeholder="Write user"/>
+		<br/>
+		<label>To Usergrups</label>
+		<input type="text" ng-model="toGrp" ng-change="findRes('g')" 
+		ng-model-options="{debounce:500}" placeholder="Write usergroup"/>
+		<br/>
+		<label>To organizations</label>
+		<input type="text" ng-model="toOrg" ng-change="findRes('o')" 
+		ng-model-options="{debounce:500}" placeholder="Write organization"/>
 		<br/>
 	
 	
-    <li style="color:blue" ng-repeat="x in res.users" ng-click="addRecv(x)"> {{ x.name }} </li>
+    <li style="color:blue" ng-repeat="x in res" ng-click="addRecv(x)"> {{ x.name }} </li>
 		<br/>
 		<label>Subject</label>
 		<input type="text" ng-model="sub" placeholder="Write subject"/>
 		<br/>
 		<label>Text</label>
-		<textarea cols="70" rows="30" id="mail" placeholder="..." ng-model="mailText"></textarea>
+		<textarea cols="50" rows="30" id="mail" placeholder="..." ng-model="mailText"></textarea>
 	
+	<button ng-click="sendMsg()">
+  		Send
+	</button>
+	{{test}}
 </div>
