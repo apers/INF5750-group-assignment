@@ -109,28 +109,95 @@ module.controller('ConversationController', function($scope, $routeParams, Conve
 });
 
 module.controller('ConversationNewController', function($scope, $location, $http, Conversation) {
-    $scope.recv = [];
-    $scope.changed = function() {
-        if($scope.to.length > 0) {
-            $http.get("http://admin:district@inf5750-19.uio.no/api/users?filter=firstName:like:"
-                    + $scope.to).
+    $scope.recv = {usrNames: [], usrIds: [], grpNames: [], grpIds: [], orgNames:[], orgIds:[]};
+    var last = '';
+    $scope.findRes = function(t) {
+    	var search = "http://admin:district@inf5750-19.uio.no/api/";
+    	/*TODO move into helper function*/
+    	if(t === 'u') {
+    		if($scope.toUsr.length == 0) {
+    			//set res to others if they are > 0 ? 
+    			$scope.res = [];
+    			return;
+    		} else {
+    			search += "users?filter=firstName:like:"
+                    + $scope.toUsr + "&surname:like:" + $scope.toUsr;
+    		}
+    	} else if(t === 'g') {
+    		if($scope.toGrp.length == 0) {
+    			//set res to others if they are > 0 ? 
+    			$scope.res = [];
+    			return;
+    		} else {
+    			search += "userGroups?filter=name:like:"
+                    + $scope.toGrp;
+    		}
+    	} else {
+    		if($scope.toOrg.length == 0) {
+    			//set res to others if they are > 0 ? 
+    			$scope.res = [];
+    			return;
+    		} else {
+    			search += "organisationUnits?filter=name:like:"
+                    + $scope.toOrg;
+    		}
+    	}
+            $http.get(search).
                     success(function(data, status) {
-                        $scope.res = data;
+                    	if(t === 'u') {
+                    		$scope.res = data.users;
+                    	} else if(t === 'g') {
+                    		$scope.res = data.userGroups;
+                    	} else {
+                    		$scope.res = data.organisationUnits;
+                    	}
                     }).
                     error(function(data, status) {
                         alert("ERROR");
                     });
-        } else {
-            $scope.res = [];
-        }
+            last = t;
     }
+    
+    
     $scope.addRecv = function(inp) {
-            $scope.recv[$scope.recv.length] = {name: inp.name,
-                    id: inp.id}
+    	if(last === 'u') {
+            $scope.recv.usrNames.push({name: inp.name});
+            $scope.recv.usrIds.push({id: inp.id});
+    	} else if (last === 'g') {
+    		$scope.recv.grpNames.push({name: inp.name});
+            $scope.recv.grpIds.push({id: inp.id});
+    	} else {
+    		$scope.recv.orgNames.push({name: inp.name});
+            $scope.recv.orgIds.push({id: inp.id});
+    	}
     }
 
-    $scope.remRecv = function(indx) {
-            $scope.recv.splice(indx, 1);
+    $scope.remRecv = function(indx, t) {
+    	if(t === 'u') {
+            $scope.recv.usrNames.splice(indx);
+            $scope.recv.usrIds.splice(indx);
+    	} else if (t === 'g') {
+    		$scope.recv.grpNames.splice(indx);
+            $scope.recv.grpIds.splice(indx);
+    	} else {
+    		$scope.recv.orgNames.splice(indx);
+            $scope.recv.orgIds.splice(indx);
+    	}
+    }
+    
+    $scope.sendMsg = function() {
+    	var msg = {subject: $scope.sub, text: $scope.mailText, 
+    			users: $scope.recv.usrIds, userGroups: $scope.recv.grpIds , 
+    			organisationUnits: $scope.recv.orgIds };
+    	$scope.test = msg;
+    	$http.post("http://admin:district@inf5750-19.uio.no/api/messageConversations", msg).
+    	success(function(data, status) {
+    	    alert("Success");
+    	  }).
+    	  error(function(data, status) {
+    	    alert("fail:(");
+    	  });
+
     }
 
     // Change page
