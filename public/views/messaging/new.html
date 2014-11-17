@@ -19,24 +19,23 @@
 			padding-right: 20px;" 
 			ng-repeat="x in recv.orgNames" ng-click="remRecv($index, 'o')"> [x]{{ x.name }} </li>
     <br/>
-		<label>To User</label>
-		<input type="text" ng-model="toUsr" ng-change="findRes('u')" 
-		ng-model-options="{debounce:500}" placeholder="Write user"/>
+		To User
+		<input type="text" ng-model="toUsr" 
+		typeahead="users as users.name for users in findRecv($viewValue, 'u')" typeahead-on-select="selectedRecv(toUsr, 'u')" 
+		placeholder="Write users"/>
 		<br/>
-		<label>To Usergrups</label>
-		<input type="text" ng-model="toGrp" ng-change="findRes('g')" 
-		ng-model-options="{debounce:500}" placeholder="Write usergroup"/>
+		To Usergrups
+		<input type="text" ng-model="toGrp" 
+		typeahead="users as users.name for users in findRecv($viewValue, 'g')" typeahead-on-select="selectedRecv(toGrp, 'g')"
+		placeholder="Write usergroups"\> 
 		<br/>
-		<label>To organizations</label>
-		<input type="text" ng-model="toOrg" ng-change="findRes('o')" 
-		ng-model-options="{debounce:500}" placeholder="Write organization"/>
+		To organizations
+		<input type="text" ng-model="toOrg"
+		typeahead="users as users.name for users in findRecv($viewValue, 'o')" typeahead-on-select="selectedRecv(toOrg, 'o')" 
+		placeholder="Write organization"/>
 		<br/>
-	
-	
-    <li style="color:blue" ng-repeat="x in res" ng-click="addRecv(x)"> {{ x.name }} </li>
-		<br/>
-		<label>Subject</label>
-		<input type="text" ng-model="sub" placeholder="Write subject"/>
+		Subject
+			<input type="text" ng-model="sub" placeholder="Write subject"/>
 		<br/>
 		<label>Text</label>
 		<textarea cols="50" rows="30" id="mail" placeholder="..." ng-model="mailText"></textarea>
@@ -44,5 +43,5 @@
 	<button ng-click="sendMsg()">
   		Send
 	</button>
-	{{test}}
+	<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
 </div>

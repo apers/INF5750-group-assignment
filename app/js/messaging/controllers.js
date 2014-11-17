@@ -1,7 +1,7 @@
 'use strict';
 
 var module = angular.module('overdressed.messaging.controllers', [
-    'ngRoute'
+    'ngRoute', 'ui.bootstrap'
 ]);
 
 module.config(function ($routeProvider) {
@@ -121,67 +121,52 @@ module.controller('ConversationController', function ($scope, $routeParams, Conv
 
 module.controller('ConversationNewController', function ($scope, $location, $http, Conversation) {
     $scope.recv = {usrNames: [], usrIds: [], grpNames: [], grpIds: [], orgNames: [], orgIds: []};
-    var last = '';
-    $scope.findRes = function (t) {
+    $scope.testz = ['aaa', 'bbb', 'ccc'];
+    $scope.res = [];
+   
+   
+    $scope.findRecv = function (inp, t) {
         var search = "http://admin:district@inf5750-19.uio.no/api/";
         /*TODO move into helper function*/
         if (t === 'u') {
-            if ($scope.toUsr.length == 0) {
-                //set res to others if they are > 0 ?
-                $scope.res = [];
-                return;
-            } else {
                 search += "users?filter=firstName:like:"
-                + $scope.toUsr + "&surname:like:" + $scope.toUsr;
-            }
-        } else if (t === 'g') {
-            if ($scope.toGrp.length == 0) {
-                //set res to others if they are > 0 ?
-                $scope.res = [];
-                return;
-            } else {
+                + inp + "&surname:like:" + inp;
+       } else if (t === 'g') {
                 search += "userGroups?filter=name:like:"
-                + $scope.toGrp;
-            }
+                + inp;
         } else {
-            if ($scope.toOrg.length == 0) {
-                //set res to others if they are > 0 ?
-                $scope.res = [];
-                return;
-            } else {
                 search += "organisationUnits?filter=name:like:"
-                + $scope.toOrg;
-            }
+                + inp;
         }
-        $http.get(search).
-            success(function (data, status) {
-                if (t === 'u') {
-                    $scope.res = data.users;
-                } else if (t === 'g') {
-                    $scope.res = data.userGroups;
-                } else {
-                    $scope.res = data.organisationUnits;
-                }
-            }).
-            error(function (data, status) {
-                alert("ERROR");
-            });
-        last = t;
+        
+        return $http.get(search)
+            	.then(function(response){ 
+            		if(t === 'u') {
+            			return response.data.users;
+            		}else if(t === 'g'){
+            			return response.data.userGroups;
+            		} else {
+            			return response.data.organisationUnits;
+            		}
+            		});
     }
 
-
-    $scope.addRecv = function (inp) {
-        if (last === 'u') {
+    $scope.selectedRecv = function(inp, t) {
+        if (t === 'u') {
             $scope.recv.usrNames.push({name: inp.name});
             $scope.recv.usrIds.push({id: inp.id});
-        } else if (last === 'g') {
+            $scope.toUsr = "";
+        } else if (t === 'g') {
             $scope.recv.grpNames.push({name: inp.name});
             $scope.recv.grpIds.push({id: inp.id});
+            $scope.toGrp = "";
         } else {
             $scope.recv.orgNames.push({name: inp.name});
             $scope.recv.orgIds.push({id: inp.id});
+            $scope.toOrg = "";
         }
     }
+  
 
     $scope.remRecv = function (indx, t) {
         if (t === 'u') {
