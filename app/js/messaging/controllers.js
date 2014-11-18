@@ -29,7 +29,6 @@ module.config(function ($routeProvider) {
 module.controller('ConversationListController', function ($scope, $location, $routeParams, $http, Conversation) {
     // Init
     $scope.totalSelected = 0;
-    $scope.allSelected = false;
 
     // Get all conversations
     $scope.conversations = Conversation.query($routeParams);
@@ -54,30 +53,31 @@ module.controller('ConversationListController', function ($scope, $location, $ro
     };
 
     /* Select conversation */
-    $scope.selectConversation = function (state) {
+    $scope.countSelected = function (state) {
         if (state == true) {
             $scope.totalSelected++;
         } else {
             $scope.totalSelected--;
         }
-    }
+    };
 
     $scope.changeFollowUp = function (conversation) {
         conversation.followUp = !conversation.followUp;
-        $http.post('http://admin:district@inf5750-19.uio.no/api/messageConversations/read', '[' + conversation.id + ']')
-            .success(function () {
-                console.log('Success');
-                $scope.conversations = Conversation.query($routeParams);
-            })
-        // TODO: save
-    }
+
+        Conversation.get({id: conversation.id}, function(data) {
+            data.followUp = conversation.followUp;
+            data.$save();
+        }, function(data) {
+            console.log('Error: ', data)
+        });
+    };
 
     $scope.deleteConversation = function (conversation) {
-        $http.delete('http://admin:district@inf5750-19.uio.no/api/messageConversations/' + conversation.id)
-         .success(function () {
-         $scope.conversations = Conversation.query($routeParams);
-         })
-    }
+        // Delete conversation
+        Conversation.delete({id: conversation.id});
+        // Refresh messages
+        $scope.conversations = Conversation.query($routeParams);
+    };
 
     // Set current page
     $scope.page = parseInt($routeParams.page);

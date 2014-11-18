@@ -24,15 +24,16 @@
 
     // Same style as when selected
     &:hover {
-      border-color: #d9edf7;
-      background: #d9edf7;
-      color: #31708f;
+      border-color: #00acce;
+      background: #00acce;
+
+      color: #fff;
       z-index: 2;
     }
 
     &.selected {
-      border-color: #428bca;
-      background: #428bca;
+      border-color: #0099b9;
+      background: #0099b9;
       color: #fff;
       z-index: 2;
     }
