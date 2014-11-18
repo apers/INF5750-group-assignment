@@ -119,34 +119,45 @@ module.controller('ConversationController', function ($scope, $routeParams, Conv
     };
 });
 
-module.controller('ConversationNewController', function ($scope, $location, $http, Conversation) {
+module.controller('ConversationNewController', function ($scope, $location, $http, 
+		Conversation, limitToFilter) {
     $scope.recv = {usrNames: [], usrIds: [], grpNames: [], grpIds: [], orgNames: [], orgIds: []};
-    $scope.testz = ['aaa', 'bbb', 'ccc'];
     $scope.res = [];
    
-   
+    //Adds neq:name to avoid getting results we already have.
+    function updateQuery(arr, q, qVal) {
+    	arr.forEach(function (elem) {
+    		q += qVal + "" + elem.name;
+    	});
+    	return q;
+    }
+    
     $scope.findRecv = function (inp, t) {
         var search = "http://admin:district@inf5750-19.uio.no/api/";
-        /*TODO move into helper function*/
         if (t === 'u') {
-                search += "users?filter=firstName:like:"
-                + inp + "&surname:like:" + inp;
+                search += "users?filter=userCredentials.name:like" + inp;
+                search = updateQuery($scope.recv.usrNames, search, 
+                		"&filter=userCredentials.name:neq:");
        } else if (t === 'g') {
                 search += "userGroups?filter=name:like:"
                 + inp;
+                search = updateQuery($scope.recv.grpNames, search, 
+        		"&filter=name:neq:");
         } else {
                 search += "organisationUnits?filter=name:like:"
                 + inp;
+                search = updateQuery($scope.recv.orgNames, search, 
+        		"&filter=name:neq:");
         }
         
         return $http.get(search)
             	.then(function(response){ 
             		if(t === 'u') {
-            			return response.data.users;
+            			return limitToFilter(response.data.users, 10);
             		}else if(t === 'g'){
-            			return response.data.userGroups;
+            			return limitToFilter(response.data.userGroups, 10);
             		} else {
-            			return response.data.organisationUnits;
+            			return limitToFilter(response.data.organisationUnits, 10);
             		}
             		});
     }
@@ -187,7 +198,6 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
             users: $scope.recv.usrIds, userGroups: $scope.recv.grpIds,
             organisationUnits: $scope.recv.orgIds
         };
-        $scope.test = msg;
         $http.post("http://admin:district@inf5750-19.uio.no/api/messageConversations", msg).
             success(function (data, status) {
                 alert("Success");
