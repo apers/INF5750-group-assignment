@@ -42,13 +42,15 @@
         </div>
     </div>
 </div>
+        <p>Max page: {{conversations.pager.pageCount}}</p>
+        <p>Current page: {{page}}</p>
 <div class="text-center">
     <ul class="pagination">
-        <li><a href="#inbox/{{page - 1}}">&laquo;</a></li>
-        <li ng-class="{'active': (page == 1)}"><a href="#inbox/1">1</a></li>
-        <li ng-class="{'active': (page == 2)}"><a href="#inbox/2">2</a></li>
-        <li ng-class="{'active': (page == 3)}"><a href="#inbox/3">3</a></li>
-        <li><a href="#inbox/{{page + 1}}">&raquo;</a></li>
+        <li><a href="#inbox/{{currentPage - 1}}">&laquo;</a></li>
+        <li ng-class="{'active': (currentPage == paging1)}"><a href="#inbox/{{paging1}}">{{paging1}}</a></li>
+        <li ng-class="{'active': (currentPage == paging2)}"><a href="#inbox/{{paging2}}">{{paging2}}</a></li>
+        <li ng-class="{'active': (currentPage == paging3)}"><a href="#inbox/{{paging3}}">{{paging3}}</a></li>
+        <li><a href="#inbox/{{currentPage + 1}}">&raquo;</a></li>
     </ul>
 </div>
 
