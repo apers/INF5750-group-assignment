@@ -7,7 +7,8 @@ var gulp = require('gulp'),
     args = require('yargs').argv;
 
 var js_files = [
-    //"./bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js",
+    "./bower_components/jQuery/dist/jquery.js",
+    "./bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js",
     "./bower_components/angular/angular.js",
     "./bower_components/angular-route/angular-route.js",
     //"./bower_components/angular-animate/angular-animate.js",

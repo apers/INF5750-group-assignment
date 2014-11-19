@@ -3,7 +3,11 @@
     <button type="button" class="btn btn-default"
             ng-click="selectAll(conversations.messageConversations);">Select all
     </button>
-    <button type="button" class="btn btn-default" ng-click="getAllSelected(conversations.messageConversations)">Delete
+    <button type="button" class="btn btn-default" ng-class="{'disabled': (totalSelected <= 0)}" ng-click="deleteAllSelected(conversations.messageConversations)">
+        Delete selected({{totalSelected}})
+    </button>
+    <button type="button" class="btn btn-default" ng-class="{'disabled': (totalSelected <= 0)}" ng-click="starAllSelected(conversations.messageConversations)">
+        Star selected({{totalSelected}})
     </button>
 </div>
 <div class="list-group conversationList">
@@ -12,12 +16,12 @@
          ng-repeat="conversation in conversations.messageConversations"
          ng-class="{'list-group-item-success': !conversation.read, 'selected': conversation.selected}">
         <div class="row">
-            <!-- Check boxes for selection -->
+            <!-- Content: Subject, sender etc -->
             <div class="col-md-1">
+                <!-- Check boxes for selection -->
                 <input type="checkbox" ng-model="conversation.selected"
                        ng-change="countSelected(conversation.selected)">
             </div>
-            <!-- Content: Subject, sender etc -->
             <a class="col-md-10"
                ng-href="{{'#conversation/' + conversation.id}}">
                 <!-- Heading -->
@@ -42,16 +46,16 @@
         </div>
     </div>
 </div>
-        <p>Max page: {{conversations.pager.pageCount}}</p>
-        <p>Current page: {{page}}</p>
-<div class="text-center">
-    <ul class="pagination">
-        <li><a href="#inbox/{{currentPage - 1}}">&laquo;</a></li>
-        <li ng-class="{'active': (currentPage == paging1)}"><a href="#inbox/{{paging1}}">{{paging1}}</a></li>
-        <li ng-class="{'active': (currentPage == paging2)}"><a href="#inbox/{{paging2}}">{{paging2}}</a></li>
-        <li ng-class="{'active': (currentPage == paging3)}"><a href="#inbox/{{paging3}}">{{paging3}}</a></li>
-        <li><a href="#inbox/{{currentPage + 1}}">&raquo;</a></li>
-    </ul>
+<div class="nav navbar-fixed-bottom">
+    <div class="text-center" style="font-size: 100%">
+        <ul class="pagination">
+            <li><a href="#inbox/{{prevPage}}">&laquo;</a></li>
+            <li ng-class="{'active': (currentPage == paging1)}"><a href="#inbox/{{paging1}}">{{paging1}}</a></li>
+            <li ng-class="{'active': (currentPage == paging2)}"><a href="#inbox/{{paging2}}">{{paging2}}</a></li>
+            <li ng-class="{'active': (currentPage == paging3)}"><a href="#inbox/{{paging3}}">{{paging3}}</a></li>
+            <li><a href="#inbox/{{nextPage}}">&raquo;</a></li>
+        </ul>
+    </div>
 </div>
 
 
