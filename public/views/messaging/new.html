@@ -19,29 +19,42 @@
 			padding-right: 20px;" 
 			ng-repeat="x in recv.orgNames" ng-click="remRecv($index, 'o')"> [x]{{ x.name }} </li>
     <br/>
-		To User
-		<input type="text" ng-model="toUsr" 
+    
+   
+    	<div class="input-group">
+  			<span class="input-group-addon" style= "min-width:129px;
+  text-align:left;">To user</span>
+  			<input type="text" ng-model="toUsr" class="form-control"
 		typeahead="users as users.name for users in findRecv($viewValue, 'u')" typeahead-on-select="selectedRecv(toUsr, 'u')" 
 		placeholder="Write users"/>
+		</div>
+		
+		<div class="input-group">
+  			<span class="input-group-addon"style= "min-width:129px;
+  text-align:left;">To usergroup</span>
+			<input type="text" ng-model="toGrp" class="form-control"
+			typeahead="users as users.name for users in findRecv($viewValue, 'g')" typeahead-on-select="selectedRecv(toGrp, 'g')"
+			placeholder="Write usergroups"\> 
+		</div>
+		
+		<div class="input-group">
+  			<span class="input-group-addon" style= "min-width:129px;
+  text-align:left;">To orginazations</span>
+			<input type="text" ng-model="toOrg" class="form-control"
+			typeahead="users as users.name for users in findRecv($viewValue, 'o')" typeahead-on-select="selectedRecv(toOrg, 'o')" 
+			placeholder="Write organization"/>
+		</div>
 		<br/>
-		To Usergrups
-		<input type="text" ng-model="toGrp" 
-		typeahead="users as users.name for users in findRecv($viewValue, 'g')" typeahead-on-select="selectedRecv(toGrp, 'g')"
-		placeholder="Write usergroups"\> 
-		<br/>
-		To organizations
-		<input type="text" ng-model="toOrg"
-		typeahead="users as users.name for users in findRecv($viewValue, 'o')" typeahead-on-select="selectedRecv(toOrg, 'o')" 
-		placeholder="Write organization"/>
-		<br/>
-		Subject
-			<input type="text" ng-model="sub" placeholder="Write subject"/>
+		<div class="input-group">
+  			<span class="input-group-addon">Subject</span> 
+			<input type="text" class="form-control" ng-model="sub" placeholder="Write subject"/>
+		</div>
 		<br/>
 		<label>Text</label>
-		<textarea class="form-control" rows=10 id="mail" placeholder="..." ng-model="mailText"></textarea>
+		<textarea class="form-control" rows=5 id="mail" placeholder="..." ng-model="mailText"></textarea>
 	
-	<button ng-click="sendMsg()">
+	<button ng-click="sendMsg()" type="button" class="btn btn-default navbar-btn">
   		Send
 	</button>
-	<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 </div>

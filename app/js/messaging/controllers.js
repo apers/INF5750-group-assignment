@@ -198,6 +198,7 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
             users: $scope.recv.usrIds, userGroups: $scope.recv.grpIds,
             organisationUnits: $scope.recv.orgIds
         };
+        console.log(msg);
         $http.post("http://admin:district@inf5750-19.uio.no/api/messageConversations", msg).
             success(function (data, status) {
                 alert("Success");
