@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "name": "APP_NAME",
+    "name": "audunjoy",
     "description": "DHIS2 messaging app",
     "launch_path": "index.html",
     "default_locale": "en",

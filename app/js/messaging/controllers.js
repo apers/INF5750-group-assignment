@@ -29,10 +29,35 @@ module.config(function ($routeProvider) {
 module.controller('ConversationListController', function ($scope, $location, $routeParams, $http, Conversation) {
     // Init
     $scope.totalSelected = 0;
-    $scope.allSelected = false;
 
-    // Get all conversations
-    $scope.conversations = Conversation.query($routeParams);
+    // Get all conversations and paging data
+    $scope.conversations = Conversation.query($routeParams, function (data) {
+        /* Paging */
+        var currentPage = parseInt(data.pager.page);
+        var maxPage = data.pager.pageCount;
+
+        $scope.currentPage = currentPage;
+
+        if (currentPage != 1 && currentPage != maxPage) {
+            $scope.paging1 = currentPage - 1;
+            $scope.paging2 = currentPage;
+            $scope.paging3 = currentPage + 1;
+            $scope.nextPage = currentPage +1;
+            $scope.prevPage = currentPage -1;
+        } else if (currentPage == 1) {
+            $scope.paging1 = currentPage;
+            $scope.paging2 = currentPage+1;
+            $scope.paging3 = currentPage+2;
+            $scope.nextPage = currentPage+1;
+            $scope.prevPage = currentPage;
+        } else if (currentPage == maxPage) {
+            $scope.paging1 = currentPage - 2;
+            $scope.paging2 = currentPage - 1;
+            $scope.paging3 = currentPage;
+            $scope.nextPage = currentPage;
+            $scope.prevPage = currentPage-1;
+        }
+    });
 
     /* Selects all the messages */
     $scope.selectAll = function (conversations) {
@@ -54,33 +79,31 @@ module.controller('ConversationListController', function ($scope, $location, $ro
     };
 
     /* Select conversation */
-    $scope.selectConversation = function (state) {
+    $scope.countSelected = function (state) {
         if (state == true) {
             $scope.totalSelected++;
         } else {
             $scope.totalSelected--;
         }
-    }
+    };
 
     $scope.changeFollowUp = function (conversation) {
         conversation.followUp = !conversation.followUp;
-        $http.post('http://admin:district@inf5750-19.uio.no/api/messageConversations/read', '[' + conversation.id + ']')
-            .success(function () {
-                console.log('Success');
-                $scope.conversations = Conversation.query($routeParams);
-            })
-        // TODO: save
-    }
+
+        Conversation.get({id: conversation.id}, function (data) {
+            data.followUp = conversation.followUp;
+            data.$save();
+        }, function (data) {
+            console.log('Error: ', data)
+        });
+    };
 
     $scope.deleteConversation = function (conversation) {
-        $http.delete('http://admin:district@inf5750-19.uio.no/api/messageConversations/' + conversation.id)
-         .success(function () {
-         $scope.conversations = Conversation.query($routeParams);
-         })
-    }
-
-    // Set current page
-    $scope.page = parseInt($routeParams.page);
+        // Delete conversation
+        Conversation.delete({id: conversation.id});
+        // Refresh messages
+        $scope.conversations = Conversation.query($routeParams);
+    };
 });
 
 module.controller('ConversationController', function ($scope, $routeParams, Conversation, $window) {
@@ -119,50 +142,50 @@ module.controller('ConversationController', function ($scope, $routeParams, Conv
     };
 });
 
-module.controller('ConversationNewController', function ($scope, $location, $http, 
-		Conversation, limitToFilter) {
+module.controller('ConversationNewController', function ($scope, $location, $http,
+                                                         Conversation, limitToFilter) {
     $scope.recv = {usrNames: [], usrIds: [], grpNames: [], grpIds: [], orgNames: [], orgIds: []};
     $scope.res = [];
-   
+
     //Adds neq:name to avoid getting results we already have.
     function updateQuery(arr, q, qVal) {
-    	arr.forEach(function (elem) {
-    		q += qVal + "" + elem.name;
-    	});
-    	return q;
+        arr.forEach(function (elem) {
+            q += qVal + "" + elem.name;
+        });
+        return q;
     }
-    
+
     $scope.findRecv = function (inp, t) {
         var search = "http://admin:district@inf5750-19.uio.no/api/";
         if (t === 'u') {
-                search += "users?filter=userCredentials.name:like" + inp;
-                search = updateQuery($scope.recv.usrNames, search, 
-                		"&filter=userCredentials.name:neq:");
-       } else if (t === 'g') {
-                search += "userGroups?filter=name:like:"
-                + inp;
-                search = updateQuery($scope.recv.grpNames, search, 
-        		"&filter=name:neq:");
+            search += "users?filter=userCredentials.name:like" + inp;
+            search = updateQuery($scope.recv.usrNames, search,
+                "&filter=userCredentials.name:neq:");
+        } else if (t === 'g') {
+            search += "userGroups?filter=name:like:"
+            + inp;
+            search = updateQuery($scope.recv.grpNames, search,
+                "&filter=name:neq:");
         } else {
-                search += "organisationUnits?filter=name:like:"
-                + inp;
-                search = updateQuery($scope.recv.orgNames, search, 
-        		"&filter=name:neq:");
+            search += "organisationUnits?filter=name:like:"
+            + inp;
+            search = updateQuery($scope.recv.orgNames, search,
+                "&filter=name:neq:");
         }
-        
+
         return $http.get(search)
-            	.then(function(response){ 
-            		if(t === 'u') {
-            			return limitToFilter(response.data.users, 10);
-            		}else if(t === 'g'){
-            			return limitToFilter(response.data.userGroups, 10);
-            		} else {
-            			return limitToFilter(response.data.organisationUnits, 10);
-            		}
-            		});
+            .then(function (response) {
+                if (t === 'u') {
+                    return limitToFilter(response.data.users, 10);
+                } else if (t === 'g') {
+                    return limitToFilter(response.data.userGroups, 10);
+                } else {
+                    return limitToFilter(response.data.organisationUnits, 10);
+                }
+            });
     }
 
-    $scope.selectedRecv = function(inp, t) {
+    $scope.selectedRecv = function (inp, t) {
         if (t === 'u') {
             $scope.recv.usrNames.push({name: inp.name});
             $scope.recv.usrIds.push({id: inp.id});
@@ -177,7 +200,7 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
             $scope.toOrg = "";
         }
     }
-  
+
 
     $scope.remRecv = function (indx, t) {
         if (t === 'u') {

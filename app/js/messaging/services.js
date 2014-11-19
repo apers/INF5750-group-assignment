@@ -49,6 +49,8 @@ module.factory('Conversation', function($resource, Api) {
             }
         }
     });
+
+
     /*
     res.prototype.xxx = function() {
 
