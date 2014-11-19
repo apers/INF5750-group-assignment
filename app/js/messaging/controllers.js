@@ -70,7 +70,18 @@ module.controller('ConversationListController', function ($scope, $location, $ro
     };
 
     /* Gets all selected conversations  */
-    $scope.getAllSelected = function (conversations) {
+    $scope.deleteAllSelected = function (conversations) {
+        for (var i in conversations) {
+            if (conversations[i].selected == true) {
+                Conversation.delete({id: conversations[i].id}, function(data) {
+                    // Refresh messages
+                    $scope.conversations = Conversation.query($routeParams);
+                })
+            }
+        }
+    };
+
+    $scope.starAllSelected = function (conversations) {
         for (var i in conversations) {
             if (conversations[i].selected == true) {
                 console.log(conversations[i].id);
@@ -100,9 +111,11 @@ module.controller('ConversationListController', function ($scope, $location, $ro
 
     $scope.deleteConversation = function (conversation) {
         // Delete conversation
-        Conversation.delete({id: conversation.id});
-        // Refresh messages
-        $scope.conversations = Conversation.query($routeParams);
+        Conversation.delete({id: conversation.id}, function() {
+            // Refresh messages
+            $scope.conversations = Conversation.query($routeParams);
+        });
+
     };
 });
 

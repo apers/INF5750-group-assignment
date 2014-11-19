@@ -1,7 +1,12 @@
 .conversationList
 {
+
   .conversation
   {
+    &:nth-child(odd) {
+      background: #ececec;
+    }
+
     // Glyph sizes
     span.glyphicon-star {
       font-size: 1.5em;
@@ -24,16 +29,16 @@
 
     // Same style as when selected
     &:hover {
-      border-color: #00acce;
-      background: #00acce;
+      border-color: #3F92D2;
+      background: #3F92D2;
 
       color: #fff;
       z-index: 2;
     }
 
     &.selected {
-      border-color: #0099b9;
-      background: #0099b9;
+      border-color: #0B61A4;
+      background: #0B61A4;
       color: #fff;
       z-index: 2;
     }
@@ -55,6 +60,13 @@
   }
 }
 
+
+#pager {
+  position: fixed;
+  height: 100px;
+  bottom: 0;
+  width: 100%;
+}
 .noselect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
