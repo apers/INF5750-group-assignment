@@ -29,6 +29,14 @@
       </div>
     </nav>
 
+   <div ng-show="offline" class="container"> 
+      <div class="alert alert-danger">
+        <strong>Online!</strong> 
+        Change a few things up and try submitting again.
+      </div>
+      <br>
+    </div>
+
     <div class="container" ng-view>
         <!-- contents of the controller's view will be replaced here -->
     </div>
