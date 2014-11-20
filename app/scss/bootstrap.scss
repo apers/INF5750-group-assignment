@@ -22,16 +22,16 @@ $icon-font-path: "fonts/bootstrap/";
 
 // Components
 @import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/component-animations";
-//@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/dropdowns";
+@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/dropdowns";
 @import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/button-groups";
-//@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/input-groups";
+@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/input-groups";
 @import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/navs";
 @import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/navbar";
 //@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/breadcrumbs";
 @import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/pagination";
-//@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/pager";
-//@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/labels";
-//@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/badges";
+@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/pager";
+@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/labels";
+@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/badges";
 //@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/jumbotron";
 //@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/thumbnails";
 //@import "../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/alerts";

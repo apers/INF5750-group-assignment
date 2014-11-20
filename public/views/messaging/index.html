@@ -1,3 +1,4 @@
+<!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">-->
 <div class="inbox-view">
     <div class="input-group">
         <div class="input-group-btn">
@@ -17,9 +18,13 @@
         </div>
 
         <input type="text" class="form-control" placeholder="Search" ng-model="messageFilter"
-               typeahead="messages as messages.subject for messages in filterQuery(filterByStr, $viewValue).messageConversations">
+               typeahead="message.subject as message.subject for message in typeaheadfilterQuery(filterByStr, $viewValue)">
+                <!--typeahead-on-select="typeaheadfilterQuery(">-->
 
         <div class="input-group-btn">
+            <button type="submit" class="btn btn-default" ng-click="setQueryFilter()">
+                Search
+            </button>
             <button type="button" class="btn btn-default dropdown-toggle"
                     data-toggle="dropdown" aria-expanded="false" ng-init="filterByStr='Subject'">
                 <span class="caret"></span> Filter by: {{filterByStr}}
@@ -78,6 +83,5 @@
             <li><a href="#inbox/{{nextPage}}">&raquo;</a></li>
         </ul>
     </div>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 
 </div>

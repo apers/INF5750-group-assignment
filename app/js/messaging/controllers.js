@@ -26,54 +26,93 @@ module.config(function ($routeProvider) {
         });
 });
 
-module.controller('ConversationListController', function ($scope, $location, $routeParams, $http, Conversation) {
+module.controller('ConversationListController', function ($scope, $location, $routeParams, $http, $filter, Conversation) {
     // Init
     $scope.totalSelected = 0;
+    var queryFilter = "";
 
     //http://inf5750-19.uio.no/api/messageConversations?fields=:all&filter=followUp:eq:false
     // Get all conversations and paging data
-    $scope.conversations = Conversation.query($routeParams, function (data) {
-        /* Paging */
-        var currentPage = parseInt(data.pager.page);
-        var maxPage = data.pager.pageCount;
+    var getConversations = function () {
 
-        $scope.currentPage = currentPage;
+        console.log(queryFilter);
 
-        if (currentPage != 1 && currentPage != maxPage) {
-            $scope.paging1 = currentPage - 1;
-            $scope.paging2 = currentPage;
-            $scope.paging3 = currentPage + 1;
-            $scope.nextPage = currentPage +1;
-            $scope.prevPage = currentPage -1;
-        } else if (currentPage == 1) {
-            $scope.paging1 = currentPage;
-            $scope.paging2 = currentPage+1;
-            $scope.paging3 = currentPage+2;
-            $scope.nextPage = currentPage+1;
-            $scope.prevPage = currentPage;
-        } else if (currentPage == maxPage) {
-            $scope.paging1 = currentPage - 2;
-            $scope.paging2 = currentPage - 1;
-            $scope.paging3 = currentPage;
-            $scope.nextPage = currentPage;
-            $scope.prevPage = currentPage-1;
+        if (queryFilter == "") {
+            var queryParams = {
+                page: $routeParams.page,
+                pageSize: 15
+            }
+        } else {
+            console.log('filter');
+            var queryParams = {
+                page: $routeParams.page,
+                pageSize: 15,
+                filter: queryFilter
+            }
         }
-    });
 
-    $scope.filterQuery = function(filterType, value) {
+        $scope.conversations = Conversation.query(queryParams, function (data) {
+            /* Paging */
+            var currentPage = parseInt(data.pager.page);
+            var maxPage = data.pager.pageCount;
+
+            $scope.currentPage = currentPage;
+
+            if (currentPage != 1 && currentPage != maxPage) {
+                $scope.paging1 = currentPage - 1;
+                $scope.paging2 = currentPage;
+                $scope.paging3 = currentPage + 1;
+                $scope.nextPage = currentPage + 1;
+                $scope.prevPage = currentPage - 1;
+            } else if (currentPage == 1) {
+                $scope.paging1 = currentPage;
+                $scope.paging2 = currentPage + 1;
+                $scope.paging3 = currentPage + 2;
+                $scope.nextPage = currentPage + 1;
+                $scope.prevPage = currentPage;
+            } else if (currentPage == maxPage) {
+                $scope.paging1 = currentPage - 2;
+                $scope.paging2 = currentPage - 1;
+                $scope.paging3 = currentPage;
+                $scope.nextPage = currentPage;
+                $scope.prevPage = currentPage - 1;
+            }
+        });
+    };
+
+    // Get initial conversations
+    getConversations();
+
+
+    /* For the typeahead search */
+    $scope.typeaheadfilterQuery = function (filterType, value) {
         var filterStr = "";
 
-        if( filterType == 'Subject' ) {
-            console.log('Filtering on subject:' + value);
+        if (filterType == 'Subject') {
             filterStr += 'subject:like:' + value;
+            return Conversation.query({filter: filterStr, paging: false, fields: 'subject'}).$promise.then(
+                function (response) {
+                    return $filter('limitTo')(response.messageConversations, 5)
+                });
+        }
+    };
+
+
+    /* Set a static query filter */
+    $scope.setQueryFilter = function () {
+        var filterType = "";
+        var filterValue = $scope.messageFilter;
+
+        if ($scope.filterByStr == 'Subject') {
+            filterType = 'subject';
         }
 
-        /*Conversation.query({filter: filterStr}, function(data) {
-            console.log(data.messageConversations)
-            return data[0];
-        });*/
-        return Conversation.query({filter: filterStr});
-    };
+        if (filterValue != "") {
+            queryFilter = filterType + ':like:' + filterValue;
+            getConversations();
+        }
+
+    }
 
     /* Selects all the messages */
     $scope.selectAll = function (conversations) {
@@ -88,7 +127,7 @@ module.controller('ConversationListController', function ($scope, $location, $ro
     /* Selects all the messages */
     $scope.selectNone = function (conversations) {
         conversations.forEach(function (conversation) {
-            if(conversation.selected == true) {
+            if (conversation.selected == true) {
                 conversation.selected = false;
                 $scope.totalSelected--;
             }
@@ -99,7 +138,7 @@ module.controller('ConversationListController', function ($scope, $location, $ro
     $scope.deleteAllSelected = function (conversations) {
         for (var i in conversations) {
             if (conversations[i].selected == true) {
-                Conversation.delete({id: conversations[i].id}, function(data) {
+                Conversation.delete({id: conversations[i].id}, function (data) {
                     // Refresh messages
                     $scope.conversations = Conversation.query($routeParams);
                     $scope.totalSelected--;
@@ -138,7 +177,7 @@ module.controller('ConversationListController', function ($scope, $location, $ro
 
     $scope.deleteConversation = function (conversation) {
         // Delete conversation
-        Conversation.delete({id: conversation.id}, function() {
+        Conversation.delete({id: conversation.id}, function () {
             // Refresh messages
             $scope.conversations = Conversation.query($routeParams);
         });

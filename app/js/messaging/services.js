@@ -39,6 +39,7 @@ module.factory('Conversation', function($resource, Api) {
             params: {
                 fields: ':all',
                 page: '@page',
+                paging: '@paging',
                 filter: '@filter'
             }
         },
@@ -58,7 +59,6 @@ module.factory('Conversation', function($resource, Api) {
     };
     */
 
-    //res.prototype.
 
     return res;
 });
