@@ -237,7 +237,7 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
     $scope.findRecv = function (inp, t) {
         var search = "http://admin:district@inf5750-19.uio.no/api/";
         if (t === 'u') {
-            search += "users?filter=userCredentials.name:like" + inp;
+            search += "users?filter=userCredentials.name:like:" + inp;
             search = updateQuery($scope.recv.usrNames, search,
                 "&filter=userCredentials.name:neq:");
         } else if (t === 'g') {
@@ -251,15 +251,15 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
             search = updateQuery($scope.recv.orgNames, search,
                 "&filter=name:neq:");
         }
-
+        search += "&pageSize=10";
         return $http.get(search)
             .then(function (response) {
                 if (t === 'u') {
-                    return limitToFilter(response.data.users, 10);
+                    return response.data.users;
                 } else if (t === 'g') {
-                    return limitToFilter(response.data.userGroups, 10);
+                    return response.data.userGroups;
                 } else {
-                    return limitToFilter(response.data.organisationUnits, 10);
+                    return response.data.organisationUnits;
                 }
             });
     }
@@ -293,6 +293,7 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
             $scope.recv.orgIds.splice(indx);
         }
     }
+    
 
     $scope.sendMsg = function () {
         var msg = {
