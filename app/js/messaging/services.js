@@ -38,7 +38,8 @@ module.factory('Conversation', function($resource, Api) {
             isArray: false,
             params: {
                 fields: ':all',
-                page: '@page'
+                page: '@page',
+                filter: '@filter'
             }
         },
 

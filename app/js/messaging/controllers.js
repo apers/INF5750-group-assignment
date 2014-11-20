@@ -30,6 +30,7 @@ module.controller('ConversationListController', function ($scope, $location, $ro
     // Init
     $scope.totalSelected = 0;
 
+    //http://inf5750-19.uio.no/api/messageConversations?fields=:all&filter=followUp:eq:false
     // Get all conversations and paging data
     $scope.conversations = Conversation.query($routeParams, function (data) {
         /* Paging */
@@ -59,12 +60,37 @@ module.controller('ConversationListController', function ($scope, $location, $ro
         }
     });
 
+    $scope.filterQuery = function(filterType, value) {
+        var filterStr = "";
+
+        if( filterType == 'Subject' ) {
+            console.log('Filtering on subject:' + value);
+            filterStr += 'subject:like:' + value;
+        }
+
+        /*Conversation.query({filter: filterStr}, function(data) {
+            console.log(data.messageConversations)
+            return data[0];
+        });*/
+        return Conversation.query({filter: filterStr});
+    };
+
     /* Selects all the messages */
     $scope.selectAll = function (conversations) {
         conversations.forEach(function (conversation) {
             if ((conversation.selected == false) || !('selected' in conversation)) {
                 conversation.selected = true;
                 $scope.totalSelected++;
+            }
+        })
+    };
+
+    /* Selects all the messages */
+    $scope.selectNone = function (conversations) {
+        conversations.forEach(function (conversation) {
+            if(conversation.selected == true) {
+                conversation.selected = false;
+                $scope.totalSelected--;
             }
         })
     };
@@ -76,6 +102,7 @@ module.controller('ConversationListController', function ($scope, $location, $ro
                 Conversation.delete({id: conversations[i].id}, function(data) {
                     // Refresh messages
                     $scope.conversations = Conversation.query($routeParams);
+                    $scope.totalSelected--;
                 })
             }
         }

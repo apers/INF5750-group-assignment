@@ -1,78 +1,89 @@
-.conversationList
-{
+.inbox-view {
+  .conversationList {
 
-  .conversation
-  {
-    &:nth-child(odd) {
-      background: #ececec;
-    }
+    .conversation {
+      &:nth-child(odd) {
+        //background: #ececec;
+        background: #dddddd;
+      }
 
-    // Glyph sizes
-    span.glyphicon-star {
-      font-size: 1.5em;
-      color: #d8ca36;
-    }
-    span.glyphicon-star-empty {
-      font-size: 1.5em;
-      color: #777777;
-      &:hover {
+      // Glyph sizes
+      span.glyphicon-star {
+        font-size: 1.5em;
         color: #d8ca36;
       }
-    }
-    span.glyphicon-remove {
-      font-size: 1.5em;
-      color: #777777;
+      span.glyphicon-star-empty {
+        font-size: 1.5em;
+        color: #777777;
+        &:hover {
+          color: #d8ca36;
+        }
+      }
+      span.glyphicon-remove {
+        font-size: 1.5em;
+        color: #777777;
+        &:hover {
+          color: #d15455;
+        }
+      }
+
+      // Same style as when selected
       &:hover {
-        color: #d15455;
+        border-color: #3F92D2;
+        background: #3F92D2;
+
+        color: #fff;
+        z-index: 2;
+      }
+
+      &.selected {
+        border-color: #0b7ac3;
+        background: #0b7ac3;
+        color: #fff;
+        z-index: 2;
+      }
+
+      // Remove link colors and decorations from inbox view
+      a {
+        &:link {
+          text-decoration: none;
+          color: inherit
+        }
+        &:active {
+          text-decoration: none;
+          color: inherit
+        }
+        &:hover {
+          text-decoration: none;
+          color: inherit
+        }
+        &:visited {
+          text-decoration: none;
+          color: inherit
+        }
       }
     }
-
-    // Same style as when selected
-    &:hover {
-      border-color: #3F92D2;
-      background: #3F92D2;
-
-      color: #fff;
+    // Style for new message
+    .new-message {
+      border-color: #bcebbb;
+      background: #bcebbb;
       z-index: 2;
     }
+  }
 
-    &.selected {
-      border-color: #0B61A4;
-      background: #0B61A4;
-      color: #fff;
-      z-index: 2;
-    }
-
-    // Remove link colors and decorations from inbox view
-    a
-    {
-      &:link {  text-decoration: none; color: inherit}
-      &:active { text-decoration: none; color: inherit}
-      &:hover { text-decoration: none; color: inherit}
-      &:visited { text-decoration: none; color: inherit}
+  .noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .navbar-fixed-bottom {
+    pointer-events: none;
+    .pagination {
+      pointer-events: all !important;
     }
   }
-  // Style for new message
-  .new-message {
-    border-color: #bcebbb;
-    background: #bcebbb;
-    z-index: 2;
-  }
-}
-
-
-#pager {
-  position: fixed;
-  height: 100px;
-  bottom: 0;
-  width: 100%;
-}
-.noselect {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
