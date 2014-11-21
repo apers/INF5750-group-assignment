@@ -1,5 +1,24 @@
 <!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">-->
+<!-- Single message delete modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm</h4>
+            </div>
+            <div class="modal-body">
+                Delete message(s)?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" ng-click="deleteConversation(deleteConv)">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- View -->
 <div class="inbox-view">
+    <!--Input -->
     <div class="input-group">
         <div class="input-group-btn">
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -19,8 +38,9 @@
 
         <input type="text" class="form-control" placeholder="Search" ng-model="messageFilter"
                typeahead="message.subject as message.subject for message in typeaheadfilterQuery($viewValue)"
-               typeahead-loading="loadingMessages">
-        <!--typeahead-on-select="typeaheadfilterQuery(">-->
+               typeahead-loading="loadingMessages"
+               typeahead-on-select="setQueryFilter(messageFilter)">
+
         <div class="input-group-btn">
             <button type="button" class="btn btn-default" ng-click="setQueryFilter(messageFilter)">
                 Go
@@ -28,7 +48,7 @@
         </div>
     </div>
     <br>
-
+    <!--Conversation list-->
     <div class="list-group conversationList">
         <!-- Each item -->
         <div class="list-group-item conversation"
@@ -60,7 +80,8 @@
                 <span ng-show="!conversation.followUp" class="glyphicon glyphicon-star-empty"
                       ng-click="changeFollowUp(conversation)"></span>
                     <!--  Delete -->
-                    <span class="glyphicon glyphicon-remove" ng-click="deleteConversation(conversation)"></span>
+                    <span type="button" class="glyphicon glyphicon-remove"
+                          data-toggle="modal" data-target="#deleteModal"></span>
                 </div>
             </div>
         </div>
@@ -69,9 +90,12 @@
     <div class="text-center navbar-fixed-bottom" ng-init="changePage=1">
         <ul class="pagination">
             <li><a href="" ng-click="changePage = changePage - 1">&laquo;</a></li>
-            <li ng-class="{'active': (currentPage == paging1)}"><a href="" ng-click="changePage = paging1">{{paging1}}</a></li>
-            <li ng-class="{'active': (currentPage == paging2)}"><a href="" ng-click="changePage = paging2">{{paging2}}</a></li>
-            <li ng-class="{'active': (currentPage == paging3)}"><a href="" ng-click="changePage = paging3">{{paging3}}</a></li>
+            <li ng-class="{'active': (currentPage == paging1)}"><a href=""
+                                                                   ng-click="changePage = paging1">{{paging1}}</a></li>
+            <li ng-class="{'active': (currentPage == paging2)}"><a href=""
+                                                                   ng-click="changePage = paging2">{{paging2}}</a></li>
+            <li ng-class="{'active': (currentPage == paging3)}"><a href=""
+                                                                   ng-click="changePage = paging3">{{paging3}}</a></li>
             <li><a href="" ng-click="changePage = changePage + 1">&raquo;</a></li>
         </ul>
     </div>

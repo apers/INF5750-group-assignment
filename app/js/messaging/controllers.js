@@ -36,7 +36,10 @@ module.controller('ConversationListController', function ($scope, $location, $ht
     $scope.$watch('changePage', function() {
         console.log($scope.changePage);
         getConversations();
-    })
+        $scope.totalSelected = 0;
+    });
+
+
 
     // Get all conversations and paging data
     var getConversations = function () {
@@ -171,6 +174,10 @@ module.controller('ConversationListController', function ($scope, $location, $ht
         });
 
     };
+
+    $('#deleteModal').on('show.bs.modal', function (event) {
+        console.log($scope.deleteConv);
+    })
 });
 
 module.controller('ConversationController', function ($scope, $routeParams, Conversation, $window) {

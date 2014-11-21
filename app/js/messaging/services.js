@@ -49,11 +49,6 @@ module.factory('Conversation', function($resource, Api) {
         }
     });
 
-    res.setFilter = function(filter) {
-        console.log('setting filter: ' + filter)
-        res.filterTest = 'subject:like:' + filter;
-    };
-
     /*
     res.prototype.xxx = function() {
 
