@@ -37,10 +37,7 @@ module.factory('Conversation', function($resource, Api) {
         query: {
             isArray: false,
             params: {
-                fields: ':all',
-                page: '@page',
-                paging: '@paging',
-                filter: '@filter'
+                fields: ':all'
             }
         },
 
@@ -52,6 +49,10 @@ module.factory('Conversation', function($resource, Api) {
         }
     });
 
+    res.setFilter = function(filter) {
+        console.log('setting filter: ' + filter)
+        res.filterTest = 'subject:like:' + filter;
+    };
 
     /*
     res.prototype.xxx = function() {

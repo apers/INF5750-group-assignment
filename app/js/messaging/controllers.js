@@ -26,37 +26,43 @@ module.config(function ($routeProvider) {
         });
 });
 
-module.controller('ConversationListController', function ($scope, $location, $routeParams, $http, $filter, Conversation) {
+module.controller('ConversationListController', function ($scope, $location, $http, $filter, Conversation) {
     // Init
     $scope.totalSelected = 0;
-    var queryFilter = "";
 
-    //http://inf5750-19.uio.no/api/messageConversations?fields=:all&filter=followUp:eq:false
+    var filterText = ""
+
+    /* Watch for page changes */
+    $scope.$watch('changePage', function() {
+        console.log($scope.changePage);
+        getConversations();
+    })
+
     // Get all conversations and paging data
     var getConversations = function () {
 
-        console.log(queryFilter);
+        var filterStr;
 
-        if (queryFilter == "") {
-            var queryParams = {
-                page: $routeParams.page,
-                pageSize: 15
-            }
+        if( filterText == "" ) {
+            filterStr = null;
         } else {
-            console.log('filter');
-            var queryParams = {
-                page: $routeParams.page,
-                pageSize: 15,
-                filter: queryFilter
-            }
+            filterStr = 'subject:like:' + filterText;
         }
+
+        var queryParams = {
+            page: $scope.changePage,
+            pageSize: 15,
+            filter: filterStr
+        };
 
         $scope.conversations = Conversation.query(queryParams, function (data) {
             /* Paging */
             var currentPage = parseInt(data.pager.page);
-            var maxPage = data.pager.pageCount;
 
             $scope.currentPage = currentPage;
+            $scope.changePage = currentPage;
+
+            var maxPage = data.pager.pageCount;
 
             if (currentPage != 1 && currentPage != maxPage) {
                 $scope.paging1 = currentPage - 1;
@@ -64,7 +70,7 @@ module.controller('ConversationListController', function ($scope, $location, $ro
                 $scope.paging3 = currentPage + 1;
                 $scope.nextPage = currentPage + 1;
                 $scope.prevPage = currentPage - 1;
-            } else if (currentPage == 1) {
+            } else if (currentPage <= 1) {
                 $scope.paging1 = currentPage;
                 $scope.paging2 = currentPage + 1;
                 $scope.paging3 = currentPage + 2;
@@ -83,36 +89,18 @@ module.controller('ConversationListController', function ($scope, $location, $ro
     // Get initial conversations
     getConversations();
 
+    $scope.setQueryFilter = function(filter) {
+        filterText = filter;
+        getConversations();
+    }
 
     /* For the typeahead search */
-    $scope.typeaheadfilterQuery = function (filterType, value) {
-        var filterStr = "";
-
-        if (filterType == 'Subject') {
-            filterStr += 'subject:like:' + value;
-            return Conversation.query({filter: filterStr, paging: false, fields: 'subject'}).$promise.then(
-                function (response) {
-                    return $filter('limitTo')(response.messageConversations, 5)
-                });
-        }
+    $scope.typeaheadfilterQuery = function (value) {
+        return Conversation.query({filter: 'subject:like:' + value, paging: false, fields: 'subject'}).$promise.then(
+            function (response) {
+                return $filter('limitTo')(response.messageConversations, 5)
+            });
     };
-
-
-    /* Set a static query filter */
-    $scope.setQueryFilter = function () {
-        var filterType = "";
-        var filterValue = $scope.messageFilter;
-
-        if ($scope.filterByStr == 'Subject') {
-            filterType = 'subject';
-        }
-
-        if (filterValue != "") {
-            queryFilter = filterType + ':like:' + filterValue;
-            getConversations();
-        }
-
-    }
 
     /* Selects all the messages */
     $scope.selectAll = function (conversations) {
@@ -140,7 +128,7 @@ module.controller('ConversationListController', function ($scope, $location, $ro
             if (conversations[i].selected == true) {
                 Conversation.delete({id: conversations[i].id}, function (data) {
                     // Refresh messages
-                    $scope.conversations = Conversation.query($routeParams);
+                    getConversations();
                     $scope.totalSelected--;
                 })
             }
@@ -179,7 +167,7 @@ module.controller('ConversationListController', function ($scope, $location, $ro
         // Delete conversation
         Conversation.delete({id: conversation.id}, function () {
             // Refresh messages
-            $scope.conversations = Conversation.query($routeParams);
+            getConversations();
         });
 
     };
