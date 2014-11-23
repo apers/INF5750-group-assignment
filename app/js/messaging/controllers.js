@@ -54,7 +54,7 @@ module.controller('ConversationListController', function ($scope, $location, $ht
 
         var queryParams = {
             page: $scope.changePage,
-            pageSize: 15,
+            pageSize: 30,
             filter: filterStr
         };
 
@@ -156,14 +156,20 @@ module.controller('ConversationListController', function ($scope, $location, $ht
     };
 
     $scope.changeFollowUp = function (conversation) {
-        conversation.followUp = !conversation.followUp;
+
+        var conv = Conversation.get({id: conversation.id, fields: null}, function() {
+            console.log(conv);
+            conv.$saveTest();
+        });
+
+        /*conversation.followUp = !conversation.followUp;
 
         Conversation.get({id: conversation.id}, function (data) {
             data.followUp = conversation.followUp;
             data.$save();
         }, function (data) {
             console.log('Error: ', data)
-        });
+        });*/
     };
 
     $scope.deleteConversation = function (conversation) {

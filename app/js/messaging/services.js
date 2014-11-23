@@ -46,6 +46,10 @@ module.factory('Conversation', function($resource, Api) {
                 // this ensures we retrieve more data
                 fields: ':all,messages[:identifiable,sender]'
             }
+        },
+
+        saveTest: {
+            method: 'PUT'
         }
     });
 
