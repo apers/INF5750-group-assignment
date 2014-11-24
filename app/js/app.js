@@ -25,6 +25,7 @@ module.config(['$locationProvider', function($locationProvider) {
 
 //Check if we lost connection to the internet
 module.run(function($window, $rootScope) {
+    //TODO: Change true/false
     $rootScope.offline = navigator.onLine;
 
     $window.addEventListener("offline", function () {
@@ -42,11 +43,11 @@ module.run(function($window, $rootScope) {
 
 //Change in URL?
 module.run(function($rootScope, $location, $window) {
-    $rootScope.location = $location.path();
+    $rootScope.location = $location.path().replace(/\d+/g, '');
 
     $window.addEventListener("hashchange", function() {
         $rootScope.$apply(function() {
-            $rootScope.location = $location.path();
+            $rootScope.location = $location.path().replace(/\d+/g, '');
         });
     }, false);
 });
