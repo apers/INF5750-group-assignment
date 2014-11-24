@@ -43,11 +43,11 @@ module.run(function($window, $rootScope) {
 
 //Change in URL?
 module.run(function($rootScope, $location, $window) {
-    $rootScope.location = $location.path().replace(/\d+/g, '');
+    $rootScope.location = $location.path();
 
     $window.addEventListener("hashchange", function() {
         $rootScope.$apply(function() {
-            $rootScope.location = $location.path().replace(/\d+/g, '');
+            $rootScope.location = $location.path();
         });
     }, false);
 });
