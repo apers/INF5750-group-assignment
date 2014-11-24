@@ -23,19 +23,30 @@ module.config(['$locationProvider', function($locationProvider) {
     //$locationProvider.html5Mode(true);
 }]);
 
-//Check if web page is offline or not
+//Check if we lost connection to the internet
 module.run(function($window, $rootScope) {
-      $rootScope.offline = navigator.onLine;
+    $rootScope.offline = navigator.onLine;
 
-      $window.addEventListener("offline", function () {
+    $window.addEventListener("offline", function () {
         $rootScope.$apply(function() {
-          $rootScope.offline = false;
+            $rootScope.offline = false;
         });
-      }, false);
+    }, false);
 
-      $window.addEventListener("online", function () {
+    $window.addEventListener("online", function () {
         $rootScope.$apply(function() {
-          $rootScope.offline = true;
+            $rootScope.offline = true;
         });
-      }, false);
+    }, false);
+});
+
+//Change in URL?
+module.run(function($rootScope, $location, $window) {
+    $rootScope.location = $location.path();
+
+    $window.addEventListener("hashchange", function() {
+        $rootScope.$apply(function() {
+            $rootScope.location = $location.path();
+        });
+    }, false);
 });
