@@ -1,7 +1,7 @@
 'use strict';
 
 var module = angular.module('overdressed.messaging.controllers', [
-    'ngRoute', 'ui.bootstrap'
+    'ngRoute', 'ngTagsInput', 'ui.bootstrap'
 ]);
 
 module.config(function ($routeProvider) {
@@ -223,17 +223,19 @@ module.controller('ConversationController', function ($scope, $routeParams, Conv
 });
 
 module.controller('ConversationNewController', function ($scope, $location, $http,
-                                                         Conversation, limitToFilter) {
+                                                         Conversation) {
     $scope.recv = {usrNames: [], usrIds: [], grpNames: [], grpIds: [], orgNames: [], orgIds: []};
     $scope.res = [];
+    $scope.sub = "";
 
     //Adds neq:name to avoid getting results we already have.
     function updateQuery(arr, q, qVal) {
         arr.forEach(function (elem) {
-            q += qVal + "" + elem.name;
+            q += qVal + "" + elem;
         });
         return q;
     }
+    
 
     $scope.findRecv = function (inp, t) {
         var search = "http://admin:district@inf5750-19.uio.no/api/";
@@ -256,7 +258,7 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
         return $http.get(search)
             .then(function (response) {
                 if (t === 'u') {
-                    return response.data.users;
+                	return response.data.users;
                 } else if (t === 'g') {
                     return response.data.userGroups;
                 } else {
@@ -267,31 +269,30 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
 
     $scope.selectedRecv = function (inp, t) {
         if (t === 'u') {
-            $scope.recv.usrNames.push({name: inp.name});
+            $scope.recv.usrNames.push(inp.name);
             $scope.recv.usrIds.push({id: inp.id});
-            $scope.toUsr = "";
+
         } else if (t === 'g') {
-            $scope.recv.grpNames.push({name: inp.name});
+            $scope.recv.grpNames.push(inp.name);
             $scope.recv.grpIds.push({id: inp.id});
-            $scope.toGrp = "";
+
         } else {
-            $scope.recv.orgNames.push({name: inp.name});
+            $scope.recv.orgNames.push(inp.name);
             $scope.recv.orgIds.push({id: inp.id});
-            $scope.toOrg = "";
         }
     }
 
 
     $scope.remRecv = function (indx, t) {
         if (t === 'u') {
-            $scope.recv.usrNames.splice(indx);
-            $scope.recv.usrIds.splice(indx);
+            $scope.recv.usrNames.splice(indx,1);
+            $scope.recv.usrIds.splice(indx,1);
         } else if (t === 'g') {
-            $scope.recv.grpNames.splice(indx);
-            $scope.recv.grpIds.splice(indx);
+            $scope.recv.grpNames.splice(indx,1);
+            $scope.recv.grpIds.splice(indx,1);
         } else {
-            $scope.recv.orgNames.splice(indx);
-            $scope.recv.orgIds.splice(indx);
+            $scope.recv.orgNames.splice(indx,1);
+            $scope.recv.orgIds.splice(indx,1);
         }
     }
     
@@ -308,7 +309,7 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
                 alert("Success");
             }).
             error(function (data, status) {
-                alert("fail:(");
+                console.log("fail");
             });
 
     }

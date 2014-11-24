@@ -1,58 +1,81 @@
 
 <div ng-controller="ConversationNewController">
-	<br/>
+<!--  
 	users:
 	<li style="color:red; display: inline;
 			list-style-type: none;
 			padding-right: 20px;" 
-			ng-repeat="x in recv.usrNames" ng-click="remRecv($index, 'u')"> [x]{{ x.name }} </li>
+			ng-repeat="x in recv.usrNames" ng-click="remRecv($index, 'u')"> [x]{{ x }} </li>
     <br/>
     groups:
     <li style="color:green; display: inline;
 			list-style-type: none;
 			padding-right: 20px;" 
-			ng-repeat="x in recv.grpNames" ng-click="remRecv($index, 'g')"> [x]{{ x.name }} </li>
+			ng-repeat="x in recv.grpNames" ng-click="remRecv($index, 'g')"> [x]{{ x }} </li>
     <br/>
     organizations:
     <li style="color:purple; display: inline;
 			list-style-type: none;
 			padding-right: 20px;" 
-			ng-repeat="x in recv.orgNames" ng-click="remRecv($index, 'o')"> [x]{{ x.name }} </li>
+			ng-repeat="x in recv.orgNames" ng-click="remRecv($index, 'o')"> [x]{{ x }} </li>
     <br/>
+    -->
     
-   
+		<form name="inputs">   
+    	
     	<div class="input-group">
   			<span class="input-group-addon" style= "min-width:129px;
   text-align:left;">To user</span>
-  			<input type="text" ng-model="toUsr" class="form-control"
-		typeahead="users as users.name for users in findRecv($viewValue, 'u')" typeahead-on-select="selectedRecv(toUsr, 'u')" 
-		placeholder="Write users"/>
+  			
+  			<tags-input ng-model="toUsr" name="usrInput" 
+  			display-property="name" placeholder="Write users " ng-required="!toGrp" 
+  			on-tag-added="selectedRecv($tag, 'u')" on-tag-removed="remRecv($index, 'u')" min-length=1
+  			add-from-autocomplete-only="true">
+		<!-- typeahead="users as users.name for users in findRecv($viewValue, 'u')" typeahead-on-select="selectedRecv(toUsr, 'u')"  -->
+			 <auto-complete source="findRecv($query, 'u')"></auto-complete>
+			 </tags-input>
 		</div>
 		
 		<div class="input-group">
   			<span class="input-group-addon"style= "min-width:129px;
   text-align:left;">To usergroup</span>
-			<input type="text" ng-model="toGrp" class="form-control"
-			typeahead="users as users.name for users in findRecv($viewValue, 'g')" typeahead-on-select="selectedRecv(toGrp, 'g')"
-			placeholder="Write usergroups"\> 
+			<tags-input ng-model="toGrp" placeholder="Write usergroups " ng-required="!toUsr" display-property="name"
+			on-tag-added="selectedRecv($tag, 'g')" on-tag-removed="remRecv($index, 'g')" min-length=1
+			add-from-autocomplete-only="true">
+			<auto-complete source="findRecv($query, 'g')"></auto-complete>
+			</tags-input> 
+			<!-- typeahead="users as users.name for users in findRecv($viewValue, 'g')" typeahead-on-select="selectedRecv(toGrp, 'g')"-->
+			
 		</div>
 		
 		<div class="input-group">
   			<span class="input-group-addon" style= "min-width:129px;
-  text-align:left;">To orginazations</span>
-			<input type="text" ng-model="toOrg" class="form-control"
-			typeahead="users as users.name for users in findRecv($viewValue, 'o')" typeahead-on-select="selectedRecv(toOrg, 'o')" 
-			placeholder="Write organization"/>
-		</div>
+  text-align:left;">To organization</span>
+			<tags-input ng-model="toOrg" placeholder="Write organization " display-property="name"
+			on-tag-added="selectedRecv($tag, 'o')" on-tag-removed="remRecv($index, 'o')" min-length=1
+			add-from-autocomplete-only="true">
+			<auto-complete source="findRecv($query, 'o')"></auto-complete>
+			</tags-input> 
+			<!--  typeahead="users as users.name for users in findRecv($viewValue, 'o')" typeahead-on-select="selectedRecv(toOrg, 'o')" -->			
+			</div>
 		<br/>
-		<div class="input-group">
+			
+
+	
+			<div class="input-group">
   			<span class="input-group-addon">Subject</span> 
-			<input type="text" class="form-control" ng-model="sub" placeholder="Write subject" required/>
-		</div>
+					<input type="text" class="form-control" ng-model="sub" 
+					placeholder="Write subject" required style="width:50%"/>
+				</div>
+		
 		<br/>
 		<textarea class="form-control" rows=5 id="mail" placeholder="Write message" ng-model="mailText"></textarea>
 	
-	<button ng-click="sendMsg()" type="button" class="btn btn-default navbar-btn">
+	<button ng-click="sendMsg()" class="btn btn-default navbar-btn">
   		Send
-	</button>	
+	</button>
+	
+	</form>	
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/2.0.1/ng-tags-input.min.css" />
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ng-tags-input/2.1.1-1/ng-tags-input.bootstrap.min.css" />
 </div>
