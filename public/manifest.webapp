@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "name": "chris",
+    "name": "APP_NAME",
     "description": "DHIS2 messaging app",
     "launch_path": "index.html",
     "default_locale": "en",
