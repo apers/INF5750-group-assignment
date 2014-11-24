@@ -2,13 +2,11 @@
   .conversationList {
 
     .conversation {
-      &:nth-child(odd) {
-        //background: #ececec;
-        background: #dddddd;
-      }
+
+      background: #ececec;
 
       #table-buttons {
-        min-width: 75px;
+        width: 70px;
       }
 
       // Glyph sizes
@@ -31,19 +29,28 @@
         }
       }
 
+
+      #colorBlock {
+        width: 10px;
+      }
+      td {
+        max-width: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+      }
+
       // Same style as when selected
       &:hover {
-        border-color: #3F92D2;
-        background: #3F92D2;
-
-        color: #fff;
-        z-index: 2;
+        #colorBlock {
+          background: #83beff;
+        }
       }
 
       &.selected {
-        border-color: #0b7ac3;
-        background: #0b7ac3;
-        color: #fff;
+        border-color: #faffaa;
+        background: #faffaa;
         z-index: 2;
       }
 
@@ -69,9 +76,10 @@
     }
     // Style for new message
     .new-message {
-      border-color: #bcebbb;
-      background: #bcebbb;
+      border-color: #ffffff;
+      background: #ffffff;
       z-index: 2;
+      font-weight: bold;
     }
   }
 

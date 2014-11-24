@@ -33,12 +33,17 @@ module.controller('ConversationListController', function ($scope, $location, $ht
     var filterText = ""
 
     /* Watch for page changes */
-    $scope.$watch('changePage', function() {
-        console.log($scope.changePage);
+    $scope.$watch('changePage', function () {
         getConversations();
         $scope.totalSelected = 0;
     });
 
+    $scope.$watch('messageFilter', function() {
+       if($scope.messageFilter != undefined) {
+           filterText = $scope.messageFilter;
+           getConversations();
+       }
+    });
 
 
     // Get all conversations and paging data
@@ -46,7 +51,7 @@ module.controller('ConversationListController', function ($scope, $location, $ht
 
         var filterStr;
 
-        if( filterText == "" ) {
+        if (filterText == "") {
             filterStr = null;
         } else {
             filterStr = 'subject:like:' + filterText;
@@ -91,19 +96,6 @@ module.controller('ConversationListController', function ($scope, $location, $ht
 
     // Get initial conversations
     getConversations();
-
-    $scope.setQueryFilter = function(filter) {
-        filterText = filter;
-        getConversations();
-    }
-
-    /* For the typeahead search */
-    $scope.typeaheadfilterQuery = function (value) {
-        return Conversation.query({filter: 'subject:like:' + value, paging: false, fields: 'subject'}).$promise.then(
-            function (response) {
-                return $filter('limitTo')(response.messageConversations, 5)
-            });
-    };
 
     /* Selects all the messages */
     $scope.selectAll = function (conversations) {
@@ -157,19 +149,19 @@ module.controller('ConversationListController', function ($scope, $location, $ht
 
     $scope.changeFollowUp = function (conversation) {
 
-        var conv = Conversation.get({id: conversation.id, fields: null}, function() {
+        var conv = Conversation.get({id: conversation.id, fields: null}, function () {
             console.log(conv);
             conv.$saveTest();
         });
 
         /*conversation.followUp = !conversation.followUp;
 
-        Conversation.get({id: conversation.id}, function (data) {
-            data.followUp = conversation.followUp;
-            data.$save();
-        }, function (data) {
-            console.log('Error: ', data)
-        });*/
+         Conversation.get({id: conversation.id}, function (data) {
+         data.followUp = conversation.followUp;
+         data.$save();
+         }, function (data) {
+         console.log('Error: ', data)
+         });*/
     };
 
     $scope.deleteConversation = function (conversation) {

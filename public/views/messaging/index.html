@@ -36,31 +36,25 @@
             </ul>
         </div>
 
-        <input type="text" class="form-control" placeholder="Search" ng-model="messageFilter"
-               typeahead="message.subject as message.subject for message in typeaheadfilterQuery($viewValue)"
-               typeahead-loading="loadingMessages"
-               typeahead-on-select="setQueryFilter(messageFilter)">
-
-        <div class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="setQueryFilter(messageFilter)">
-                Go
-            </button>
-        </div>
+        <input type="text" class="form-control" placeholder="Search" ng-model="messageFilter">
     </div>
-    <br>
+    <hr>
     <!--Conversation list-->
     <div class="conversationList">
         <!-- Each item -->
         <table class="table table-condensed">
             <thead>
             <td></td>
+            <td></td>
             <td><b>From</b></td>
             <td><b>Subject</b></b></td>
+            <td><b>Last update</b></td>
             </thead>
             <tbody>
             <tr class="conversation"
                 ng-repeat="conversation in conversations.messageConversations"
-                ng-class="{'list-group-item-success': !conversation.read, 'selected': conversation.selected}">
+                ng-class="{'new-message': !conversation.read, 'selected': conversation.selected}">
+                <td id="colorBlock"></td>
                 <!-- Content: Subject, sender etc -->
                 <td id="table-buttons">
                     <!-- Check boxes for selection -->
@@ -76,16 +70,16 @@
                           data-toggle="modal" data-target="#deleteModal"></span>
                 </td>
 
-                <td style ="white-space: nowrap;">
+                <td>
                     <!--  From -->
                     {{ conversation.lastSenderFirstname + ' ' +
                     conversation.lastSenderSurname}}
 
                 </td>
 
-                <td style ="white-space: nowrap;">{{conversation.displayName}}</td>
+                <td >{{conversation.displayName}}</td>
 
-                <td style="position:relative;display:block">
+                <td>
                     {{conversation.created | date : 'MMM. dd, hh:mm'}}
                 </td>
             </tr>
