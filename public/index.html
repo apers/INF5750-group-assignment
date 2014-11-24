@@ -22,12 +22,14 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li active-on-click><a href="#/">Inbox</a></li>
-            <li active-on-click><a href="#/conversation/new">New message</a></li>
+            <li ng-class="{active: isLocation('/inbox/')}"><a href="#/">Inbox</a></li>
+            <li ng-class="{active: isLocation('/conversation/new')}"><a href="#/conversation/new">New message</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+
+    <p>hei {{isLocation('/inbox/')}}</p>
 
    <div ng-show="offline" class="container"> 
       <div class="alert alert-danger">
