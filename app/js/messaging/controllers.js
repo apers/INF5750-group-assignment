@@ -26,6 +26,16 @@ module.config(function ($routeProvider) {
         });
 });
 
+/*
+TODO: 
+module.controller('menuController', function ($scope) {
+
+    var isLocation = function (path) {
+        console.log("Checking");
+        return $scope.location.slice(0, path.length) == path;
+    };
+});*/
+
 module.controller('ConversationListController', function ($scope, $location, $http, $filter, Conversation) {
     // Init
     $scope.totalSelected = 0;
