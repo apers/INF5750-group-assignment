@@ -22,3 +22,32 @@ module.config(['$locationProvider', function($locationProvider) {
     //  than there are actually files for, so this is disabled)
     //$locationProvider.html5Mode(true);
 }]);
+
+//Check if we lost connection to the internet
+module.run(function($window, $rootScope) {
+    //TODO: Change true/false
+    $rootScope.offline = navigator.onLine;
+
+    $window.addEventListener("offline", function () {
+        $rootScope.$apply(function() {
+            $rootScope.offline = false;
+        });
+    }, false);
+
+    $window.addEventListener("online", function () {
+        $rootScope.$apply(function() {
+            $rootScope.offline = true;
+        });
+    }, false);
+});
+
+//Change in URL?
+module.run(function($rootScope, $location, $window) {
+    $rootScope.location = $location.path();
+
+    $window.addEventListener("hashchange", function() {
+        $rootScope.$apply(function() {
+            $rootScope.location = $location.path();
+        });
+    }, false);
+});

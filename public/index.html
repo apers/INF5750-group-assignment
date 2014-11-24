@@ -24,12 +24,21 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li active-on-click><a href="#/">Inbox</a></li>
-            <li active-on-click><a href="#/conversation/new">New message</a></li>
+            <li ng-class="{active: location.slice(0, '/inbox/'.length) == '/inbox/'}"><a href="#/">Inbox</a></li>
+            <!-- TODO: put ng-hide="offline" on new message -->
+            <li ng-class="{active: location.slice(0, '/conversation/new'.length) == '/conversation/new'}"><a href="#/conversation/new">New message</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+
+   <div ng-show="offline" class="container"> 
+      <div class="alert alert-danger">
+        <strong>Offline!</strong> 
+        You are now in offline mode, some functions will be disabled.
+      </div>
+      <br>
+    </div>
 
     <div class="container" ng-view>
         <!-- contents of the controller's view will be replaced here -->
