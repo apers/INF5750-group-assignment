@@ -97,6 +97,10 @@ module.controller('ConversationListController', function ($scope, $location, $ht
     // Get initial conversations
     getConversations();
 
+    $scope.showConversation = function(conversation) {
+        $location.path('conversation/'+conversation.id);
+    }
+
     /* Selects all the messages */
     $scope.selectAll = function (conversations) {
         conversations.forEach(function (conversation) {
@@ -227,7 +231,7 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
         });
         return q;
     }
-    
+
 
     $scope.findRecv = function (inp, t) {
         var search = "http://admin:district@inf5750-19.uio.no/api/";
@@ -250,7 +254,7 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
         return $http.get(search)
             .then(function (response) {
                 if (t === 'u') {
-                	return response.data.users;
+                    return response.data.users;
                 } else if (t === 'g') {
                     return response.data.userGroups;
                 } else {
@@ -277,17 +281,17 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
 
     $scope.remRecv = function (indx, t) {
         if (t === 'u') {
-            $scope.recv.usrNames.splice(indx,1);
-            $scope.recv.usrIds.splice(indx,1);
+            $scope.recv.usrNames.splice(indx, 1);
+            $scope.recv.usrIds.splice(indx, 1);
         } else if (t === 'g') {
-            $scope.recv.grpNames.splice(indx,1);
-            $scope.recv.grpIds.splice(indx,1);
+            $scope.recv.grpNames.splice(indx, 1);
+            $scope.recv.grpIds.splice(indx, 1);
         } else {
-            $scope.recv.orgNames.splice(indx,1);
-            $scope.recv.orgIds.splice(indx,1);
+            $scope.recv.orgNames.splice(indx, 1);
+            $scope.recv.orgIds.splice(indx, 1);
         }
     }
-    
+
 
     $scope.sendMsg = function () {
         var msg = {

@@ -6,7 +6,15 @@
       background: #ececec;
 
       #table-buttons {
-        width: 70px;
+        @media(min-width: $screen-phone) {
+          width: 10px;
+        }
+        @media(min-width: $screen-tablet) {
+          width: 85px;
+        }
+        @media(min-width: $screen-desktop) {
+          width: 85px;
+        }
       }
 
       // Glyph sizes
@@ -33,13 +41,12 @@
       #colorBlock {
         width: 10px;
       }
-      td {
-        max-width: 50px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-      }
+     // td {
+     //   max-width: 50px;
+     //   white-space: nowrap;
+     //   overflow: hidden;
+//        text-overflow: ellipsis;
+//      }
 
       // Same style as when selected
       &:hover {
@@ -90,12 +97,6 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-  }
-  .navbar-fixed-bottom {
-    pointer-events: none;
-    .pagination {
-      pointer-events: all !important;
-    }
   }
 }
 

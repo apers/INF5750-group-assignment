@@ -29,9 +29,14 @@
                 <li><a href="" ng-click="selectAll(conversations.messageConversations)">Select all</a></li>
                 <li><a href="" ng-click="selectNone(conversations.messageConversations)">Select none</a></li>
                 <li class="divider"></li>
-                <li><a href="" ng-click="deleteAllSelected(conversations.messageConversations)">Delete selected
+                <li ng-class="{'disabled': totalSelected==0}"><a href=""
+                                                                 data-toggle="modal" data-target="#deleteModal"
+                                                                 ng-click="deleteAllSelected(conversations.messageConversations)">Delete
+                    selected
                     <span class="badge" ng-hide="totalSelected==0">{{totalSelected}}</span></a></li>
-                <li><a href="" ng-click="starAllSelected(conversations.messageConversations)">Star selected
+                <li ng-class="{'disabled': totalSelected==0}"><a href=""
+                                                                 ng-click="starAllSelected(conversations.messageConversations)">Star
+                    selected
                     <span class="badge" ng-hide="totalSelected==0">{{totalSelected}}</span></a></li>
             </ul>
         </div>
@@ -69,25 +74,24 @@
                     <span type="button" class="glyphicon glyphicon-remove"
                           data-toggle="modal" data-target="#deleteModal"></span>
                 </td>
-
-                <td>
+                <td ng-click="showConversation(conversation)">
                     <!--  From -->
                     {{ conversation.lastSenderFirstname + ' ' +
                     conversation.lastSenderSurname}}
-
                 </td>
 
-                <td >{{conversation.displayName}}</td>
+                <td ng-click="showConversation(conversation)">{{conversation.displayName}}</td>
 
-                <td>
+                <td ng-click="showConversation(conversation)">
                     {{conversation.created | date : 'MMM. dd, hh:mm'}}
                 </td>
+
             </tr>
             </tbody>
         </table>
     </div>
 
-    <div class="text-center navbar-fixed-bottom" ng-init="changePage=1">
+    <div class="text-center ng-init=" changePage=1">
         <ul class="pagination">
             <li><a href="" ng-click="changePage = changePage - 1">&laquo;</a></li>
             <li ng-class="{'active': (currentPage == paging1)}"><a href=""
