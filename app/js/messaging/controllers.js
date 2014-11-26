@@ -204,8 +204,16 @@ module.controller('ConversationController', function ($scope, $routeParams, Conv
     };
 
     $scope.addReply = function () {
-        // TODO
-        console.log("add reply", $scope.conversation.id, $scope.reply_text);
+        $scope.reply_text = $scope.reply_text.trim();
+        if ($scope.reply_text == '') return;
+        var text_to_send = $scope.reply_text;
+
+        $scope.conversation.addReply($scope.reply_text).then(function(ret) {
+            if ($scope.reply_text == text_to_send) $scope.reply_text = '';
+            console.log("reply success", ret);
+        }, function(ret) {
+            console.log("reply error", ret);
+        });
     };
 
     $scope.markUnread = function () {

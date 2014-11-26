@@ -44,7 +44,7 @@
 
             <div class="list-group-item reply-form">
                 <h4 class="sr-only">Add reply</h4>
-                <form onsubmit="addReply()">
+                <form ng-submit="addReply()">
                     <div class="form-group">
                         <textarea ng-model="reply_text" class="form-control" rows="5"></textarea>
                     </div>

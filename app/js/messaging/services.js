@@ -62,6 +62,23 @@ module.factory('Conversation', function(Api, $http, $q, OfflineConversation) {
         };
     });
 
+    Conversation.prototype.addReply = function(text) {
+        var self = this;
+        return OfflineConversation.sendMessage(this.id, text).then(function() {
+            self.messages.push({
+                created: new Date,
+                name: text,
+                lastUpdated: new Date,
+                sender: self.getUser()
+            });
+        });
+    };
+
+    Conversation.prototype.getUser = function() {
+        // TODO: return the correct user (how do we find which user we are?)
+        return this.userMessages[0].user;
+    };
+
     // online search of messages
     Conversation.query = function(query) {
         return $http.get(Api.getBaseUrl()+'messageConversations', {
@@ -140,7 +157,8 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
         var t = cache.newMessages;
         angular.forEach(t, function(message) {
             // TODO: catch new connection errors
-            OfflineConversation.sendMessage(message.id, message.data, true);
+            // TODO: should there be some timer so they are sent in order?
+            OfflineConversation.sendMessage(null, message, true);
         });
         resaveCache();
     }
@@ -161,16 +179,17 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
         console.log("OfflineConversation", "going online");
         sendMarks();
         sendMessages();
+        buildMessageCache();
     }, false);
 
     angular.forEach(OfflineConversation.markTypes, function(endpoints, method) {
         OfflineConversation[method] = function(ids, state, skipOffline) {
-            // TODO: how to handle promise when offline (neither resolve or reject is currently being called)
             return $q(function (resolve, reject) {
                 if (navigator.onLine) {
                     $http.post(url + '/' + (endpoints[state + 0]), ids).success(resolve).error(reject);
                 } else if (!skipOffline) {
                     addMarks(ids, method, state);
+                    resolve();
                 }
             });
         }
@@ -181,13 +200,25 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
     };
 
     OfflineConversation.sendMessage = function(id, data, skipOffline) {
-        // TODO: how to handle promise when offline (neither resolve or reject is currently being called)
+        if (typeof data != 'object') {
+            data = {
+                'id': id,
+                'text': data,
+                'date': new Date()
+            };
+        }
+
         return $q(function(resolve, reject) {
             if (navigator.onLine) {
-                // TODO: sending message
+                $http.post(url + '/' + data.id, data.text, {
+                    headers: {
+                        'content-type': 'text/plain'
+                    }
+                }).success(resolve).error(reject);
             } else if (!skipOffline) {
-                cache.newMessages.push({id: id, data: data});
+                cache.newMessages.push(data);
                 resaveCache();
+                resolve();
             }
         });
     };
