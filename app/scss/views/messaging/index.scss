@@ -1,102 +1,82 @@
-.inbox-view {
-  .conversationList {
+.conversationList {
 
-    .conversation {
-
-      background: #ececec;
-
-      #table-buttons {
-        @media(min-width: $screen-phone) {
-          width: 10px;
-        }
-        @media(min-width: $screen-tablet) {
-          width: 85px;
-        }
-        @media(min-width: $screen-desktop) {
-          width: 85px;
-        }
-      }
-
-      // Glyph sizes
-      span.glyphicon-star {
-        font-size: 1.5em;
-        color: #f0e23f;
-      }
-      span.glyphicon-star-empty {
-        font-size: 1.5em;
-        color: #d8d280;
-        &:hover {
-          color: #f0e23f;
-        }
-      }
-      span.glyphicon-remove {
-        font-size: 1.5em;
-        color: #9f4344;
-        &:hover {
-          color: #eb0005;
-        }
-      }
+  //background: #ececec;
 
 
-      #colorBlock {
-        width: 10px;
-      }
-     // td {
-     //   max-width: 50px;
-     //   white-space: nowrap;
-     //   overflow: hidden;
-//        text-overflow: ellipsis;
-//      }
+  #table-buttons {
+    width: 30px;
+    text-align: center;
+  }
 
-      // Same style as when selected
-      &:hover {
-        #colorBlock {
-          background: #83beff;
-        }
-      }
-
-      &.selected {
-        border-color: #faffaa;
-        background: #faffaa;
-        z-index: 2;
-      }
-
-      // Remove link colors and decorations from inbox view
-      a {
-        &:link {
-          text-decoration: none;
-          color: inherit
-        }
-        &:active {
-          text-decoration: none;
-          color: inherit
-        }
-        &:hover {
-          text-decoration: none;
-          color: inherit
-        }
-        &:visited {
-          text-decoration: none;
-          color: inherit
-        }
-      }
+  // Glyph sizes
+  span.glyphicon-star {
+    font-size: 1.5em;
+    color: #f0e23f;
+  }
+  span.glyphicon-star-empty {
+    font-size: 1.5em;
+    color: #d8d280;
+    &:hover {
+      color: #f0e23f;
     }
-    // Style for new message
-    .new-message {
-      border-color: #ffffff;
-      background: #ffffff;
-      z-index: 2;
-      font-weight: bold;
+  }
+  span.glyphicon-remove {
+    font-size: 1.5em;
+    color: #9f4344;
+    &:hover {
+      color: #eb0005;
     }
   }
 
-  .noselect {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  // Same style as when selected
+  &:hover {
+    #colorBlock {
+      background: #83beff;
+    }
+  }
+
+  &.selected {
+    background: #faffaa;
+    z-index: 2;
+  }
+
+  .icons {
+    display: table;
+    .date {
+      display: table-footer-group;
+      color: #777777;
+    }
+    .icon {
+      display: table-header-group;
+    }
+  }
+
+  // Remove link colors and decorations from inbox view
+  a {
+    &:link {
+      text-decoration: none;
+      color: inherit
+    }
+    &:active {
+      text-decoration: none;
+      color: inherit
+    }
+    &:hover {
+      text-decoration: none;
+      color: inherit
+    }
+    &:visited {
+      text-decoration: none;
+      color: inherit
+    }
+  }
+  // Style for new message
+  .new-message {
+    background: #ffffff;
+    z-index: 2;
+    font-weight: bold;
+
   }
 }
+
 

@@ -10,7 +10,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteAllSelected(conversations.messageConversations)">Delete</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"
+                        ng-click="deleteAllSelected(conversations.messageConversations)">Delete
+                </button>
             </div>
         </div>
     </div>
@@ -26,95 +28,76 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteConversation(deleteSingleId)">Delete</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"
+                        ng-click="deleteConversation(deleteSingleId)">Delete
+                </button>
             </div>
         </div>
     </div>
 </div>
-<!-- View -->
-<div class="inbox-view">
-    <!--Input -->
-    <div class="input-group">
-        <div class="input-group-btn">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                Action <span class="caret"></span>
-                <span class="badge" ng-hide="totalSelected==0">{{totalSelected}}</span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="" ng-click="selectAll(conversations.messageConversations)">Select all</a></li>
-                <li><a href="" ng-click="selectNone(conversations.messageConversations)">Select none</a></li>
-                <li class="divider"></li>
-                <li ng-class="{'disabled': totalSelected==0}"><a href=""
-                                                                 data-toggle="modal" data-target="#deleteAllModal">Delete selected
-                    <span class="badge" ng-hide="totalSelected==0">{{totalSelected}}</span></a></li>
-                <li ng-class="{'disabled': totalSelected==0}"><a href=""
-                                                                 ng-click="starAllSelected(conversations.messageConversations)">Star
-                    selected
-                    <span class="badge" ng-hide="totalSelected==0">{{totalSelected}}</span></a></li>
-            </ul>
-        </div>
-
-        <input type="text" class="form-control" placeholder="Search" ng-model="messageFilter">
-    </div>
-    <hr>
-    <!--Conversation list-->
-    <div class="conversationList">
-        <!-- Each item -->
-        <table class="table table-condensed">
-            <thead>
-            <td></td>
-            <td></td>
-            <td><b>From</b></td>
-            <td><b>Subject</b></b></td>
-            <td><b>Last update</b></td>
-            </thead>
-            <tbody>
-            <tr class="conversation"
-                ng-repeat="conversation in conversations.messageConversations"
-                ng-class="{'new-message': !conversation.read, 'selected': conversation.selected}">
-                <td id="colorBlock"></td>
-                <!-- Content: Subject, sender etc -->
-                <td id="table-buttons">
-                    <!-- Check boxes for selection -->
-                    <input type="checkbox" ng-model="conversation.selected"
-                           ng-change="countSelected(conversation.selected)">
-                    <!--  Follow up -->
-                <span ng-show="conversation.followUp" class="glyphicon glyphicon-star"
-                      ng-click="changeFollowUp(conversation)"></span>
-                    <span ng-show="!conversation.followUp" class="glyphicon glyphicon-star-empty"
-                          ng-click="changeFollowUp(conversation)"></span>
-                    <!--  Delete -->
-                    <span ng-click="deleteSingleId = conversation.id" type="button" class="glyphicon glyphicon-remove"
-                          data-toggle="modal" data-target="#deleteModal"></span>
-                </td>
-                <td ng-click="showConversation(conversation)">
-                    <!--  From -->
-                    {{ conversation.lastSenderFirstname + ' ' +
-                    conversation.lastSenderSurname}}
-                </td>
-
-                <td ng-click="showConversation(conversation)">{{conversation.displayName}}</td>
-
-                <td ng-click="showConversation(conversation)">
-                    {{conversation.created | date : 'MMM. dd, hh:mm'}}
-                </td>
-
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="text-center ng-init=" changePage=1">
-        <ul class="pagination">
-            <li><a href="" ng-click="changePage = changePage - 1">&laquo;</a></li>
-            <li ng-class="{'active': (currentPage == paging1)}"><a href=""
-                                                                   ng-click="changePage = paging1">{{paging1}}</a></li>
-            <li ng-class="{'active': (currentPage == paging2)}"><a href=""
-                                                                   ng-click="changePage = paging2">{{paging2}}</a></li>
-            <li ng-class="{'active': (currentPage == paging3)}"><a href=""
-                                                                   ng-click="changePage = paging3">{{paging3}}</a></li>
-            <li><a href="" ng-click="changePage = changePage + 1">&raquo;</a></li>
+<!--Input -->
+<div class="input-group">
+    <div class="input-group-btn">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            Action <span class="caret"></span>
+            <span class="badge" ng-hide="totalSelected==0">{{totalSelected}}</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="" ng-click="selectAll(conversations.messageConversations)">Select all</a></li>
+            <li><a href="" ng-click="selectNone(conversations.messageConversations)">Select none</a></li>
+            <li class="divider"></li>
+            <li ng-class="{'disabled': totalSelected==0}"><a href=""
+                                                             data-toggle="modal" data-target="#deleteAllModal">Delete
+                selected
+                <span class="badge" ng-hide="totalSelected==0">{{totalSelected}}</span></a></li>
+            <li ng-class="{'disabled': totalSelected==0}"><a href=""
+                                                             ng-click="starAllSelected(conversations.messageConversations)">
+                Star selected
+                <span class="badge" ng-hide="totalSelected==0">{{totalSelected}}</span></a></li>
         </ul>
     </div>
+    <input type="text" class="form-control" placeholder="Search" ng-model="messageFilter">
+</div>
+<hr>
+<!--Conversation list-->
+<div class="list-group">
+    <div class="list-group-item conversationList"
+         ng-repeat="conversation in conversations.messageConversations"
+         ng-class="{'new-message': !conversation.read, 'selected': conversation.selected}">
+        <div class="pull-right icons">
+            <div class="date">{{conversation.created | date : 'MMM. dd, hh:mm'}}</div>
+            <div class="pull-right icon">
+                <input type="checkbox" ng-model="conversation.selected"
+                       ng-change="countSelected(conversation.selected)">
+                    <span ng-click="deleteSingleId = conversation.id" type="button" class="glyphicon glyphicon-remove"
+                          data-toggle="modal" data-target="#deleteModal"></span>
+                        <span ng-show="conversation.followUp" class="glyphicon glyphicon-star"
+                              ng-click="changeFollowUp(conversation)"></span>
+            <span ng-show="!conversation.followUp"
+                  class="glyphicon glyphicon-star-empty"
+                  ng-click="changeFollowUp(conversation)"></span>
+            </div>
+        </div>
+        <div ng-click="showConversation(conversation)">
+            <!--  From -->
+            <h4 class="list-group-item-heading">
+                {{ conversation.lastSenderFirstname + ' ' + conversation.lastSenderSurname}}
+            </h4>
 
+            <p class="list-group-item-text" style="color: #777777">{{conversation.displayName}}</p>
+        </div>
+    </div>
+</div>
+
+<div class="text-center ng-init=" changePage=1">
+    <ul class="pagination">
+        <li><a href="" ng-click="changePage = changePage - 1">&laquo;</a></li>
+        <li ng-class="{'active': (currentPage == paging1)}"><a href=""
+                                                               ng-click="changePage = paging1">{{paging1}}</a></li>
+        <li ng-class="{'active': (currentPage == paging2)}"><a href=""
+                                                               ng-click="changePage = paging2">{{paging2}}</a></li>
+        <li ng-class="{'active': (currentPage == paging3)}"><a href=""
+                                                               ng-click="changePage = paging3">{{paging3}}</a></li>
+        <li><a href="" ng-click="changePage = changePage + 1">&raquo;</a></li>
+    </ul>
 </div>
