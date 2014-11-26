@@ -75,7 +75,12 @@ module.controller('ConversationListController', function ($scope, $location, $ht
             filter: filterStr
         };
 
-        $scope.conversations = Conversation.query(queryParams, function (data) {
+        $scope.conversations = null;
+        Conversation.query(queryParams).then(function (response) {
+            var data = response.data;
+            $scope.conversations = data;
+            console.log("got page data", data);
+
             /* Paging */
             var currentPage = parseInt(data.pager.page);
 
@@ -182,7 +187,7 @@ module.controller('ConversationListController', function ($scope, $location, $ht
 
 module.controller('ConversationController', function ($scope, $routeParams, Conversation, $window) {
     $scope.conversation = null;
-    Conversation.get({id: $routeParams.id}, function (ret) {
+    Conversation.get($routeParams.id).then(function (ret) {
         $scope.conversation = ret;
         console.log("ret", ret);
     }, function (error) {
@@ -191,10 +196,12 @@ module.controller('ConversationController', function ($scope, $routeParams, Conv
     });
 
     $scope.changeFollowUp = function () {
-        $scope.conversation.followUp = !$scope.conversation.followUp;
-        // TODO: save
-        console.log("set followup", $scope.conversation.id, $scope.conversation.followUp);
-    }
+        $scope.conversation.setFollowUp(!$scope.conversation.followUp).success(function(ret) {
+            console.log("followUp success", ret);
+        }).error(function(err) {
+            console.log("error", err);
+        });
+    };
 
     $scope.addReply = function () {
         // TODO
@@ -202,8 +209,11 @@ module.controller('ConversationController', function ($scope, $routeParams, Conv
     };
 
     $scope.markUnread = function () {
-        // TODO
-        console.log("mark unread", $scope.conversation.id);
+        $scope.conversation.markRead(false).success(function(ret) {
+            console.log("markRead success", ret);
+        }).error(function(err) {
+            console.log("error", err);
+        });
     };
 
     $scope.delete = function () {
