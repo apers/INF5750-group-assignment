@@ -14,9 +14,9 @@
   			<tags-input ng-model="toUsr" name="usrInput" 
   			display-property="name" placeholder="Write users "
   			on-tag-added="selectedRecv($tag, 'u')" on-tag-removed="remRecv($index, 'u')" min-length=1
-  			add-from-autocomplete-only="true">
+  			add-from-autocomplete-only="true" replace-spaces-with-dashes="false" >
 		<!-- typeahead="users as users.name for users in findRecv($viewValue, 'u')" typeahead-on-select="selectedRecv(toUsr, 'u')"  -->
-			 <auto-complete source="findRecv($query, 'u')"></auto-complete>
+			 <auto-complete source="findRecv($query, 'u')" min-length="2"></auto-complete>
 			 </tags-input>
 		</div>
 		
@@ -25,8 +25,8 @@
   text-align:left;">To usergroup</span>
 			<tags-input ng-model="toGrp" placeholder="Write usergroups " display-property="name"
 			on-tag-added="selectedRecv($tag, 'g')" on-tag-removed="remRecv($index, 'g')" min-length=1
-			add-from-autocomplete-only="true">
-			<auto-complete source="findRecv($query, 'g')"></auto-complete>
+			add-from-autocomplete-only="true" replace-spaces-with-dashes="false">
+			<auto-complete source="findRecv($query, 'g')" min-length="2"></auto-complete>
 			</tags-input> 			
 		</div>
 		
@@ -35,8 +35,8 @@
   text-align:left;">To organization</span>
 			<tags-input ng-model="toOrg" placeholder="Write organization " display-property="name"
 			on-tag-added="selectedRecv($tag, 'o')" on-tag-removed="remRecv($index, 'o')" min-length=1
-			add-from-autocomplete-only="true">
-			<auto-complete source="findRecv($query, 'o')"></auto-complete>
+			add-from-autocomplete-only="true" replace-spaces-with-dashes="false">
+			<auto-complete source="findRecv($query, 'o')" min-length="2"></auto-complete>
 			</tags-input> 
 		</div>
 	
