@@ -7,3 +7,6 @@ public/fonts/bootstrap/
 
 #Ignore file from Mac
 .DS_STORE
+
+# local development stuff
+.idea/
