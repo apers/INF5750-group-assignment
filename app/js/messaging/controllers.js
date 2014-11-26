@@ -233,7 +233,10 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
     $scope.recv = {usrNames: [], usrIds: [], grpNames: [], grpIds: [], orgNames: [], orgIds: []};
     $scope.res = [];
     $scope.sub = "";
-
+    $scope.submitted = false;
+    var alertMsg = 
+    	{type:'danger', msg:'Missing a user or usergroup'};
+    $scope.alert = [];
     //Adds neq:name to avoid getting results we already have.
     function updateQuery(arr, q, qVal) {
         arr.forEach(function (elem) {
@@ -286,6 +289,7 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
             $scope.recv.orgNames.push(inp.name);
             $scope.recv.orgIds.push({id: inp.id});
         }
+        $scope.alert=[];
     }
 
 
@@ -301,9 +305,26 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
             $scope.recv.orgIds.splice(indx, 1);
         }
     }
+    
+    $scope.checkRecv = function() {
+    	if($scope.recv.usrNames.length < 1 && $scope.recv.grpNames.length < 1) {
+    		return false;
+    	}
+    	$scope.submitted = false;
+    	return true;
+    }
+    
+    $scope.closeAlert = function() {
+    	$scope.alert = [];
+    }
 
 
     $scope.sendMsg = function () {
+    	$scope.alert = [];
+    	if(!$scope.checkRecv()) {
+    		$scope.alert.push(alertMsg);
+    		return;
+    	}
         var msg = {
             subject: $scope.sub, text: $scope.mailText,
             users: $scope.recv.usrIds, userGroups: $scope.recv.grpIds,
@@ -311,13 +332,12 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
         };
         console.log(msg);
         $http.post("http://admin:district@inf5750-19.uio.no/api/messageConversations", msg).
-            success(function (data, status) {
-                alert("Success");
+            success(function (data, status, headers, config, statusText) {
+            	console.log(data, status, headers, config, statusText);
             }).
             error(function (data, status) {
                 console.log("fail");
             });
-
     }
 
     // Change page
