@@ -21,6 +21,7 @@ SERVER="inf5750-19.uio.no"
 USER="admin"
 PASS="district"
 APP_NAME="$1"
+CACHE_VERSION=`date +%c`
 
 if [ "$SERVER" == "" ]
 then
@@ -35,6 +36,7 @@ cmd=(
     # replace APP_NAME in files, restore from backupfiles later
     "sed -i.backup -e 's/APP_NAME/$APP_NAME/' index.html"
     "sed -i.backup -e 's/APP_NAME/$APP_NAME/' manifest.webapp"
+    "sed -i.backup -e 's/CACHE_VERSION/$CACHE_VERSION/' cache.appcache"
 
     # put the package on DHIS2-server
     "zip -r $APP_NAME.zip ."
@@ -45,6 +47,7 @@ cmd=(
     # restore changed files
     "mv index.html.backup index.html"
     "mv manifest.webapp.backup manifest.webapp"
+    "mv cache.appcache.backup cache.appcache"
 )
 
 check_return_value () {
