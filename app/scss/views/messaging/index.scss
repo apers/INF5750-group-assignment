@@ -20,20 +20,20 @@
       // Glyph sizes
       span.glyphicon-star {
         font-size: 1.5em;
-        color: #d8ca36;
+        color: #f0e23f;
       }
       span.glyphicon-star-empty {
         font-size: 1.5em;
-        color: #777777;
+        color: #d8d280;
         &:hover {
-          color: #d8ca36;
+          color: #f0e23f;
         }
       }
       span.glyphicon-remove {
         font-size: 1.5em;
-        color: #777777;
+        color: #9f4344;
         &:hover {
-          color: #d15455;
+          color: #eb0005;
         }
       }
 

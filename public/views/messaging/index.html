@@ -1,5 +1,20 @@
-<!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">-->
 <!-- Single message delete modal -->
+<div class="modal fade" id="deleteAllModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm</h4>
+            </div>
+            <div class="modal-body">
+                Delete {{totalSelected}} message(s)?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteAllSelected(conversations.messageConversations)">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -7,11 +22,11 @@
                 <h4 class="modal-title">Confirm</h4>
             </div>
             <div class="modal-body">
-                Delete message(s)?
+                Delete message?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" ng-click="deleteConversation(deleteConv)">Delete</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteConversation(deleteSingleId)">Delete</button>
             </div>
         </div>
     </div>
@@ -30,9 +45,7 @@
                 <li><a href="" ng-click="selectNone(conversations.messageConversations)">Select none</a></li>
                 <li class="divider"></li>
                 <li ng-class="{'disabled': totalSelected==0}"><a href=""
-                                                                 data-toggle="modal" data-target="#deleteModal"
-                                                                 ng-click="deleteAllSelected(conversations.messageConversations)">Delete
-                    selected
+                                                                 data-toggle="modal" data-target="#deleteAllModal">Delete selected
                     <span class="badge" ng-hide="totalSelected==0">{{totalSelected}}</span></a></li>
                 <li ng-class="{'disabled': totalSelected==0}"><a href=""
                                                                  ng-click="starAllSelected(conversations.messageConversations)">Star
@@ -71,7 +84,7 @@
                     <span ng-show="!conversation.followUp" class="glyphicon glyphicon-star-empty"
                           ng-click="changeFollowUp(conversation)"></span>
                     <!--  Delete -->
-                    <span type="button" class="glyphicon glyphicon-remove"
+                    <span ng-click="deleteSingleId = conversation.id" type="button" class="glyphicon glyphicon-remove"
                           data-toggle="modal" data-target="#deleteModal"></span>
                 </td>
                 <td ng-click="showConversation(conversation)">

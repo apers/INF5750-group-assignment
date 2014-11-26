@@ -38,18 +38,16 @@ module.factory('Conversation', function($resource, Api) {
             isArray: false,
             params: {
                 fields: ':all'
-            }
+            },
+            cache: false
         },
 
         get: {
             params: {
                 // this ensures we retrieve more data
                 fields: ':all,messages[:identifiable,sender]'
-            }
-        },
-
-        saveTest: {
-            method: 'PUT'
+            },
+            cache: false
         }
     });
 

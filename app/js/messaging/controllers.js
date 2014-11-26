@@ -40,7 +40,7 @@ module.controller('ConversationListController', function ($scope, $location, $ht
     // Init
     $scope.totalSelected = 0;
 
-    var filterText = ""
+    var filterText = "";
 
     /* Watch for page changes */
     $scope.$watch('changePage', function () {
@@ -48,8 +48,10 @@ module.controller('ConversationListController', function ($scope, $location, $ht
         $scope.totalSelected = 0;
     });
 
+    /* Watch for filter changes */
     $scope.$watch('messageFilter', function() {
        if($scope.messageFilter != undefined) {
+           $scope.changePage = 1;
            filterText = $scope.messageFilter;
            getConversations();
        }
@@ -135,6 +137,7 @@ module.controller('ConversationListController', function ($scope, $location, $ht
     $scope.deleteAllSelected = function (conversations) {
         for (var i in conversations) {
             if (conversations[i].selected == true) {
+
                 Conversation.delete({id: conversations[i].id}, function (data) {
                     // Refresh messages
                     getConversations();
@@ -162,34 +165,19 @@ module.controller('ConversationListController', function ($scope, $location, $ht
     };
 
     $scope.changeFollowUp = function (conversation) {
-
-        var conv = Conversation.get({id: conversation.id, fields: null}, function () {
-            console.log(conv);
-            conv.$saveTest();
-        });
-
-        /*conversation.followUp = !conversation.followUp;
-
-         Conversation.get({id: conversation.id}, function (data) {
-         data.followUp = conversation.followUp;
-         data.$save();
-         }, function (data) {
-         console.log('Error: ', data)
-         });*/
+        conversation.followUp = !conversation.followUp;
     };
 
     $scope.deleteConversation = function (conversation) {
+        console.log(conversation);
         // Delete conversation
-        Conversation.delete({id: conversation.id}, function () {
+        Conversation.delete({id: conversation}, function (data) {
             // Refresh messages
             getConversations();
-        });
+            $scope.totalSelected--;
+        })
 
     };
-
-    $('#deleteModal').on('show.bs.modal', function (event) {
-        console.log($scope.deleteConv);
-    })
 });
 
 module.controller('ConversationController', function ($scope, $routeParams, Conversation, $window) {
