@@ -1,0 +1,16 @@
+CACHE MANIFEST
+# next line is set by deploy script
+# CACHE_VERSION
+
+# cached files
+CACHE:
+manifest.webapp
+app.css
+app.js
+views/messaging/conversation.html
+views/messaging/index.html
+views/messaging/new.html
+
+# needs network for other files
+NETWORK:
+*

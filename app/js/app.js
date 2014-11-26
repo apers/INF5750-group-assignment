@@ -26,16 +26,19 @@ module.config(['$locationProvider', function($locationProvider) {
 //Check if we lost connection to the internet
 module.run(function($window, $rootScope) {
     //TODO: Change true/false
-    $rootScope.offline = navigator.onLine;
+    console.log("initial offline state", !navigator.onLine);
+    $rootScope.offline = !navigator.onLine;
 
     $window.addEventListener("offline", function () {
         $rootScope.$apply(function() {
+            console.log("offline", false);
             $rootScope.offline = false;
         });
     }, false);
 
     $window.addEventListener("online", function () {
         $rootScope.$apply(function() {
+            console.log("offline", true);
             $rootScope.offline = true;
         });
     }, false);
