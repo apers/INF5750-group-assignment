@@ -164,7 +164,7 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
     }, false);
 
     angular.forEach(OfflineConversation.markTypes, function(endpoints, method) {
-        self[method] = function(ids, state, skipOffline) {
+        OfflineConversation[method] = function(ids, state, skipOffline) {
             // TODO: how to handle promise when offline (neither resolve or reject is currently being called)
             return $q(function (resolve, reject) {
                 if (navigator.onLine) {
