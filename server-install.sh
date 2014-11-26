@@ -21,7 +21,7 @@ SERVER="inf5750-19.uio.no"
 USER="admin"
 PASS="district"
 APP_NAME="$1"
-CACHE_VERSION=`date +%c`
+CACHE_VERSION=`date`
 
 if [ "$SERVER" == "" ]
 then
