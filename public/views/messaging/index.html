@@ -56,7 +56,7 @@
                 <span class="badge" ng-hide="totalSelected==0">{{totalSelected}}</span></a></li>
         </ul>
     </div>
-    <input type="text" class="form-control" placeholder="Search" ng-model="messageFilter">
+    <input ng-disabled="offline" type="text" class="form-control" placeholder="Search" ng-model="messageFilter">
 </div>
 <hr>
 <!--Conversation list-->

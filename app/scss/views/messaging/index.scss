@@ -11,7 +11,7 @@
   // Glyph sizes
   span.glyphicon-star {
     font-size: 1.5em;
-    color: #f0e23f;
+    color: #d8d280;
   }
   span.glyphicon-star-empty {
     font-size: 1.5em;
@@ -70,13 +70,13 @@
       color: inherit
     }
   }
-  // Style for new message
-  .new-message {
-    background: #ffffff;
-    z-index: 2;
-    font-weight: bold;
+}
 
-  }
+  // Style for new message
+.new-message {
+  background: #ddf1ca;
+  z-index: 2;
+  font-weight: bold;
 }
 
 

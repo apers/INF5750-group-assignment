@@ -27,14 +27,14 @@ module.config(function ($routeProvider) {
 });
 
 /*
-TODO: 
-module.controller('menuController', function ($scope) {
+ TODO:
+ module.controller('menuController', function ($scope) {
 
-    var isLocation = function (path) {
-        console.log("Checking");
-        return $scope.location.slice(0, path.length) == path;
-    };
-});*/
+ var isLocation = function (path) {
+ console.log("Checking");
+ return $scope.location.slice(0, path.length) == path;
+ };
+ });*/
 
 module.controller('ConversationListController', function ($scope, $location, $http, $filter, Conversation, OfflineConversation) {
     // Init
@@ -49,12 +49,12 @@ module.controller('ConversationListController', function ($scope, $location, $ht
     });
 
     /* Watch for filter changes */
-    $scope.$watch('messageFilter', function() {
-       if($scope.messageFilter != undefined) {
-           $scope.changePage = 1;
-           filterText = $scope.messageFilter;
-           getConversations();
-       }
+    $scope.$watch('messageFilter', function () {
+        if ($scope.messageFilter != undefined) {
+            $scope.changePage = 1;
+            filterText = $scope.messageFilter;
+            getConversations();
+        }
     });
 
 
@@ -71,17 +71,17 @@ module.controller('ConversationListController', function ($scope, $location, $ht
 
         var queryParams = {
             page: $scope.changePage,
-            pageSize: 30,
+            pageSize: 15,
             filter: filterStr
         };
 
         $scope.conversations = null;
-        Conversation.query(queryParams).then(function (response) {
-            var data = response.data;
-            $scope.conversations = data;
-            console.log("got page data", data);
 
-            /* Paging */
+        OfflineConversation.getByPage($scope.changePage, queryParams.pageSize, queryParams.filter).then(function (response) {
+            var data = response;
+
+            $scope.conversations = data;
+
             var currentPage = parseInt(data.pager.page);
 
             $scope.currentPage = currentPage;
@@ -110,8 +110,8 @@ module.controller('ConversationListController', function ($scope, $location, $ht
         });
     };
 
-    $scope.showConversation = function(conversation) {
-        $location.path('conversation/'+conversation.id);
+    $scope.showConversation = function (conversation) {
+        $location.path('conversation/' + conversation.id);
     }
 
     /* Selects all the messages */
@@ -181,8 +181,13 @@ module.controller('ConversationListController', function ($scope, $location, $ht
     };
 
     $scope.getLastSender = function (conversation) {
-        var name = conversation.lastSenderFirstname + ' ' + conversation.lastSenderSurname;
-        return name
+        if( 'lastSenderFirstname' in conversation ) {
+            return conversation.lastSenderFirstname + ' ' + conversation.lastSenderSurname;
+        } else if( 'lastSender' in conversation ) {
+            return conversation.lastSender.name;
+        } else {
+            return 'No sender';
+        }
     }
 });
 
@@ -197,9 +202,9 @@ module.controller('ConversationController', function ($scope, $routeParams, Conv
     });
 
     $scope.changeFollowUp = function () {
-        $scope.conversation.setFollowUp(!$scope.conversation.followUp).success(function(ret) {
+        $scope.conversation.setFollowUp(!$scope.conversation.followUp).success(function (ret) {
             console.log("followUp success", ret);
-        }).error(function(err) {
+        }).error(function (err) {
             console.log("error", err);
         });
     };
@@ -209,18 +214,18 @@ module.controller('ConversationController', function ($scope, $routeParams, Conv
         if ($scope.reply_text == '') return;
         var text_to_send = $scope.reply_text;
 
-        $scope.conversation.addReply($scope.reply_text).then(function(ret) {
+        $scope.conversation.addReply($scope.reply_text).then(function (ret) {
             if ($scope.reply_text == text_to_send) $scope.reply_text = '';
             console.log("reply success", ret);
-        }, function(ret) {
+        }, function (ret) {
             console.log("reply error", ret);
         });
     };
 
     $scope.markUnread = function () {
-        $scope.conversation.markRead(false).success(function(ret) {
+        $scope.conversation.markRead(false).success(function (ret) {
             console.log("markRead success", ret);
-        }).error(function(err) {
+        }).error(function (err) {
             console.log("error", err);
         });
     };
@@ -241,8 +246,8 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
     $scope.res = [];
     $scope.sub = "";
     $scope.submitted = false;
-    var alertMsg = 
-    	{type:'danger', msg:'Missing a user or usergroup'};
+    var alertMsg =
+    {type: 'danger', msg: 'Missing a user or usergroup'};
     $scope.alert = [];
     //Adds neq:name to avoid getting results we already have.
     function updateQuery(arr, q, qVal) {
@@ -296,7 +301,7 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
             $scope.recv.orgNames.push(inp.name);
             $scope.recv.orgIds.push({id: inp.id});
         }
-        $scope.alert=[];
+        $scope.alert = [];
     }
 
 
@@ -312,26 +317,26 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
             $scope.recv.orgIds.splice(indx, 1);
         }
     }
-    
-    $scope.checkRecv = function() {
-    	if($scope.recv.usrNames.length < 1 && $scope.recv.grpNames.length < 1) {
-    		return false;
-    	}
-    	$scope.submitted = false;
-    	return true;
+
+    $scope.checkRecv = function () {
+        if ($scope.recv.usrNames.length < 1 && $scope.recv.grpNames.length < 1) {
+            return false;
+        }
+        $scope.submitted = false;
+        return true;
     }
-    
-    $scope.closeAlert = function() {
-    	$scope.alert = [];
+
+    $scope.closeAlert = function () {
+        $scope.alert = [];
     }
 
 
     $scope.sendMsg = function () {
-    	$scope.alert = [];
-    	if(!$scope.checkRecv()) {
-    		$scope.alert.push(alertMsg);
-    		return;
-    	}
+        $scope.alert = [];
+        if (!$scope.checkRecv()) {
+            $scope.alert.push(alertMsg);
+            return;
+        }
         var msg = {
             subject: $scope.sub, text: $scope.mailText,
             users: $scope.recv.usrIds, userGroups: $scope.recv.grpIds,
@@ -340,7 +345,7 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
         console.log(msg);
         $http.post("http://admin:district@inf5750-19.uio.no/api/messageConversations", msg).
             success(function (data, status, headers, config, statusText) {
-            	console.log(data, status, headers, config, statusText);
+                console.log(data, status, headers, config, statusText);
             }).
             error(function (data, status) {
                 console.log("fail");

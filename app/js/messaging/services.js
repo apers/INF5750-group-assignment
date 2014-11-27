@@ -166,12 +166,19 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
     function buildMessageCache(force) {
         // TODO: invalidate cache
         // TODO: what if 0 messages? --> should use timestamp
-        if (cache.messageList.length == 0 || force) {
-            /*$http.get(url, {
-                params: { }
-            });*/
-            // TODO
-            //cache.messageList
+        if(navigator.onLine) {
+            if (cache.messageList.length == 0 || force) {
+                $http.get(url, {
+                    params: {fields: ':all', pageSize: 50}
+                }).success(
+                    function (data) {
+                        console.log('updated cache');
+                        cache.messageList = data.messageConversations
+                    }).error(
+                    function () {
+                        console.log('Could not build message cache')
+                    });
+            }
         }
     }
 
@@ -244,11 +251,12 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
         });
     };
 
-    OfflineConversation.getByPage = function(page) {
+    OfflineConversation.getByPage = function(page, pagesize, filter) {
+        console.log('getPage');
         return $q(function(resolve, reject) {
             if (navigator.onLine) {
                 $http.get(url, {
-                    params: { fields: ':all', page: page }
+                    params: { fields: ':all', page: page, pageSize: pagesize, filter: filter }
                 }).success(resolve).error(reject);
             } else {
                 var numPages = Math.ceil(cache.messageList.length / perPage);
@@ -260,7 +268,7 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
                             pageCount: numPages,
                             total: cache.messageList.length
                         },
-                        messageConversations: cache.messageList.slice((page-1)*numPage, numPage)
+                        messageConversations: cache.messageList.slice((page-1)*perPage, perPage*page)
                     });
                 }
             }
