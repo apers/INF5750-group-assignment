@@ -18,12 +18,19 @@ var js_files = [
     "./app/js/**/*.js"
 ];
 
+var css_files = [
+	"app/scss/app.scss",
+	"./bower_components/ng-tags-input/ng-tags-input.min.css",
+	"./bower_components/ng-tags-input/ng-tags-input.bootstrap.min.css"
+];
+
 // pass --name NAME to set another appname
 var appname = args.name || 'Overdressed';
 
 gulp.task('styles', function() {
     // todo: style: compressed
-    return gulp.src('app/scss/app.scss')
+    return gulp.src(css_files)
+    	.pipe(concat('app.css'))
         .pipe(sass({ style: 'expanded' }))
         .pipe(gulp.dest('public'));
 });

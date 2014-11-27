@@ -1,29 +1,21 @@
 <div ng-controller="ConversationNewController">
-		
 		<form name="inputs"> 
-		  
-    	<!--  <span class="form-group has-error" ng-show="submitted && !checkRecv()">
-    		  <label class="control-label">Error: Missing a user or usergroup</label>
-    	</span>
-    	-->
+		
     	<alert ng-repeat="al in alert" type="al.type" close="closeAlert()">{{al.msg}}</alert>
   
     	<div class="input-group" >
-  			<span class="input-group-addon" style= "min-width:129px;
-  text-align:left;">To user</span>
-  			<tags-input ng-model="toUsr" name="usrInput" 
+  			<span class="input-group-addon" id="addonUsr">To user</span>
+  			<tags-input class="usrinput" ng-model="toUsr" name="usrInput" 
   			display-property="name" placeholder="Write users "
   			on-tag-added="selectedRecv($tag, 'u')" on-tag-removed="remRecv($index, 'u')" min-length=1
   			add-from-autocomplete-only="true" replace-spaces-with-dashes="false" >
-		<!-- typeahead="users as users.name for users in findRecv($viewValue, 'u')" typeahead-on-select="selectedRecv(toUsr, 'u')"  -->
 			 <auto-complete source="findRecv($query, 'u')" min-length="2"></auto-complete>
 			 </tags-input>
 		</div>
 		
 		<div class="input-group">
-  			<span class="input-group-addon"style= "min-width:129px;
-  text-align:left;">To usergroup</span>
-			<tags-input ng-model="toGrp" placeholder="Write usergroups " display-property="name"
+  			<span class="input-group-addon" id="addonGrp">To usergroup</span>
+			<tags-input class="grpinput" ng-model="toGrp" placeholder="Write usergroups " display-property="name"
 			on-tag-added="selectedRecv($tag, 'g')" on-tag-removed="remRecv($index, 'g')" min-length=1
 			add-from-autocomplete-only="true" replace-spaces-with-dashes="false">
 			<auto-complete source="findRecv($query, 'g')" min-length="2"></auto-complete>
@@ -31,11 +23,12 @@
 		</div>
 		
 		<div class="input-group">
-  			<span class="input-group-addon" style= "min-width:129px;
-  text-align:left;">To organization</span>
-			<tags-input ng-model="toOrg" placeholder="Write organization " display-property="name"
+  			<span class="input-group-addon" id="addonOrg"">To organization</span>
+			<tags-input class="orginput" ng-model="toOrg" placeholder="Write organization " display-property="name"
 			on-tag-added="selectedRecv($tag, 'o')" on-tag-removed="remRecv($index, 'o')" min-length=1
-			add-from-autocomplete-only="true" replace-spaces-with-dashes="false">
+			add-from-autocomplete-only="true" replace-spaces-with-dashes="false"
+			
+			>
 			<auto-complete source="findRecv($query, 'o')" min-length="2"></auto-complete>
 			</tags-input> 
 		</div>
@@ -45,8 +38,8 @@
 	
 			<div class="input-group">
   			<span class="input-group-addon">Subject</span> 
-					<input type="text" class="form-control" ng-model="sub" 
-					placeholder="Write subject" style="width:50%"/>
+					<input type="text" class="form-control" id="inputSub" ng-model="sub" 
+					placeholder="Write subject" />
 				</div>
 		
 		<br/>
@@ -57,6 +50,5 @@
 	</button>
 	
 	</form>	
-	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/2.0.1/ng-tags-input.min.css" />
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ng-tags-input/2.1.1-1/ng-tags-input.bootstrap.min.css" />
+	
 </div>
