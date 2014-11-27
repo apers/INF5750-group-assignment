@@ -81,7 +81,7 @@
         <div ng-click="showConversation(conversation)">
             <!--  From -->
             <h4 class="list-group-item-heading">
-                {{ conversation.lastSenderFirstname + ' ' + conversation.lastSenderSurname}}
+                {{getLastSender(conversation)}}
             </h4>
 
             <p class="list-group-item-text" style="color: #777777">{{conversation.displayName}}</p>
@@ -89,7 +89,7 @@
     </div>
 </div>
 
-<div class="text-center ng-init=" changePage=1">
+<div class="text-center">
     <ul class="pagination">
         <li><a href="" ng-click="changePage = changePage - 1">&laquo;</a></li>
         <li ng-class="{'active': (currentPage == paging1)}"><a href=""

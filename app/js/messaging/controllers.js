@@ -36,7 +36,7 @@ module.controller('menuController', function ($scope) {
     };
 });*/
 
-module.controller('ConversationListController', function ($scope, $location, $http, $filter, Conversation) {
+module.controller('ConversationListController', function ($scope, $location, $http, $filter, Conversation, OfflineConversation) {
     // Init
     $scope.totalSelected = 0;
 
@@ -85,7 +85,6 @@ module.controller('ConversationListController', function ($scope, $location, $ht
             var currentPage = parseInt(data.pager.page);
 
             $scope.currentPage = currentPage;
-            $scope.changePage = currentPage;
 
             var maxPage = data.pager.pageCount;
 
@@ -110,9 +109,6 @@ module.controller('ConversationListController', function ($scope, $location, $ht
             }
         });
     };
-
-    // Get initial conversations
-    getConversations();
 
     $scope.showConversation = function(conversation) {
         $location.path('conversation/'+conversation.id);
@@ -183,6 +179,11 @@ module.controller('ConversationListController', function ($scope, $location, $ht
         })
 
     };
+
+    $scope.getLastSender = function (conversation) {
+        var name = conversation.lastSenderFirstname + ' ' + conversation.lastSenderSurname;
+        return name
+    }
 });
 
 module.controller('ConversationController', function ($scope, $routeParams, Conversation, $window) {
