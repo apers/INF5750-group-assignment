@@ -37,8 +37,8 @@ module.run(function($window, $rootScope) {
     }, false);
     $window.addEventListener("online", function () {
         $rootScope.$apply(function() {
-            console.log("offline", true);
-            $rootScope.offline = true;
+            console.log("offline", false);
+            $rootScope.offline = false;
         });
     }, false);
 });
