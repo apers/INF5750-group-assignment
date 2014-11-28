@@ -32,16 +32,23 @@
       </div>
     </nav>
 
-   <div ng-show="offline" class="container">
-      <div class="alert alert-danger">
-        <strong>Offline!</strong> 
-        You are now in offline mode, some functions will be disabled.
-      </div>
-      <br>
-    </div>
+    <div class="container">
+        <div ng-show="offline">
+            <div class="alert alert-danger">
+                <strong>Offline!</strong>
+                You are now in offline mode, some functions will be disabled.
+            </div>
+        </div>
 
-    <div class="container" ng-view>
-        <!-- contents of the controller's view will be replaced here -->
+        <div ng-show="isWaiting()">
+            <div class="alert alert-warning">
+                There are currently data waiting to synchronize. The data will not be synchronized before you go online again and visit this application.
+            </div>
+        </div>
+
+        <div ng-view>
+            <!-- contents of the controller's view will be replaced here -->
+        </div>
     </div>
 
 </body>
