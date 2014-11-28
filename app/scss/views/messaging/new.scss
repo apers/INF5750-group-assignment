@@ -1,42 +1,55 @@
-.input-group-addon {
-  min-width:129px;
-  text-align:left;
- }
- 
- #addonUsr {
-    border-bottom:0;
-    border-bottom-left-radius:0;
- }
- 
-#addonGrp {
-    border-bottom-left-radius:0;
-    border-bottom:0;
-    border-top-left-radius:0;
-    border-top:0;
-}
+.newConversation {
+  .input-group-addon {
+    min-width: 129px;
+    text-align: left;
+    vertical-align: top;
+    padding-top: 10px;
+  }
 
-#addonOrg {
-    border-top:0;
-    border-top-left-radius:0;
-}
+  .addon-usr {
+    .input-group-addon {
+      border-bottom: 0;
+      border-bottom-left-radius: 0;
+    }
+    .tags {
+      border-bottom-right-radius: 0;
+      border-bottom: 0;
+    }
+  }
 
-#inputSub {
-    width:50%;
+  .addon-grp {
+    .input-group-addon {
+      border-bottom-left-radius: 0;
+      border-bottom: 0;
+      border-top-left-radius: 0;
+      border-top: 0;
+    }
+    .tags {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  .addon-org {
+    .input-group-addon {
+      border-top: 0;
+      border-top-left-radius: 0;
+    }
+    .tags {
+      border-top-right-radius: 0;
+      border-top: 0;
+    }
+  }
+
+  .addon-subject {
+    margin: 10px 0;
+
+    input {
+      wiwdth: 50%;
+    }
+  }
+
+  textarea {
+    margin-bottom: 10px;
+  }
 }
- 
- .usrinput .tags {
-    border-bottom-right-radius:0;
-    border-bottom:0;
- }
- 
- .grpinput .tags {
-    border-top-right-radius:0;
-    border-bottom-right-radius:0;
- }
- 
- 
- .orginput .tags {
-    border-top-right-radius:0;
-    border-top:0;
- }
- 

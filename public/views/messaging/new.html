@@ -1,54 +1,48 @@
-<div ng-controller="ConversationNewController">
-        <form name="inputs">
+<div class="newConversation">
+    <form name="inputs">
 
         <alert ng-repeat="al in alert" type="al.type" close="closeAlert()">{{al.msg}}</alert>
   
-        <div class="input-group" >
-            <span class="input-group-addon" id="addonUsr">To user</span>
-            <tags-input class="usrinput" ng-model="toUsr" name="usrInput"
-            display-property="name" placeholder="Write users "
-            on-tag-added="selectedRecv($tag, 'u')" on-tag-removed="remRecv($index, 'u')" min-length=1
-            add-from-autocomplete-only="true" replace-spaces-with-dashes="false" >
-             <auto-complete source="findRecv($query, 'u')" min-length="2"></auto-complete>
-             </tags-input>
-        </div>
+        <div class="input-group addon-usr">
+            <span class="input-group-addon">To user</span>
 
-        <div class="input-group">
-            <span class="input-group-addon" id="addonGrp">To usergroup</span>
-            <tags-input class="grpinput" ng-model="toGrp" placeholder="Write usergroups " display-property="name"
-            on-tag-added="selectedRecv($tag, 'g')" on-tag-removed="remRecv($index, 'g')" min-length=1
-            add-from-autocomplete-only="true" replace-spaces-with-dashes="false">
-            <auto-complete source="findRecv($query, 'g')" min-length="2"></auto-complete>
+            <tags-input ng-model="toUsr" name="usrInput"
+                    display-property="name" placeholder="Write users "
+                    on-tag-added="selectedRecv($tag, 'u')" on-tag-removed="remRecv($index, 'u')" min-length=1
+                    add-from-autocomplete-only="true" replace-spaces-with-dashes="false">
+                <auto-complete source="findRecv($query, 'u')" min-length="2"></auto-complete>
             </tags-input>
         </div>
 
-        <div class="input-group">
-            <span class="input-group-addon" id="addonOrg"">To organization</span>
-            <tags-input class="orginput" ng-model="toOrg" placeholder="Write organization " display-property="name"
-            on-tag-added="selectedRecv($tag, 'o')" on-tag-removed="remRecv($index, 'o')" min-length=1
-            add-from-autocomplete-only="true" replace-spaces-with-dashes="false"
+        <div class="input-group addon-grp">
+            <span class="input-group-addon">To usergroup</span>
 
-            >
-            <auto-complete source="findRecv($query, 'o')" min-length="2"></auto-complete>
+            <tags-input ng-model="toGrp" placeholder="Write usergroups " display-property="name"
+                    on-tag-added="selectedRecv($tag, 'g')" on-tag-removed="remRecv($index, 'g')" min-length=1
+                    add-from-autocomplete-only="true" replace-spaces-with-dashes="false">
+                <auto-complete source="findRecv($query, 'g')" min-length="2"></auto-complete>
             </tags-input>
         </div>
 
+        <div class="input-group addon-org">
+            <span class="input-group-addon">To organization</span>
+            <tags-input ng-model="toOrg" placeholder="Write organization " display-property="name"
+                    on-tag-added="selectedRecv($tag, 'o')" on-tag-removed="remRecv($index, 'o')" min-length=1
+                    add-from-autocomplete-only="true" replace-spaces-with-dashes="false">
+                <auto-complete source="findRecv($query, 'o')" min-length="2"></auto-complete>
+            </tags-input>
+        </div>
 
-            <br/>
-
-            <div class="input-group">
+        <div class="input-group addon-subject">
             <span class="input-group-addon">Subject</span>
-                    <input type="text" class="form-control" id="inputSub" ng-model="sub"
-                    placeholder="Write subject" />
-                </div>
+            <input type="text" class="form-control" ng-model="sub" placeholder="Write subject">
+        </div>
 
-        <br/>
-        <textarea class="form-control" rows=5 id="mail" placeholder="Write message" ng-model="mailText"></textarea>
+        <textarea class="form-control" rows=5 placeholder="Write message" ng-model="mailText"></textarea>
 
-    <button ng-click="sendMsg()" class="btn btn-default navbar-btn">
-        Send
-    </button>
+        <button ng-click="sendMsg()" class="btn btn-primary">
+            Send
+        </button>
 
     </form>
-
 </div>
