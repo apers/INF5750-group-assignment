@@ -1,7 +1,8 @@
 'use strict';
 
 var module = angular.module('overdressed.messaging.controllers', [
-    'ngRoute', 'ngTagsInput', 'ui.bootstrap'
+    'ngRoute', 'ngTagsInput', 'ui.bootstrap',
+    'overdressed.messaging.controllers.PageController'
 ]);
 
 module.config(function ($routeProvider) {
