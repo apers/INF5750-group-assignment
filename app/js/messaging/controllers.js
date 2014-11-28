@@ -78,9 +78,7 @@ module.controller('ConversationListController', function ($scope, $location, $ht
 
         $scope.conversations = null;
 
-        OfflineConversation.getByPage($scope.changePage, queryParams.pageSize, queryParams.filter).then(function (response) {
-            var data = response;
-
+        OfflineConversation.getByPage($scope.changePage, queryParams.pageSize, queryParams.filter).then(function (data) {
             $scope.conversations = data;
 
             var currentPage = parseInt(data.pager.page);
@@ -192,7 +190,7 @@ module.controller('ConversationListController', function ($scope, $location, $ht
     }
 });
 
-module.controller('ConversationController', function ($scope, $routeParams, Conversation, $window) {
+module.controller('ConversationController', function ($scope, $routeParams, Conversation, $window, $location) {
     $scope.conversation = null;
     Conversation.get($routeParams.id).then(function (ret) {
         $scope.conversation = ret;
@@ -203,9 +201,9 @@ module.controller('ConversationController', function ($scope, $routeParams, Conv
     });
 
     $scope.changeFollowUp = function () {
-        $scope.conversation.setFollowUp(!$scope.conversation.followUp).success(function (ret) {
+        $scope.conversation.markFollowUp(!$scope.conversation.followUp).then(function (ret) {
             console.log("followUp success", ret);
-        }).error(function (err) {
+        }, function (err) {
             console.log("error", err);
         });
     };
@@ -224,9 +222,10 @@ module.controller('ConversationController', function ($scope, $routeParams, Conv
     };
 
     $scope.markUnread = function () {
-        $scope.conversation.markRead(false).success(function (ret) {
+        $scope.conversation.markRead(false).then(function (ret) {
             console.log("markRead success", ret);
-        }).error(function (err) {
+            $location.path('');
+        }, function (err) {
             console.log("error", err);
         });
     };

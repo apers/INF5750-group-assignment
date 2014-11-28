@@ -47,6 +47,9 @@
         // expose offline data information
         (function() {
             $scope.isWaiting = OfflineConversation.isWaiting;
+
+            // check for offline stuff to be sent
+            OfflineConversation.checkOfflineQueue();
         })();
 
     });

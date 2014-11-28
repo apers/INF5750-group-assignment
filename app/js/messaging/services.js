@@ -58,19 +58,25 @@ module.factory('Conversation', function(Api, $http, $q, OfflineConversation) {
             return OfflineConversation[method](ids, state);
         };
         Conversation.prototype[method] = function(state) {
-            return Conversation[method](this.id, state);
+            var self = this;
+            return Conversation[method]([this.id], state).then(function(ret) {
+                // TODO: should also update any local collections we might have?
+                self[endpoints[2]] = state;
+                return ret;
+            });
         };
     });
 
     Conversation.prototype.addReply = function(text) {
         var self = this;
-        return OfflineConversation.sendMessage(this.id, text).then(function() {
+        return OfflineConversation.sendMessage(this.id, text).then(function(ret) {
             self.messages.push({
                 created: new Date,
                 name: text,
                 lastUpdated: new Date,
                 sender: self.getUser()
             });
+            return ret;
         });
     };
 
@@ -103,10 +109,13 @@ module.factory('Conversation', function(Api, $http, $q, OfflineConversation) {
  *  Service for offline conversation data
  */
 module.factory('OfflineConversation', function(Api, $http, $injector, $window, $q) {
+    // TODO: change this when API gets fixed
+    var readAndFollowUpSupport = false;
+
     function OfflineConversation() {}
     OfflineConversation.markTypes = {
-        markFollowUp: ['unfollowUp', 'followUp'],
-        markRead: ['unread', 'read']
+        markFollowUp: ['unfollowUp', 'followUp', 'followUp'],
+        markRead: ['unread', 'read', 'read']
     };
     var cache = 'overdressed' in localStorage ? JSON.parse(localStorage['overdressed']) : {
             'marks': {}, // e.g. items for markFollowUp
@@ -119,8 +128,8 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
     function addMarks(ids, markname, state) {
         angular.forEach(ids, function(id) {
             // remove old marks
-            angular.forEach(cache.marks[markname] || {}, function(state) {
-                angular.forEach(state, function(subid, i) {
+            angular.forEach(cache.marks[markname] || {}, function(subids, state) {
+                angular.forEach(subids, function(subid, i) {
                     if (id == subid) {
                         cache.marks[markname][state].splice(i, 1);
                     }
@@ -133,7 +142,7 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
         });
 
         resaveCache();
-    };
+    }
 
     function resaveCache() {
         localStorage['overdressed'] = JSON.stringify(cache);
@@ -182,28 +191,35 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
         }
     }
 
-    $window.addEventListener('online', function() {
-        console.log("OfflineConversation", "going online");
+    OfflineConversation.checkOfflineQueue = function() {
+        if (!navigator.onLine) return;
         sendMarks();
         sendMessages();
         buildMessageCache();
+    };
+
+    $window.addEventListener('online', function() {
+        console.log("OfflineConversation", "going online");
+        OfflineConversation.checkOfflineQueue();
     }, false);
 
     angular.forEach(OfflineConversation.markTypes, function(endpoints, method) {
         OfflineConversation[method] = function(ids, state, skipOffline) {
             return $q(function (resolve, reject) {
-                if (navigator.onLine) {
+                if (navigator.onLine && readAndFollowUpSupport) {
                     $http.post(url + '/' + (endpoints[state + 0]), ids).success(resolve).error(reject);
                 } else if (!skipOffline) {
                     addMarks(ids, method, state);
-                    resolve();
+                    resolve("offline");
+                } else {
+                    reject("offline");
                 }
             });
         }
     });
 
     OfflineConversation.isWaiting = function() {
-        return cache['marks'].length > 0 || cache['newMessages'].length > 0;
+        return Object.keys(cache.marks).length > 0 || cache.newMessages.length > 0;
     };
 
     OfflineConversation.sendMessage = function(id, data, skipOffline) {
