@@ -53,3 +53,10 @@ module.run(function($rootScope, $location, $window) {
         });
     }, false);
 });
+
+// hide menu on menu item click
+$(document).ready(function () {
+    $("#navbar li a").click(function() {
+        $(".navbar-collapse").removeClass("in");
+    });
+});
