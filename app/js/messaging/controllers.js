@@ -255,17 +255,19 @@ module.controller('ConversationNewController', function ($scope, $location, $htt
         $scope.alert = [];
     }
 
+    $scope.remRecv = function (tag, t) {
+        function remove(setNames, setIds) {
+            var index = setNames.indexOf(tag.name);
+            setNames.splice(index, 1);
+            setIds.splice(index, 1);
+        }
 
-    $scope.remRecv = function (indx, t) {
         if (t === 'u') {
-            $scope.recv.usrNames.splice(indx, 1);
-            $scope.recv.usrIds.splice(indx, 1);
+            remove($scope.recv.usrNames, $scope.recv.usrIds);
         } else if (t === 'g') {
-            $scope.recv.grpNames.splice(indx, 1);
-            $scope.recv.grpIds.splice(indx, 1);
+            remove($scope.recv.grpNames, $scope.recv.grpIds);
         } else {
-            $scope.recv.orgNames.splice(indx, 1);
-            $scope.recv.orgIds.splice(indx, 1);
+            remove($scope.recv.orgNames, $scope.recv.orgIds);
         }
     }
 

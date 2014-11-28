@@ -2,13 +2,13 @@
     <form name="inputs">
 
         <alert ng-repeat="al in alert" type="al.type" close="closeAlert()">{{al.msg}}</alert>
-  
+
         <div class="input-group addon-usr">
             <span class="input-group-addon">To user</span>
 
             <tags-input ng-model="toUsr" name="usrInput"
                     display-property="name" placeholder="Write users "
-                    on-tag-added="selectedRecv($tag, 'u')" on-tag-removed="remRecv($index, 'u')" min-length=1
+                    on-tag-added="selectedRecv($tag, 'u')" on-tag-removed="remRecv($tag, 'u')" min-length=1
                     add-from-autocomplete-only="true" replace-spaces-with-dashes="false">
                 <auto-complete source="findRecv($query, 'u')" min-length="2"></auto-complete>
             </tags-input>
@@ -18,7 +18,7 @@
             <span class="input-group-addon">To usergroup</span>
 
             <tags-input ng-model="toGrp" placeholder="Write usergroups " display-property="name"
-                    on-tag-added="selectedRecv($tag, 'g')" on-tag-removed="remRecv($index, 'g')" min-length=1
+                    on-tag-added="selectedRecv($tag, 'g')" on-tag-removed="remRecv($tag, 'g')" min-length=1
                     add-from-autocomplete-only="true" replace-spaces-with-dashes="false">
                 <auto-complete source="findRecv($query, 'g')" min-length="2"></auto-complete>
             </tags-input>
@@ -27,7 +27,7 @@
         <div class="input-group addon-org">
             <span class="input-group-addon">To organization</span>
             <tags-input ng-model="toOrg" placeholder="Write organization " display-property="name"
-                    on-tag-added="selectedRecv($tag, 'o')" on-tag-removed="remRecv($index, 'o')" min-length=1
+                    on-tag-added="selectedRecv($tag, 'o')" on-tag-removed="remRecv($tag, 'o')" min-length=1
                     add-from-autocomplete-only="true" replace-spaces-with-dashes="false">
                 <auto-complete source="findRecv($query, 'o')" min-length="2"></auto-complete>
             </tags-input>

@@ -14,7 +14,7 @@ var js_files = [
     //"./bower_components/angular-animate/angular-animate.js",
     "./bower_components/angular-resource/angular-resource.js",
     "./bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
-    "ng-tags-input_mod.js",
+    "./bower_components/ng-tags-input/ng-tags-input.js",
     "./app/js/**/*.js"
 ];
 
