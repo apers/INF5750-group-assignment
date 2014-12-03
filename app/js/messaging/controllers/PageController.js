@@ -43,7 +43,7 @@
         })();
 
         $scope.isLocaton = function(path) {
-            return $location.path().slice(0, path.length) == path};
+            return ($location.path().slice(0, path.length) == path);
         };
 
     });
