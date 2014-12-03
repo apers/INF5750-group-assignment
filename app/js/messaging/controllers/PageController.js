@@ -25,16 +25,6 @@
             }, false);
         })();
 
-        // detect url changes
-        (function() {
-            $rootScope.location = $location.path();
-            $window.addEventListener("hashchange", function () {
-                $rootScope.$apply(function () {
-                    $rootScope.location = $location.path();
-                });
-            }, false);
-        })();
-
         // hide menu on menu item click
         (function() {
             $(document).ready(function () {
@@ -51,6 +41,10 @@
             // check for offline stuff to be sent
             OfflineConversation.checkOfflineQueue();
         })();
+
+        $scope.isLocaton = function(path) {
+            return $location.path().slice(0, path.length) == path};
+        };
 
     });
 })();
