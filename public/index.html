@@ -25,8 +25,8 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li ng-class="{active: location.slice(0, '/inbox/'.length) == '/inbox/'}"><a href="#/">Inbox</a></li>
-            <!-- TODO: put ng-hide="offline" on new message -->
-            <li ng-class="{active: location.slice(0, '/conversation/new'.length) == '/conversation/new'}"><a href="#/conversation/new">New message</a></li>
+            <li ng-hide="offline" ng-class="{active: location.slice(0, '/conversation/new'.length) == '/conversation/new'}">
+            <a href="#/conversation/new">New message</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
