@@ -69,7 +69,7 @@
             <div class="pull-right icon">
                 <input type="checkbox" ng-model="conversation.selected"
                        ng-change="countSelected(conversation.selected)">
-                    <span ng-click="deleteSingleId = conversation.id" type="button" class="glyphicon glyphicon-remove"
+                    <span ng-show="!offline" ng-click="deleteSingleId = conversation.id" type="button" class="glyphicon glyphicon-remove"
                           data-toggle="modal" data-target="#deleteModal"></span>
                         <span ng-show="conversation.followUp" class="glyphicon glyphicon-star"
                               ng-click="changeFollowUp(conversation)"></span>

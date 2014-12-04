@@ -27,15 +27,15 @@ var css_files = [
 // pass --name NAME to set another appname
 var appname = args.name || 'Overdressed';
 
-gulp.task('styles', function() {
+gulp.task('styles', function () {
     // todo: style: compressed
     return gulp.src(css_files)
         .pipe(concat('app.css'))
-        .pipe(sass({ style: 'expanded' }))
+        .pipe(sass({style: 'expanded'}))
         .pipe(gulp.dest('public'));
 });
 
-gulp.task('scripts', function() {
+gulp.task('scripts', function () {
     return gulp.src(js_files)
         .pipe(concat('app.js'))
         //.pipe(ngAnnotate())
@@ -43,41 +43,42 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest('public'));
 });
 
-gulp.task('fonts', function() {
+gulp.task('fonts', function () {
     return gulp.src('./bower_components/bootstrap-sass-official/assets/fonts/**')
         .pipe(gulp.dest('./public/fonts'));
 });
 
-gulp.task('watch', function() {
+gulp.task('watch', function () {
     gulp.watch('app/scss/**/*', ['styles']);
     gulp.watch(js_files, ['scripts']);
 });
 
 // deploy the application with the install script
 // pass --name NAME as argument to set name to deployed application
-gulp.task('deploy', function() {
+gulp.task('deploy', function () {
     gulp.start('deploy-do');
 });
 
 // helper to actually run the script
 // (could not get the task to run as it should in the deploy-task)
 gulp.task('deploy-do', shell.task([
-    './server-install.sh '+appname
+    './server-install.sh ' + appname
 ]));
 
 // this task will watch for changes in the app-directory and automatically try to deploy it
 // pass --name NAME as argument to set name to deployed application
 // eg: $ gulp watch-deploy --name SomeAppName
-gulp.task('watch-deploy', function() {
+gulp.task('watch-deploy', function () {
     gulp.watch([
-            'app/scss/**/*.scss',
-            'app/js/**/*.js',
-            //'public/index.html', // cannot watch this, deploy script modifies it
-            //'public/manifest.webapp', // cannot watch this, deploy script modifies it
-            'public/views/**/*.html'
-        ], ['deploy']);
+        'app/scss/**/*.scss',
+        'app/js/**/*.js',
+        'app/js/messaging/controllers/ConversationListController.js',
+        //'public/index.html', // cannot watch this, deploy script modifies it
+        //'public/manifest.webapp', // cannot watch this, deploy script modifies it
+        'public/views/**/*.html'
+    ], ['deploy']);
 });
 
-gulp.task('default', function() {
+gulp.task('default', function () {
     gulp.start('styles', 'scripts', 'fonts');
 });

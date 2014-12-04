@@ -181,8 +181,8 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
                     params: {fields: ':all', pageSize: 50}
                 }).success(
                     function (data) {
-                        console.log('updated cache');
-                        cache.messageList = data.messageConversations
+                        cache.messageList = data.messageConversations;
+                        resaveCache();
                     }).error(
                     function () {
                         console.log('Could not build message cache')
@@ -291,6 +291,5 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
         });
     }
 
-    buildMessageCache();
     return OfflineConversation;
 });

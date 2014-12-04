@@ -6,6 +6,7 @@
     module.controller('ConversationListController', function ($scope, $location, $http, $filter, Conversation, OfflineConversation) {
         // Init
         $scope.totalSelected = 0;
+        $scope.changePage = 1;
 
         var filterText = "";
 
@@ -19,12 +20,13 @@
         $scope.$watch('messageFilter', function () {
             if ($scope.messageFilter != undefined) {
                 $scope.changePage = 1;
+                $scope.totalSelected = 0;
                 filterText = $scope.messageFilter;
                 getConversations();
             }
         });
 
-
+/**/
         // Get all conversations and paging data
         var getConversations = function () {
 
