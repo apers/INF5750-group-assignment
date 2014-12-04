@@ -42,10 +42,17 @@
   }
 
   .addon-subject {
-    margin: 10px 0;
+    margin: 20px 0;
 
-    input {
-      wiwdth: 50%;
+	@media screen and (max-width: 721px) {
+    	input {
+      	 width: 100%;
+    	}
+    }
+    @media screen and (min-width: 722px) {
+    	input {
+     	 width: 50%;
+    	}
     }
   }
 

@@ -66,6 +66,24 @@ module.factory('Conversation', function(Api, $http, $q, OfflineConversation) {
             });
         };
     });
+    
+    Conversation.getUsers = function(search) {
+    	return $http.get(Api.getBaseUrl()+search);
+    };
+    
+    Conversation.sendNewMsg = function(msg) {
+        return $q(function(resolve, reject) {
+        	$http.post(Api.getBaseUrl() + 'messageConversations', msg, {
+                    headers: {
+                    	'application-type': 'application/json'
+                    }
+                }).success(function(data, status, header) { 
+                    resolve(header('location').split('/'));
+                }).error(function(data, status, header) {
+        			reject(status);
+                })
+        });
+    };
 
     Conversation.prototype.addReply = function(text) {
         var self = this;
