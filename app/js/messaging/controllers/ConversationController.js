@@ -1,9 +1,7 @@
-(function() {
+(function () {
     'use strict';
 
-    var module = angular.module('overdressed.messaging.controllers.ConversationController', [
-
-    ]);
+    var module = angular.module('overdressed.messaging.controllers.ConversationController', []);
 
     module.controller('ConversationController', function ($scope, $routeParams, Conversation, $window, $location) {
         $scope.conversation = null;
