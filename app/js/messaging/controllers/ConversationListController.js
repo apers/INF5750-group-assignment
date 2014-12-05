@@ -45,6 +45,8 @@
 
             $scope.conversations = null;
 
+            console.log('Get conversations from page: ' + $scope.changePage);
+
             OfflineConversation.getByPage($scope.changePage, queryParams.pageSize, queryParams.filter).then(function (data) {
                 $scope.conversations = data;
 
