@@ -77,10 +77,6 @@
             });
         };
 
-        $scope.showConversation = function (conversation) {
-            $location.path('conversation/' + conversation.id);
-        }
-
         /* Selects all the messages */
         $scope.selectAll = function (conversations) {
             conversations.forEach(function (conversation) {
