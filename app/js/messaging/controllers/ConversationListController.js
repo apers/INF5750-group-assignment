@@ -29,6 +29,8 @@
         // Get all conversations and paging data
         var getConversations = function () {
 
+            $scope.searching = true;
+
             var filterStr;
 
             if (filterText == "") {
@@ -48,6 +50,9 @@
             console.log('Get conversations from page: ' + $scope.changePage);
 
             OfflineConversation.getByPage($scope.changePage, queryParams.pageSize, queryParams.filter).then(function (data) {
+
+                $scope.searching = false;
+
                 $scope.conversations = data;
 
                 var currentPage = parseInt(data.pager.page);
