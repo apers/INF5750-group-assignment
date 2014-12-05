@@ -3,7 +3,7 @@
 
     var module = angular.module('overdressed.messaging.controllers.ConversationListController', []);
 
-    module.controller('ConversationListController', function ($scope, $location, $http, $filter, Conversation, OfflineConversation) {
+    module.controller('ConversationListController', function ($scope, $location, $http, $filter, OfflineConversation) {
         // Init
         $scope.totalSelected = 0;
         $scope.changePage = 1;
@@ -26,7 +26,6 @@
             }
         });
 
-/**/
         // Get all conversations and paging data
         var getConversations = function () {
 
@@ -105,12 +104,7 @@
         $scope.deleteAllSelected = function (conversations) {
             for (var i in conversations) {
                 if (conversations[i].selected == true) {
-
-                    Conversation.delete({id: conversations[i].id}, function (data) {
-                        // Refresh messages
-                        getConversations();
-                        $scope.totalSelected--;
-                    })
+                    OfflineConversation.delete(conversations[i].id);
                 }
             }
         };
@@ -118,7 +112,7 @@
         $scope.starAllSelected = function (conversations) {
             for (var i in conversations) {
                 if (conversations[i].selected == true) {
-                    console.log(conversations[i].id);
+                    setFollowUp(conversations[i]);
                 }
             }
         };
@@ -133,19 +127,32 @@
         };
 
         $scope.changeFollowUp = function (conversation) {
+            setFollowUp(conversation);
+        };
+
+        function setFollowUp(conversation) {
             conversation.followUp = !conversation.followUp;
-        };
 
+            OfflineConversation.get(conversation.id).then(function(convo) {
+                convo.markFollowUp(conversation.followUp).then(function (ret) {
+                    console.log("markRead success", ret);
+                }, function (err) {
+                    console.log("error", err);
+                });
+            });
+        }
+        /**/
         $scope.deleteConversation = function (conversation) {
-            console.log(conversation);
             // Delete conversation
-            Conversation.delete({id: conversation}, function (data) {
-                // Refresh messages
-                getConversations();
-                $scope.totalSelected--;
+            OfflineConversation.delete(conversation)
+                .success(function(ret){
+                    console.log(ret);
             })
-
+                .error(function(ret){
+                    console.log(ret);
+            })
         };
+
 
         $scope.getLastSender = function (conversation) {
             if ('lastSenderFirstname' in conversation) {

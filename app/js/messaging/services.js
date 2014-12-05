@@ -268,7 +268,7 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
     };
 
     OfflineConversation.getByPage = function(page, pagesize, filter) {
-        console.log('getPage');
+        console.log('getPage page: ' + page);
         return $q(function(resolve, reject) {
             if (navigator.onLine) {
                 $http.get(url, {
@@ -289,7 +289,18 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
                 }
             }
         });
-    }
+    };
+
+    // Delete a message
+    OfflineConversation.delete = function(id) {
+
+        return $q(function(resolve, reject) {
+            $http.delete(Api.getBaseUrl() + 'messageConversation/' +  id)
+                .success(resolve)
+                .error(reject);
+        });
+
+    };
 
     return OfflineConversation;
 });

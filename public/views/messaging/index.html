@@ -1,3 +1,6 @@
+<div class="alert alert-info" ng-show="conversations == null">
+    Loading messages...
+</div>
 <!-- Single message delete modal -->
 <div class="modal fade" id="deleteAllModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm">
@@ -69,8 +72,8 @@
             <div class="pull-right icon">
                 <input type="checkbox" ng-model="conversation.selected"
                        ng-change="countSelected(conversation.selected)">
-                    <span ng-show="!offline" ng-click="deleteSingleId = conversation.id" type="button" class="glyphicon glyphicon-remove"
-                          data-toggle="modal" data-target="#deleteModal"></span>
+                    <span ng-show="!offline" ng-click="deleteConversation(conversation.id)" type="button" class="glyphicon glyphicon-remove"
+                            ></span>
                         <span ng-show="conversation.followUp" class="glyphicon glyphicon-star"
                               ng-click="changeFollowUp(conversation)"></span>
             <span ng-show="!conversation.followUp"
@@ -84,7 +87,7 @@
                 {{getLastSender(conversation)}}
             </h4>
 
-            <p class="list-group-item-text" style="color: #777777">{{conversation.displayName}}</p>
+            <p class="list-group-item-text" style="color: #777777">{{conversation.displayName || 'No subject'}}</p>
         </div>
     </div>
 </div>

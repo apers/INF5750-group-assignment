@@ -10,7 +10,7 @@ var module = angular.module('overdressed.messaging.controllers', [
 module.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            redirectTo: '/inbox/1'
+            redirectTo: '/inbox'
         })
         .when('/conversation/new', {
 
@@ -18,7 +18,7 @@ module.config(function ($routeProvider) {
             controller: 'ConversationNewController'
 
         })
-        .when('/inbox/:page', {
+        .when('/inbox', {
             templateUrl: 'views/messaging/index.html',
             controller: 'ConversationListController'
 
