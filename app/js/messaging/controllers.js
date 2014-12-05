@@ -29,13 +29,3 @@ module.config(function ($routeProvider) {
             controller: 'ConversationController'
         });
 });
-
-/*
- TODO:
- module.controller('menuController', function ($scope) {
-
- var isLocation = function (path) {
- console.log("Checking");
- return $scope.location.slice(0, path.length) == path;
- };
- });*/

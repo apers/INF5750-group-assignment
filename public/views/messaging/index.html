@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 61de6f3b5a7c103e8ff8f56ab4298109880110c6
 <!--Input -->
 <div class="input-group">
     <div class="input-group-btn">
@@ -25,7 +29,13 @@
     </div>
     <input ng-disabled="offline" type="text" class="form-control" placeholder="Search" ng-model="messageFilter">
 </div>
+<<<<<<< HEAD
 <hr>
+=======
+
+<hr>
+
+>>>>>>> 61de6f3b5a7c103e8ff8f56ab4298109880110c6
 <!--Conversation list-->
 <div class="list-group">
     <div class="list-group-item conversationList"
@@ -37,6 +47,7 @@
         <a class="message" ng-href="#/conversation/{{conversation.id}}">
             <div class="meta">
                 <div class="icon">
+<<<<<<< HEAD
 <span ng-show="!offline" ng-click="deleteSingleId = conversation.id; $event.preventDefault()" type="button" class="glyphicon glyphicon-remove"
       data-toggle="modal" data-target="#deleteModal" title="Delete conversation"></span>
 <span class="glyphicon" ng-class="{'glyphicon-star': conversation.followUp, 'glyphicon-star-empty': !conversation.followUp}"
@@ -48,6 +59,21 @@
             <h4 class="list-group-item-heading">
                 {{getLastSender(conversation)}}
             </h4>
+=======
+                    <span ng-show="!offline" ng-click="deleteSingleId = conversation.id; $event.preventDefault()" type="button" class="glyphicon glyphicon-remove"
+                          data-toggle="modal" data-target="#deleteModal" title="Delete conversation"></span>
+                    <span class="glyphicon" ng-class="{'glyphicon-star': conversation.followUp, 'glyphicon-star-empty': !conversation.followUp}"
+                          ng-click="changeFollowUp(conversation); $event.preventDefault()" title="Mark/unmark as follow-up"></span>
+                </div>
+                <div class="date">{{conversation.created | date:'MMM. dd, hh:mm'}}</div>
+            </div>
+
+            <!--  From -->
+            <h4 class="list-group-item-heading">
+                {{getLastSender(conversation)}}
+            </h4>
+
+>>>>>>> 61de6f3b5a7c103e8ff8f56ab4298109880110c6
             <p class="list-group-item-text">
                 {{conversation.displayName}}
                 <span class="no-subject" ng-show="conversation.displayName==''">Subject missing</span>
@@ -55,6 +81,10 @@
         </a>
     </div>
 </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 61de6f3b5a7c103e8ff8f56ab4298109880110c6
 <div class="text-center">
     <ul class="pagination">
         <li><a href="" ng-click="changePage = changePage - 1">&laquo;</a></li>
@@ -72,7 +102,33 @@
         </li>
     </ul>
 </div>
+<<<<<<< HEAD
 <!-- Multi message delete modal -->
+=======
+
+
+<!-- Single message delete modal -->
+<div class="modal fade" id="deleteAllModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm</h4>
+            </div>
+            <div class="modal-body">
+                Delete {{totalSelected}} message(s)?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"
+                        ng-click="deleteAllSelected(conversations.messageConversations)">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+>>>>>>> 61de6f3b5a7c103e8ff8f56ab4298109880110c6
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -91,4 +147,8 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
 </div>
+=======
+</div>
+>>>>>>> 61de6f3b5a7c103e8ff8f56ab4298109880110c6
