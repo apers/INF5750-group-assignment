@@ -43,20 +43,14 @@
 
   .addon-subject {
     margin: 20px 0;
-
-	@media screen and (max-width: 721px) {
-    	input {
-      	 width: 100%;
-    	}
-    }
-    @media screen and (min-width: 722px) {
-    	input {
-     	 width: 50%;
-    	}
+    @media (min-width: $screen-md-min) {
+      input {
+        width: 60%;
+      }
     }
   }
 
   textarea {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 }
