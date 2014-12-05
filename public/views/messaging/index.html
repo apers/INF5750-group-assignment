@@ -1,3 +1,4 @@
+
 <!--Input -->
 <div class="input-group">
     <div class="input-group-btn">
@@ -26,7 +27,7 @@
     <input ng-disabled="offline" type="text" class="form-control" placeholder="Search" ng-model="messageFilter">
 </div>
 
-<<hr>
+<hr>
 
 <!--Conversation list-->
 <div class="list-group">
@@ -39,22 +40,13 @@
         <a class="message" ng-href="#/conversation/{{conversation.id}}">
             <div class="meta">
                 <div class="icon">
-<span ng-show="!offline" ng-click="deleteSingleId = conversation.id; $event.preventDefault()" type="button" class="glyphicon glyphicon-remove"
-      data-toggle="modal" data-target="#deleteModal" title="Delete conversation"></span>
-<span class="glyphicon" ng-class="{'glyphicon-star': conversation.followUp, 'glyphicon-star-empty': !conversation.followUp}"
-      ng-click="changeFollowUp(conversation); $event.preventDefault()" title="Mark/unmark as follow-up"></span>
-                </div>
-                <div class="date">{{conversation.created | date:'MMM. dd, hh:mm'}}</div>
-            </div>
-            <!-- From -->
-            <h4 class="list-group-item-heading">
-                {{getLastSender(conversation)}}
-            </h4>
                     <span ng-show="!offline" ng-click="deleteSingleId = conversation.id; $event.preventDefault()" type="button" class="glyphicon glyphicon-remove"
                           data-toggle="modal" data-target="#deleteModal" title="Delete conversation"></span>
                     <span class="glyphicon" ng-class="{'glyphicon-star': conversation.followUp, 'glyphicon-star-empty': !conversation.followUp}"
                           ng-click="changeFollowUp(conversation); $event.preventDefault()" title="Mark/unmark as follow-up"></span>
+                </div>
                 <div class="date">{{conversation.created | date:'MMM. dd, hh:mm'}}</div>
+            </div>
 
             <!--  From -->
             <h4 class="list-group-item-heading">
@@ -87,7 +79,8 @@
     </ul>
 </div>
 
-<!-- Multi message delete modal -->
+
+<!-- Single message delete modal -->
 <div class="modal fade" id="deleteAllModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -101,6 +94,26 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"
                         ng-click="deleteAllSelected(conversations.messageConversations)">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm</h4>
+            </div>
+            <div class="modal-body">
+                Delete message?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"
+                        ng-click="deleteConversation(deleteSingleId)">
                     Delete
                 </button>
             </div>
