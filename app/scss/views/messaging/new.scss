@@ -42,14 +42,15 @@
   }
 
   .addon-subject {
-    margin: 10px 0;
-
-    input {
-      wiwdth: 50%;
+    margin: 20px 0;
+    @media (min-width: $screen-md-min) {
+      input {
+        width: 60%;
+      }
     }
   }
 
   textarea {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 }

@@ -1,38 +1,15 @@
 .conversationList {
-
   background: #ececec;
+  overflow: hidden;
 
-
-  #table-buttons {
-    width: 30px;
-    text-align: center;
+  &.new-message {
+    background: #ffffff;
+    z-index: 2;
+    font-weight: bold;
   }
 
-  // Glyph sizes
-  span.glyphicon-star {
-    font-size: 1.5em;
-    color: #d8d280;
-  }
-  span.glyphicon-star-empty {
-    font-size: 1.5em;
-    color: #d8d280;
-    &:hover {
-      color: #f0e23f;
-    }
-  }
-  span.glyphicon-remove {
-    font-size: 1.5em;
-    color: #9f4344;
-    &:hover {
-      color: #eb0005;
-    }
-  }
-
-  // Same style as when selected
   &:hover {
-    #colorBlock {
-      background: #83beff;
-    }
+    background: #83beff;
   }
 
   &.selected {
@@ -40,43 +17,59 @@
     z-index: 2;
   }
 
-  .icons {
-    display: table;
-    .date {
-      display: table-footer-group;
-      color: #777777;
+  .marker {
+    float: left;
+    padding-top: 10px;
+  }
+
+  .message {
+    display: block;
+
+    text-decoration: none;
+    margin: -10px -15px -10px 30px;
+    padding: 10px 15px 10px 0;
+
+    .meta {
+      float: right;
+      text-align: right;
+      margin-left: 3px;
+
+      .icon {
+        .glyphicon {
+          font-size: 1.5em;
+        }
+        .glyphicon-star {
+          color: #d8d280;
+        }
+        .glyphicon-star-empty {
+          color: #d8d280;
+          &:hover {
+            color: #f0e23f;
+          }
+        }
+        .glyphicon-remove {
+          color: #9f4344;
+          &:hover {
+            color: #eb0005;
+          }
+        }
+      }
+      .date {
+        color: $gray-light;
+      }
     }
-    .icon {
-      display: table-header-group;
+
+    h4 {
+      color: $text-color;
+    }
+
+    p {
+      color: $gray;
+      .no-subject {
+        font-style: italic;
+        color: $gray-light;
+      }
     }
   }
 
-  // Remove link colors and decorations from inbox view
-  a {
-    &:link {
-      text-decoration: none;
-      color: inherit
-    }
-    &:active {
-      text-decoration: none;
-      color: inherit
-    }
-    &:hover {
-      text-decoration: none;
-      color: inherit
-    }
-    &:visited {
-      text-decoration: none;
-      color: inherit
-    }
-  }
 }
-
-  // Style for new message
-.new-message {
-  background: #ffffff;
-  z-index: 2;
-  font-weight: bold;
-}
-
-
