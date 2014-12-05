@@ -42,7 +42,7 @@
             OfflineConversation.checkOfflineQueue();
         })();
 
-        $scope.isLocaton = function(path) {
+        $scope.isLocation = function(path) {
             return ($location.path().slice(0, path.length) == path);
         };
 
