@@ -4,7 +4,8 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     ngAnnotate = require('gulp-ng-annotate'),
     shell = require('gulp-shell'),
-    args = require('yargs').argv;
+    args = require('yargs').argv,
+    sourcemaps = require('gulp-sourcemaps');
 
 var js_files = [
     "./bower_components/jquery/dist/jquery.js",
@@ -30,16 +31,20 @@ var appname = args.name || 'Overdressed';
 gulp.task('styles', function () {
     // todo: style: compressed
     return gulp.src(css_files)
-        .pipe(concat('app.css'))
+        .pipe(sourcemaps.init())
         .pipe(sass({style: 'expanded'}))
+        .pipe(concat('app.css'))
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('public'));
 });
 
 gulp.task('scripts', function () {
     return gulp.src(js_files)
+        .pipe(sourcemaps.init())
         .pipe(concat('app.js'))
         //.pipe(ngAnnotate())
         //.pipe(uglify())
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('public'));
 });
 
