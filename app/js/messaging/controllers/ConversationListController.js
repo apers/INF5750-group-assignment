@@ -143,10 +143,7 @@
         $scope.deleteConversation = function (conversation) {
             // Delete conversation
             OfflineConversation.delete(conversation)
-                .success(function(ret){
-                    console.log(ret);
-            })
-                .error(function(ret){
+                .then(function(ret){
                     console.log(ret);
             })
         };
