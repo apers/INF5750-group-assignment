@@ -30,6 +30,10 @@
 <hr>
 
 <!--Conversation list-->
+        <div class="alert alert-info" role="alert" ng-show="conversations.messageConversations.length == 0">
+            No messages found
+        </div>
+
 <div class="list-group">
     <div class="list-group-item conversationList"
          ng-repeat="conversation in conversations.messageConversations"
