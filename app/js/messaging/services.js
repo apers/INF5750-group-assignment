@@ -189,7 +189,8 @@ module.factory('CacheService', function() {
     var cache;
     var cacheName = 'overdressed';
 
-    var loadCache = function() {
+    var loadCache = function(reload) {
+        if (cache && !reload) return;
         if (!(cacheName in localStorage)) {
             cache = {};
             saveCache();
@@ -204,26 +205,26 @@ module.factory('CacheService', function() {
 
     return {
         get: function(name, def) {
-            if (!cache) {
-                loadCache();
-            }
+            loadCache();
             if (name in cache) {
                 return cache[name];
             }
             return def || null;
         },
         set: function(name, value) {
+            loadCache();
             cache[name] = value;
             saveCache();
         },
         delete: function(name) {
+            loadCache();
             if (name in cache) {
                 delete cache[name];
             }
             saveCache();
         },
         reload: function() {
-            loadCache();
+            loadCache(true);
         }
     };
 });
