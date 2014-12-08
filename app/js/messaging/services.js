@@ -43,16 +43,15 @@ module.factory('UserDetails', function(Api, CacheService, $http, $q) {
                 }
 
                 if (navigator.onLine) {
-                    console.log("fetching api/me");
                     $http.get(Api.getBaseUrl() + 'me').success(function (ret) {
                         userdata = ret;
+                        CacheService.set('userdata', userdata);
                         resolve(userdata);
                     }).error(function (err) {
                         alert("Unable to fetch user details!");
                         reject("Unable to fetch user details!");
                     });
                 } else {
-                    console.log("will try load api/me from cache");
                     userdata = CacheService.get('userdata');
                     if (userdata != null) {
                         console.log("user data from offline", userdata);
