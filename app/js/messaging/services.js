@@ -11,7 +11,7 @@ var module = angular.module('overdressed.messaging.services', [
  */
 module.factory('Api', function($http) {
     // TODO: read from manifest
-    var baseUrl = 'http://admin:district@inf5750-19.uio.no/api/';
+    var baseUrl = 'http://inf5750-19.uio.no/api/';
 
     //$http.get('manifest.webapp').success(function(data) {
     //    return data.activities.dhis.href + "/api/";
@@ -50,7 +50,7 @@ module.factory('Conversation', function(Api, $http, $q, OfflineConversation) {
     //
     function Conversation(value) {
         shallowClearAndCopy(value || {}, this);
-        console.log("new conversation", this);
+        //console.log("new conversation", this);
     }
 
     angular.forEach(OfflineConversation.markTypes, function(endpoints, method) {
@@ -123,10 +123,58 @@ module.factory('Conversation', function(Api, $http, $q, OfflineConversation) {
     return Conversation;
 });
 
+
+/**
+ * Cache-service
+ */
+module.factory('CacheService', function() {
+    var cache;
+    var cacheName = 'overdressed';
+
+    var loadCache = function() {
+        if (!(cacheName in localStorage)) {
+            cache = {};
+            saveCache();
+        }
+
+        cache = JSON.parse(localStorage[cacheName]);
+    };
+
+    var saveCache = function() {
+        localStorage[cacheName] = JSON.stringify(cache);
+    };
+
+    return {
+        get: function(name, def) {
+            if (!cache) {
+                loadCache();
+            }
+            if (name in cache) {
+                return cache[name];
+            }
+            return def || null;
+        },
+        set: function(name, value) {
+            cache[name] = value;
+            saveCache();
+        },
+        delete: function(name) {
+            if (name in cache) {
+                delete cache[name];
+            }
+            saveCache();
+        },
+        reload: function() {
+            loadCache();
+        }
+    };
+});
+
+
 /**
  *  Service for offline conversation data
  */
-module.factory('OfflineConversation', function(Api, $http, $injector, $window, $q) {
+module.factory('OfflineConversation', function(Api, CacheService, $http, $injector, $window, $q) {
     // TODO: change this when API gets fixed
     var readAndFollowUpSupport = false;
 
@@ -135,75 +183,72 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
         markFollowUp: ['unfollowUp', 'followUp', 'followUp'],
         markRead: ['unread', 'read', 'read']
     };
-    var cache = 'overdressed' in localStorage ? JSON.parse(localStorage['overdressed']) : {
-            'marks': {}, // e.g. items for markFollowUp
-            'messageList': [], // the cached items
-            'newMessages': [] // list of added replies not pushed
-        },
-        perPage = 15,
+
+    // cache list:
+    // marks - e.g. items for markFollowUp
+    // messageList - the cached items
+    // newMessages - list of added replies not pushed
+
+    var perPage = 15,
         url = Api.getBaseUrl()+'messageConversations';
 
     function addMarks(ids, markname, state) {
         angular.forEach(ids, function(id) {
+            var cache = CacheService.get('marks', {});
+
             // remove old marks
-            angular.forEach(cache.marks[markname] || {}, function(subids, state) {
+            angular.forEach(cache[markname] || {}, function(subids, state) {
                 angular.forEach(subids, function(subid, i) {
                     if (id == subid) {
-                        cache.marks[markname][state].splice(i, 1);
+                        cache[markname][state].splice(i, 1);
                     }
                 })
             });
 
-            cache.marks[markname] = cache.marks[markname] || {};
-            cache.marks[markname][state] = cache.marks[markname][state] || [];
-            cache.marks[markname][state].push(id);
+            cache[markname] = cache[markname] || {};
+            cache[markname][state] = cache[markname][state] || [];
+            cache[markname][state].push(id);
+            CacheService.set('marks', cache);
         });
-
-        resaveCache();
-    }
-
-    function resaveCache() {
-        localStorage['overdressed'] = JSON.stringify(cache);
     }
 
     function sendMarks() {
-        console.log("sending marks", cache.marks);
-        var t = cache.marks;
-        cache.marks = {};
+        //console.log("sending marks", cache.marks);
+        var t = CacheService.get('marks', {});
+        CacheService.delete('marks');
         angular.forEach(t, function (states, markname) {
             angular.forEach(states, function (ids, state) {
                 // TODO: catch new connection errors
+                if (ids.length == 0) return;
                 OfflineConversation[markname](ids, state, true);
             });
         });
-        resaveCache();
     }
 
     function sendMessages() {
-        console.log("sending messages", cache.newMessages);
-        var t = cache.newMessages;
+        //console.log("sending messages", cache.newMessages);
+        var t = CacheService.get('newMessages', []);
         angular.forEach(t, function(message) {
             // TODO: catch new connection errors
             // TODO: should there be some timer so they are sent in order?
             OfflineConversation.sendMessage(null, message, true);
         });
-        resaveCache();
     }
 
     function buildMessageCache(force) {
         // TODO: invalidate cache
         // TODO: what if 0 messages? --> should use timestamp
         if(navigator.onLine) {
-            if (cache.messageList.length == 0 || force) {
+            var m = CacheService.get('messageList', []);
+            if (m.length == 0 || force) {
                 $http.get(url, {
                     params: {fields: ':all', pageSize: 50}
                 }).success(
                     function (data) {
-                        cache.messageList = data.messageConversations;
-                        resaveCache();
+                        CacheService.set('messageList', data.messageConversations);
                     }).error(
                     function () {
-                        console.log('Could not build message cache')
+                        console.log('Could not build message cache');
                     });
             }
         }
@@ -224,20 +269,26 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
     angular.forEach(OfflineConversation.markTypes, function(endpoints, method) {
         OfflineConversation[method] = function(ids, state, skipOffline) {
             return $q(function (resolve, reject) {
-                if (navigator.onLine && readAndFollowUpSupport) {
-                    $http.post(url + '/' + (endpoints[state + 0]), ids).success(resolve).error(reject);
-                } else if (!skipOffline) {
-                    addMarks(ids, method, state);
-                    resolve("offline");
+                if (!readAndFollowUpSupport) {
+                    // we silently ignore (accept) the request
+                    resolve("not supported");
+                    console.log("Method "+method+" was called, but is not supported. Silently accepted.");
                 } else {
-                    reject("offline");
+                    if (navigator.onLine) {
+                        $http.post(url + '/' + (endpoints[state + 0]), ids).success(resolve).error(reject);
+                    } else if (!skipOffline) {
+                        addMarks(ids, method, state);
+                        resolve("offline");
+                    } else {
+                        reject("offline");
+                    }
                 }
             });
         }
     });
 
     OfflineConversation.isWaiting = function() {
-        return Object.keys(cache.marks).length > 0 || cache.newMessages.length > 0;
+        return Object.keys(CacheService.get('marks', {})).length > 0 || CacheService.get('newMessages', []).length > 0;
     };
 
     OfflineConversation.sendMessage = function(id, data, skipOffline) {
@@ -257,8 +308,7 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
                     }
                 }).success(resolve).error(reject);
             } else if (!skipOffline) {
-                cache.newMessages.push(data);
-                resaveCache();
+                CachService.set('newMessages', CacheService.get('newMessages', []).push(data));
                 resolve();
             }
         });
@@ -274,9 +324,10 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
                     resolve(new x(ret));
                 }).error(reject);
             } else {
-                for (var i = 0; i < cache.messageList.length; i++) {
-                    if (cache.messageList[i].id == id) {
-                        resolve(cache.messageList[i]);
+                var m = CacheService.get('messageList', [])
+                for (var i = 0; i < m.length; i++) {
+                    if (m[i].id == id) {
+                        resolve(m[i]);
                         return;
                     }
                 }
@@ -286,23 +337,24 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
     };
 
     OfflineConversation.getByPage = function(page, pagesize, filter) {
-        console.log('getPage page: ' + page);
         return $q(function(resolve, reject) {
             if (navigator.onLine) {
                 $http.get(url, {
                     params: { fields: ':all', page: page, pageSize: pagesize, filter: filter }
                 }).success(resolve).error(reject);
             } else {
-                var numPages = Math.ceil(cache.messageList.length / perPage);
+                console.log("returning offline message list");
+                var m = CacheService.get('messageList', []);
+                var numPages = Math.ceil(m.length / perPage);
                 if (page < 1 || page > numPages) reject("page not found");
                 else {
                     resolve({
                         pager: {
                             page: page,
                             pageCount: numPages,
-                            total: cache.messageList.length
+                            total: m.length
                         },
-                        messageConversations: cache.messageList.slice((page-1)*perPage, perPage*page)
+                        messageConversations: m.slice((page-1)*perPage, perPage*page)
                     });
                 }
             }
