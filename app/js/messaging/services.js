@@ -178,6 +178,8 @@ module.factory('OfflineConversation', function(Api, CacheService, $http, $inject
     // TODO: change this when API gets fixed
     var readAndFollowUpSupport = false;
 
+    // TODO: offline stuff should be associated to a user, so it doesn't trigger when another user log in and go online
+
     function OfflineConversation() {}
     OfflineConversation.markTypes = {
         markFollowUp: ['unfollowUp', 'followUp', 'followUp'],
