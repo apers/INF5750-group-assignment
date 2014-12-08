@@ -22,6 +22,8 @@
 
 
 		$scope.findRecv = function (inp, t) {
+			//$scope.userResultLength = -1;
+
 			var search = '';
 			if (t === 'u') {
 				search += "users?filter=userCredentials.name:like:" + inp;
@@ -42,7 +44,11 @@
 			return Conversation.getUsers(search)
 			.then(function (response) {
 				if (t === 'u') {
+					/*if (!response.data.users.length) {
+						return { value:"",label:"No results found" };
+					} else {*/
 					return response.data.users;
+					//}
 				} else if (t === 'g') {
 					return response.data.userGroups;
 				} else {

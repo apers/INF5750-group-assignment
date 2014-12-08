@@ -2,6 +2,7 @@
 
 var module = angular.module('overdressed.messaging.controllers', [
     'ngRoute', 'ngTagsInput', 'ui.bootstrap',
+    'overdressed.messaging.services',
     'overdressed.messaging.controllers.PageController',
     'overdressed.messaging.controllers.ConversationController',
     'overdressed.messaging.controllers.ConversationListController',
@@ -16,16 +17,29 @@ module.config(function ($routeProvider) {
         .when('/conversation/new', {
 
             templateUrl: 'views/messaging/new.html',
-            controller: 'ConversationNewController'
-
+            controller: 'ConversationNewController',
+            resolve: {
+                resolver: function(ResolverService) {
+                    return ResolverService;
+                }
+            }
         })
         .when('/inbox', {
             templateUrl: 'views/messaging/index.html',
-            controller: 'ConversationListController'
-
+            controller: 'ConversationListController',
+            resolve: {
+                resolver: function(ResolverService) {
+                    return ResolverService;
+                }
+            }
         })
         .when('/conversation/:id', {
             templateUrl: 'views/messaging/conversation.html',
-            controller: 'ConversationController'
+            controller: 'ConversationController',
+            resolve: {
+                resolver: function(ResolverService) {
+                    return ResolverService;
+                }
+            }
         });
 });
