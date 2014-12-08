@@ -47,7 +47,7 @@
         <a class="message" ng-href="#/conversation/{{conversation.id}}">
             <div class="meta">
                 <div class="icon">
-                    <span ng-show="!offline" ng-click="deleteConversation(conversation.id)" type="button" class="glyphicon glyphicon-remove">
+                    <span ng-show="!offline" ng-click="deleteConversation(conversation.id); $event.preventDefault()" type="button" class="glyphicon glyphicon-remove">
 
                     </span>
                     <span class="glyphicon" ng-class="{'glyphicon-star': conversation.followUp, 'glyphicon-star-empty': !conversation.followUp}"

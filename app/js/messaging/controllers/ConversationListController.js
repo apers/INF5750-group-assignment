@@ -110,6 +110,7 @@
                     OfflineConversation.delete(conversations[i].id);
                 }
             }
+            getConversations();
         };
 
         $scope.starAllSelected = function (conversations) {
@@ -150,9 +151,10 @@
             OfflineConversation.delete(conversation)
                 .then(function(ret){
                     console.log(ret);
-            })
+                    getConversations();
+                });
 
-            getConversations();
+
         };
 
 
