@@ -151,6 +151,8 @@
                 .then(function(ret){
                     console.log(ret);
             })
+
+            getConversations();
         };
 
 
