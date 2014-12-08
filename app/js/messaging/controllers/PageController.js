@@ -11,12 +11,14 @@
             //Check if we lost connection to the internet
             console.log("initial offline state", !navigator.onLine);
             $rootScope.offline = !navigator.onLine;
+
             $window.addEventListener("offline", function () {
                 $rootScope.$apply(function () {
                     console.log("offline", true);
                     $rootScope.offline = true;
                 });
             }, false);
+
             $window.addEventListener("online", function () {
                 $rootScope.$apply(function () {
                     console.log("offline", false);
@@ -43,7 +45,7 @@
         })();
 
         $scope.isLocation = function(path) {
-            console.log("location", path);
+            //console.log("location", path);
             return ($location.path().slice(0, path.length) == path);
         };
 

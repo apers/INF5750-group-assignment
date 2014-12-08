@@ -68,7 +68,7 @@ module.factory('Conversation', function(Api, $http, $q, OfflineConversation) {
     });
     
     Conversation.getUsers = function(search) {
-    	return $http.get(Api.getBaseUrl()+search);
+        return $http.get(Api.getBaseUrl()+search);
     };
     
     Conversation.sendNewMsg = function(msg) {

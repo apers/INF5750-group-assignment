@@ -11,6 +11,7 @@
                     on-tag-added="selectedRecv($tag, 'u')" on-tag-removed="remRecv($tag, 'u')" min-length=1
                     add-from-autocomplete-only="true" replace-spaces-with-dashes="false">
                 <auto-complete source="findRecv($query, 'u')" min-length="2"></auto-complete>
+                <!--<span class="alert alert-info" role="alert" ng-show="userResultLength == 0">No user Found</span>-->
             </tags-input>
         </div>
 
