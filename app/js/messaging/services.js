@@ -274,7 +274,6 @@ module.factory('OfflineConversation', function(Api, CacheService, $http, $inject
     }
 
     function sendMarks() {
-        //console.log("sending marks", cache.marks);
         var t = CacheService.get('marks', {});
         CacheService.delete('marks');
         angular.forEach(t, function (states, markname) {
@@ -287,8 +286,8 @@ module.factory('OfflineConversation', function(Api, CacheService, $http, $inject
     }
 
     function sendMessages() {
-        //console.log("sending messages", cache.newMessages);
         var t = CacheService.get('newMessages', []);
+        CacheService.delete('newMessages');
         angular.forEach(t, function(message) {
             // TODO: catch new connection errors
             // TODO: should there be some timer so they are sent in order?
@@ -369,7 +368,9 @@ module.factory('OfflineConversation', function(Api, CacheService, $http, $inject
                     }
                 }).success(resolve).error(reject);
             } else if (!skipOffline) {
-                CachService.set('newMessages', CacheService.get('newMessages', []).push(data));
+                var m = CacheService.get('newMessages', []);
+                m.push(data);
+                CacheService.set('newMessages', m);
                 resolve();
             }
         });
