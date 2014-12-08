@@ -313,7 +313,7 @@ module.factory('OfflineConversation', function(Api, $http, $injector, $window, $
     OfflineConversation.delete = function(id) {
 
         return $q(function(resolve, reject) {
-            $http.delete(Api.getBaseUrl() + 'messageConversation/' +  id)
+            $http.delete(Api.getBaseUrl() + 'messageConversations/' +  id)
                 .success(resolve)
                 .error(reject);
         });
