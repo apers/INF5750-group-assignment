@@ -43,7 +43,6 @@
         })();
 
         $scope.isLocation = function(path) {
-            console.log("location", path);
             return ($location.path().slice(0, path.length) == path);
         };
 
