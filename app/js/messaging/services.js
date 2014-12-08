@@ -10,19 +10,78 @@ var module = angular.module('overdressed.messaging.services', [
  * TODO: Should probably be somewhere else and not inside the conversations module group
  */
 module.factory('Api', function($http) {
-    // TODO: read from manifest
-    var baseUrl = 'http://inf5750-19.uio.no/api/';
-
-    //$http.get('manifest.webapp').success(function(data) {
-    //    return data.activities.dhis.href + "/api/";
-    //});
+    var baseUrl = '/api/';
+    var loader = $http.get('manifest.webapp').success(function(data) {
+        baseUrl = data.activities.dhis.href + "/api/";
+    });
 
     return {
         getBaseUrl: function() {
             return baseUrl;
+        },
+        getLoader: function() {
+            return loader;
         }
     };
 });
+
+
+/**
+ * Service for user details
+ */
+module.factory('UserDetails', function(Api, CacheService, $http, $q) {
+    var userdata;
+    return {
+        get: function() {
+            return userdata;
+        },
+        load: function () {
+            return $q(function (resolve, reject) {
+                if (userdata) {
+                    resolve(userdata);
+                    return;
+                }
+
+                if (navigator.onLine) {
+                    console.log("fetching api/me");
+                    $http.get(Api.getBaseUrl() + 'me').success(function (ret) {
+                        userdata = ret;
+                        resolve(userdata);
+                    }).error(function (err) {
+                        alert("Unable to fetch user details!");
+                        reject("Unable to fetch user details!");
+                    });
+                } else {
+                    console.log("will try load api/me from cache");
+                    userdata = CacheService.get('userdata');
+                    if (userdata != null) {
+                        console.log("user data from offline", userdata);
+                        resolve(userdata);
+                    } else {
+                        reject("No userdata available offline");
+                    }
+                }
+            });
+        }
+    };
+});
+
+
+/**
+ * Resolver-service to fetch data before loading controllers
+ *
+ * This is data that must be available for the application to work
+ */
+module.factory('ResolverService', function(Api, UserDetails, $q) {
+    return $q.all([
+        Api.getLoader(),
+        UserDetails.load()
+    ]).catch(function() {
+        alert("Could not load required application data. Application failed.");
+        return $q.reject("data missing");
+    });
+});
+
 
 /**
  * Service for the conversations
